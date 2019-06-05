@@ -48,9 +48,9 @@ public class VotacionImpl
 		this.cuenta = null;
 	}
 	
-	public VotacionImpl(int ID, GregorianCalendar fecha, int calificacion)
+	public VotacionImpl(String ID, GregorianCalendar fecha, int calificacion)
 	{
-		this.ID = "";
+		this.ID = ID;
 		this.fecha = fecha;
 		this.calificacion = calificacion;
 		
