@@ -14,10 +14,10 @@ BEGIN TRAN
     (N'AUDI',N'A1',12580);
 
 	INSERT INTO Piezas VALUES
-    (1,N'Pintura gris oscuro',450),
-    (2,N'Llantas 5 brazos',975),
-    (3,N'30 TFSI 6 vel.',8150),
-    (4,N'Pintura azul metalizado',450);
+    (1,N'Pintura gris oscuro', NULL, 450),
+    (2,N'Llantas 5 brazos', NULL, 975),
+    (3,N'30 TFSI 6 vel.', NULL, 8150),
+    (4,N'Pintura azul metalizado', NULL, 450);
 
 	INSERT INTO Motores VALUES
     (3,N'Gasolina',N'Delantera',6,4.80,116);

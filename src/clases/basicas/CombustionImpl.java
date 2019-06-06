@@ -31,9 +31,9 @@ public class CombustionImpl extends MotorImpl
 		this.consumoCarburante = 0.0;
 	}
 	
-	public CombustionImpl(int ID, String nombre, String descripcion, double precio, char traccion, int numeroVelocidades, int potencia, char tipoCarburante, double consumoCarburante)
+	public CombustionImpl(int ID, String nombre, String descripcion, double precio, char traccion, int numeroVelocidades, int autonomia, int potencia, char tipoCarburante, double consumoCarburante)
 	{
-		super(ID, nombre, descripcion, precio, traccion, numeroVelocidades, potencia);
+		super(ID, nombre, descripcion, precio, traccion, numeroVelocidades, autonomia, potencia);
 		this.tipoCarburante = tipoCarburante;
 		this.consumoCarburante = consumoCarburante;
 	}

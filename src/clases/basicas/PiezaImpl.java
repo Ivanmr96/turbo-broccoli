@@ -1,7 +1,6 @@
 package clases.basicas;
 
 import java.util.ArrayList;
-
 import interfaces.Pieza;
 
 /* ESTUDIO DE INTERFAZ
@@ -32,7 +31,6 @@ import interfaces.Pieza;
 /* FUNCIONALIDADES AÑADIDAS
  * 
  * public ArrayList<CocheImpl> obtenerCochesValidos();
- * 
  */
 
 public class PiezaImpl implements Pieza

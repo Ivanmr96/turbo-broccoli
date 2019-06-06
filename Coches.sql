@@ -15,7 +15,8 @@ CREATE TABLE Cuentas
 CREATE TABLE Configuraciones
 (
 	ID uniqueidentifier DEFAULT NEWID() NOT NULL,
-	Usuario varchar(25) NOT NULL
+	Usuario varchar(25) NOT NULL,
+	Fecha datetime NULL, 
 
 	CONSTRAINT PK_Configuraciones PRIMARY KEY (ID),
 	CONSTRAINT FK_Configuraciones_Usuario FOREIGN KEY (Usuario) REFERENCES Cuentas(NombreUsuario) ON DELETE NO ACTION ON UPDATE CASCADE
@@ -34,6 +35,7 @@ CREATE TABLE Piezas
 (
 	ID int,
 	Nombre varchar(30),
+	Descripcion varchar(max),
 	Precio smallmoney,
 
 	CONSTRAINT PK_Piezas PRIMARY KEY (ID)
@@ -72,7 +74,9 @@ CREATE TABLE Motores
 	Traccion varchar(10) NOT NULL,
 	NumeroVelocidades varchar(15) NOT NULL,
 	Consumo decimal(4,2) NULL,
+	Autonomia smallint NULL,
 	Potencia smallint NULL,
+	Tipo char(1) NOT NULL,
 
 	CONSTRAINT PK_Motores PRIMARY KEY(IDPieza),
 	CONSTRAINT FK_Motores_IDPieza FOREIGN KEY (IDPieza) REFERENCES Piezas(ID) ON DELETE NO ACTION ON UPDATE CASCADE

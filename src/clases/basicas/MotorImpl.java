@@ -26,6 +26,7 @@ public class MotorImpl extends PiezaImpl
 {
 	private char traccion;
 	private int numeroVelocidades;
+	private int autonomia;
 	private int potencia;
 	
 	public MotorImpl()
@@ -33,14 +34,16 @@ public class MotorImpl extends PiezaImpl
 		super();
 		this.traccion = ' ';
 		this.numeroVelocidades = 0;
+		this.autonomia = 0;
 		this.potencia = 0;
 	}
 	
-	public MotorImpl(int ID, String nombre, String descripcion, double precio, char traccion, int numeroVelocidades, int potencia)
+	public MotorImpl(int ID, String nombre, String descripcion, double precio, char traccion, int numeroVelocidades, int autonomia, int potencia)
 	{
 		super(ID, nombre, descripcion, precio);
 		this.traccion = traccion;
 		this.numeroVelocidades = numeroVelocidades;
+		this.autonomia = autonomia;
 		this.potencia = potencia;
 	}
 	
@@ -49,14 +52,17 @@ public class MotorImpl extends PiezaImpl
 		super(otro);
 		this.traccion = otro.traccion;
 		this.numeroVelocidades = otro.numeroVelocidades;
+		this.autonomia = otro.autonomia;
 		this.potencia = otro.potencia;
 	}
 	
 	public char getTraccion() { return this.traccion; }
 	public int getNumeroVelocidades() { return this.numeroVelocidades; }
+	public int getAutonomia() { return this.autonomia; }
 	public int getPotencia() { return this.potencia; }
 	 
 	public void setTraccion(char traccion) { this.traccion = traccion; }
 	public void setNumeroVelocidades(int numeroVelocidades) { this.numeroVelocidades = numeroVelocidades; }
+	public void setAutonomia(int autonomia) { this.autonomia = autonomia; }
 	public void setPotencia(int potencia) {  this.potencia = potencia; }
 }

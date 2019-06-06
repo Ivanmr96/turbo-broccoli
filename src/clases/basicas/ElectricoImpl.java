@@ -27,9 +27,9 @@ public class ElectricoImpl extends MotorImpl
 		this.consumoElectrico = 0.0;
 	}
 	
-	public ElectricoImpl(int ID, String nombre, String descripcion, double precio, char traccion, int numeroVelocidades, int potencia, double consumoElectrico)
+	public ElectricoImpl(int ID, String nombre, String descripcion, double precio, char traccion, int numeroVelocidades, int autonomia, int potencia, double consumoElectrico)
 	{
-		super(ID, nombre, descripcion, precio, traccion, numeroVelocidades, potencia);
+		super(ID, nombre, descripcion, precio, traccion, numeroVelocidades, autonomia, potencia);
 		this.consumoElectrico = consumoElectrico;
 	}
 	
