@@ -6,6 +6,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
+import java.util.Scanner;
+
+import javax.sound.midi.Soundbank;
+
+import com.microsoft.sqlserver.jdbc.SQLServerException;
 
 import clases.basicas.CocheImpl;
 import clases.basicas.CombustionImpl;
@@ -16,6 +22,7 @@ import clases.basicas.MotorImpl;
 import clases.basicas.PiezaImpl;
 import clases.basicas.PinturaImpl;
 import clases.basicas.VotacionImpl;
+import utils.Utils;
 
 public class AObjeto 
 {
@@ -119,7 +126,60 @@ public class AObjeto
 	 * 					- Si el coche no existe en la base de datos, devuelve null
 	 * 					- Si el coche existe y tiene piezas validas, devuelve una lista con las piezas validas.
 	 */
-	public ArrayList<PiezaImpl> obtenerPiezasValidas(CocheImpl coche);
+	public ArrayList<PiezaImpl> obtenerPiezasValidas(CocheImpl coche)
+	{
+		ArrayList<PiezaImpl> piezasValidas = null;
+		
+		String consulta = "SELECT ID, Nombre, Descripcion, Precio, Tipo FROM Piezas AS pz " 
+				+ "INNER JOIN PiezasCoches AS pzco ON pzco.IDPieza = pz.ID "
+				+ "WHERE pzco.MarcaCoche = '" + coche.getMarca() + "' AND pzco.ModeloCoche = '" + coche.getModelo() + "'";
+		
+		PiezaImpl pieza;
+		
+		try
+		{
+			Statement statement = conexion.createStatement();
+			
+			ResultSet resultado = statement.executeQuery(consulta);
+			
+			piezasValidas = new ArrayList<PiezaImpl>();
+			
+			while(resultado.next())
+			{
+				String tipo = resultado.getString("Tipo");
+				int ID = resultado.getInt("ID");
+				
+				if(tipo == null)		//Si el campo tipo se dejo a NULL, la instancia será de tipo PiezaImpl
+					pieza = obtenerPieza(ID);
+				else
+				{
+					switch(tipo)		//Si el campo tiene algun valor, sera del tipo indicado si coincide con algún subtipo, si es distinto, será de tipo PiezaImpl (default)
+					{
+						case "motor":
+							pieza = obtenerPiezaMotor(ID);
+							break;
+						case "pintura":
+							pieza = obtenerPiezaPintura(ID);
+							break;
+						case "llantas":
+							pieza = obtenerPiezaLlantas(ID);
+							break;
+						default:
+							pieza = obtenerPieza(ID);
+							break;
+					}
+				}
+				
+				piezasValidas.add(pieza);
+			}
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+		
+		return piezasValidas;
+	}
 	
 	/* INTERFAZ
 	 * Comentario: Carga las piezas validas en un objeto CocheImpl
@@ -148,9 +208,40 @@ public class AObjeto
 	 * Salida: Un boolean indicando si se introdujo el coche satisfactoriamente o no.
 	 * Postcondiciones: Asociado al nombre devuelve:
 	 * 					- True. Por lo tanto el coche ha sido introducido correctamente en la base de datos
-	 * 					- False. El coche no se ha introducido correctamente en la base de datos. (Puede que ya exista)
+	 * 					- False. El coche no se ha introducido correctamente en la base de datos.
+	 * 					- Lanza SQLServerException si se intenta introducir un coche(modelo y marca) que ya existen en la base de datos.
 	 */
-	public boolean insertarCoche(CocheImpl coche);
+	public boolean insertarCoche(CocheImpl coche) throws SQLServerException
+	{
+		boolean insertado = false;
+		
+		String marca = coche.getMarca();
+		String modelo = coche.getModelo();
+		double precioBase = coche.getPrecioBase();
+		
+		String insert = "INSERT INTO Coches "
+						+ "VALUES ('" + marca + "', '" + modelo + "', " + precioBase + ");";
+		try 
+		{
+			Statement statement = conexion.createStatement();
+			
+			int filasAfectadas = statement.executeUpdate(insert);
+			
+			if(filasAfectadas > 0)
+				insertado = true;
+		} 
+		catch (SQLServerException e)
+		{
+			throw e;
+		}
+		catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
+		
+		
+		return insertado;
+	}
 	
 	/* INTERFAZ
 	 * Comentario: Elimina un coche de la base de datos, asi como las configuraciones(y sus votaciones) asociadas a él.
@@ -174,18 +265,223 @@ public class AObjeto
 	 * 					- True. La información del coche se ha actualizado con exito en la base de datos.
 	 * 					- False. No se ha podido actualizar el coche en la base de datos, quizás no exista un coche de esa marca y modelo en la base de datos
 	 */
-	public boolean actualizarCoche(CocheImpl coche);
+	public boolean actualizarCoche(CocheImpl coche)
+	{
+		boolean actualizado = false;
+		
+		String marca = coche.getMarca();
+		String modelo = coche.getModelo();
+		double precioBase = coche.getPrecioBase();
+		
+		String insert = "UPDATE Coches "
+						+ "SET PrecioBase = " + precioBase + " "
+						+ "WHERE Marca = '" + marca + "' AND Modelo = '" + modelo + "'";
+		try 
+		{
+			Statement statement = conexion.createStatement();
+			
+			int filasAfectadas = statement.executeUpdate(insert);
+			
+			if(filasAfectadas > 0)
+				actualizado = true;
+		}
+		catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
+		
+		return actualizado;
+	}
 	
 	//-------------------------------------------------------
 	
 	//ConfiguracionImpl
 	
-	public ConfiguracionImpl obtenerConfiguracion(String ID);
+	public ConfiguracionImpl obtenerConfiguracion(String ID)
+	{
+		ConfiguracionImpl configuracion = null;
+		
+		Utils utils = new Utils();
+		
+		String consulta = "SELECT Fecha FROM Configuraciones "
+						+ "WHERE ID = '" + ID + "'";
+		try 
+		{
+			Statement statement = conexion.createStatement();
+			
+			ResultSet resultado = statement.executeQuery(consulta);
+			
+			resultado.next();		//Salta a la primera y unica fila
+			
+			String fechaStr = resultado.getString("Fecha");
+			
+			GregorianCalendar fecha = utils.dateTimeToGregorianCalendar(fechaStr);
+			
+			configuracion = new ConfiguracionImpl(ID, fecha);
+			
+		} 
+		catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
+		
+		return configuracion;
+	}
 	
-	public CocheImpl obtenerCoche(ConfiguracionImpl configuracion);
-	public CuentaImpl obtenerCuenta(ConfiguracionImpl configuracion);
-	public ArrayList<PiezaImpl> obtenerPiezas(ConfiguracionImpl configuracion);
-	public ArrayList<VotacionImpl> obtenerVotaciones(ConfiguracionImpl configuracion);
+	public CocheImpl obtenerCoche(ConfiguracionImpl configuracion)
+	{
+		CocheImpl coche = null;
+		
+		String consulta = "SELECT MarcaCoche, ModeloCoche, PrecioBase FROM Configuraciones AS conf "
+						+ "INNER JOIN Coches AS co ON co.Marca = conf.MarcaCoche AND co.Modelo = conf.ModeloCoche "
+						+ "WHERE conf.ID = '" + configuracion.getID() + "'";
+		try 
+		{
+			Statement statement = conexion.createStatement();
+			
+			ResultSet resultado = statement.executeQuery(consulta);
+			
+			resultado.next();		//Salta a la primera y unica fila
+			
+			String marca = resultado.getString("MarcaCoche");
+			String modelo = resultado.getString("ModeloCoche");
+			double precioBase = resultado.getDouble("PrecioBase");
+			
+			coche = new CocheImpl(marca, modelo, precioBase);
+			
+		} 
+		catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
+		
+		return coche;
+	}
+	
+	public CuentaImpl obtenerCuenta(ConfiguracionImpl configuracion)
+	{
+		CuentaImpl cuenta = null;
+		
+		String consulta = "SELECT NombreUsuario, Contraseña FROM Configuraciones AS conf "
+						+ "INNER JOIN Cuentas AS cu ON cu.NombreUsuario = conf.Usuario "
+						+ "WHERE conf.ID = '" + configuracion.getID() + "'";
+		try 
+		{
+			Statement statement = conexion.createStatement();
+			
+			ResultSet resultado = statement.executeQuery(consulta);
+			
+			resultado.next();		//Salta a la primera y unica fila
+			
+			String nombreUsuario = resultado.getString("NombreUsuario");
+			String contrasena = resultado.getString("Contraseña");
+			
+			cuenta = new CuentaImpl(nombreUsuario, contrasena);
+			
+		} 
+		catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
+		
+		return cuenta;
+	}
+	
+	public ArrayList<PiezaImpl> obtenerPiezas(ConfiguracionImpl configuracion)
+	{
+		ArrayList<PiezaImpl> piezas = null;
+		
+		String consulta = "SELECT pz.ID, Nombre, Descripcion, Precio, Tipo FROM Configuraciones AS conf " 
+						+ "INNER JOIN PiezasConfiguracionCoche AS PzConf ON PzConf.IDConfiguracion = conf.ID "
+						+ "INNER JOIN Piezas AS pz ON pz.ID = PzConf.IDPieza "
+						+ "WHERE conf.ID = '" + configuracion.getID() + "'";
+		
+		PiezaImpl pieza;
+		
+		try
+		{
+			Statement statement = conexion.createStatement();
+			
+			ResultSet resultado = statement.executeQuery(consulta);
+			
+			piezas = new ArrayList<PiezaImpl>();
+			
+			while(resultado.next())
+			{
+				String tipo = resultado.getString("Tipo");
+				int ID = resultado.getInt("ID");
+				
+				if(tipo == null)		//Si el campo tipo se dejo a NULL, la instancia será de tipo PiezaImpl
+					pieza = obtenerPieza(ID);
+				else
+				{
+					switch(tipo)		//Si el campo tiene algun valor, sera del tipo indicado si coincide con algún subtipo, si es distinto, será de tipo PiezaImpl (default)
+					{
+						case "motor":
+							pieza = obtenerPiezaMotor(ID);
+							break;
+						case "pintura":
+							pieza = obtenerPiezaPintura(ID);
+							break;
+						case "llantas":
+							pieza = obtenerPiezaLlantas(ID);
+							break;
+						default:
+							pieza = obtenerPieza(ID);
+							break;
+					}
+				}
+				
+				piezas.add(pieza);
+			}
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+		
+		return piezas;
+	}
+	
+	public ArrayList<VotacionImpl> obtenerVotaciones(ConfiguracionImpl configuracion)
+	{
+		ArrayList<VotacionImpl> votaciones = null;
+		
+		String consulta = "SELECT ID, Calificacion, Fecha FROM Votaciones " 
+						+ "WHERE IDConfiguracion = '" + configuracion.getID() + "'";
+		
+		Utils utils = new Utils();
+		
+		VotacionImpl votacion;
+		
+		try
+		{
+			Statement statement = conexion.createStatement();
+			
+			ResultSet resultado = statement.executeQuery(consulta);
+			
+			votaciones = new ArrayList<VotacionImpl>();
+			
+			while(resultado.next())
+			{
+				String ID = resultado.getString("ID");
+				GregorianCalendar fecha = utils.dateTimeToGregorianCalendar(resultado.getString("Fecha"));
+				int calificacion = resultado.getInt("Calificacion");
+				
+				votacion = new VotacionImpl(ID, fecha, calificacion);
+				
+				votacion.establecerConfiguracion(configuracion);	//Aprovecha la situacion y establece la relacion con su configuracion determinada.
+				
+				votaciones.add(votacion);
+			}
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+		
+		return votaciones;
+	}
 	
 	public void cargarCocheEnConfiguracion(ConfiguracionImpl configuracion)
 	{
@@ -231,7 +527,32 @@ public class AObjeto
 	
 	//CuentaImpl
 	
-	public CuentaImpl obtenerCuenta(String nombreUsuario);
+	public CuentaImpl obtenerCuenta(String nombreUsuario)
+	{
+		CuentaImpl cuenta = null;
+		
+		String consulta = "SELECT Contraseña FROM Cuentas "
+						+ "WHERE NombreUsuario = '" + nombreUsuario + "'";
+		try 
+		{
+			Statement statement = conexion.createStatement();
+			
+			ResultSet resultado = statement.executeQuery(consulta);
+			
+			resultado.next();		//Salta a la primera y unica fila
+			
+			String contrasena = resultado.getString("Contraseña");
+			
+			cuenta = new CuentaImpl(nombreUsuario, contrasena);
+			
+		} 
+		catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
+		
+		return cuenta;
+	}
 	
 	public ArrayList<ConfiguracionImpl> obtenerConfiguraciones(CuentaImpl cuenta);
 	public ArrayList<VotacionImpl> obtenerVotaciones(CuentaImpl cuenta);
@@ -264,7 +585,34 @@ public class AObjeto
 	
 	//PiezaImpl
 	
-	public PiezaImpl obtenerPieza(int ID);
+	public PiezaImpl obtenerPieza(int ID)
+	{
+		PiezaImpl pieza = null;
+		
+		String consulta = "SELECT Nombre, Descripcion, Precio FROM Piezas "
+						+ "WHERE ID = " + ID;
+		
+		try
+		{
+			Statement statement = conexion.createStatement();
+			
+			ResultSet resultado = statement.executeQuery(consulta);
+			
+			resultado.next();
+			
+			String nombre = resultado.getString("Nombre");
+			String descripcion = resultado.getString("Descripcion");
+			double precio = resultado.getDouble("Precio");
+			
+			pieza = new PiezaImpl(ID, nombre, descripcion,precio);
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+		
+		return pieza;
+	}
 	
 	public ArrayList<CocheImpl> obtenerCochesValidos(PiezaImpl pieza);
 	
@@ -281,11 +629,104 @@ public class AObjeto
 	
 	//-------------------------------------------------------
 	
-	public PinturaImpl obtenerPiezaPintura(int ID);
+	public PinturaImpl obtenerPiezaPintura(int ID)
+	{
+		PinturaImpl pintura = null;
+		
+		String consulta = "SELECT Nombre, Descripcion, Precio, Color, Acabado FROM Pinturas AS P "
+						+ "INNER JOIN Piezas AS Pz ON pz.ID = P.IDPieza "
+						+ "WHERE pz.ID = " + ID;
+		
+		try
+		{
+			Statement statement = conexion.createStatement();
+			
+			ResultSet resultado = statement.executeQuery(consulta);
+			
+			resultado.next();
+			
+			String nombre = resultado.getString("Nombre");
+			String descripcion = resultado.getString("Descripcion");
+			double precio = resultado.getDouble("Precio");
+			String color = resultado.getString("Color");
+			String acabado = resultado.getString("Acabado");
+			
+			pintura = new PinturaImpl(ID, nombre, descripcion,precio, color, acabado);
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+		
+		return pintura;
+	}
 	
-	public LlantasImpl obtenerPiezaLlantas(int ID);
+	public LlantasImpl obtenerPiezaLlantas(int ID)
+	{
+		LlantasImpl llantas = null;
+		
+		String consulta = "SELECT Nombre, Descripcion, Precio, Pulgadas FROM Llantas AS Ll "
+						+ "INNER JOIN Piezas AS Pz ON pz.ID = Ll.IDPieza "
+						+ "WHERE pz.ID = " + ID;
+		
+		try
+		{
+			Statement statement = conexion.createStatement();
+			
+			ResultSet resultado = statement.executeQuery(consulta);
+			
+			resultado.next();
+			
+			String nombre = resultado.getString("Nombre");
+			String descripcion = resultado.getString("Descripcion");
+			double precio = resultado.getDouble("Precio");
+			int pulgadas = resultado.getInt("Pulgadas");
+			
+			llantas = new LlantasImpl(ID, nombre, descripcion, precio, pulgadas);
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+		
+		return llantas;
+	}
 	
-	public MotorImpl obtenerPiezaMotor(int ID);
+	public MotorImpl obtenerPiezaMotor(int ID)
+	{
+		{
+			MotorImpl motor = null;
+			
+			String consulta = "SELECT Nombre, Descripcion, Precio, Traccion, NumeroVelocidades, Autonomia, Potencia FROM Motores AS M "
+							+ "INNER JOIN Piezas AS Pz ON pz.ID = M.IDPieza "
+							+ "WHERE pz.ID = " + ID;
+			
+			try
+			{
+				Statement statement = conexion.createStatement();
+				
+				ResultSet resultado = statement.executeQuery(consulta);
+				
+				resultado.next();
+				
+				String nombre = resultado.getString("Nombre");
+				String descripcion = resultado.getString("Descripcion");
+				double precio = resultado.getDouble("Precio");
+				char traccion = resultado.getString("Traccion").charAt(0);
+				int numeroVelocidades = resultado.getInt("NumeroVelocidades");
+				int autonomia = resultado.getInt("Autonomia");
+				int potencia = resultado.getInt("Potencia");
+				
+				motor = new MotorImpl(ID, nombre, descripcion, precio, traccion, numeroVelocidades, autonomia, potencia);
+			}
+			catch(SQLException e)
+			{
+				e.printStackTrace();
+			}
+			
+			return motor;
+		}
+	}
 	
 	//public boolean insertarPiezaPintura(PinturaImpl pieza);
 	//public boolean insertarPiezaLlantas(LlantasImpl pieza);
@@ -300,9 +741,118 @@ public class AObjeto
 		
 		aObj.abrirConexion();
 		
-		CocheImpl coche = aObj.obtenerCoche("Mercedes", "Clase A");
+		/*CocheImpl coche = aObj.obtenerCoche("AUDI", "A1");
 		
 		System.out.println(coche.getPrecioBase());
+		
+		System.out.println();
+		
+		ArrayList<PiezaImpl> piezasValidas = null; //aObj.obtenerPiezasValidas(coche);
+		
+		//piezasValidas.forEach((n) -> System.out.println(n.getClass().getTypeName()));
+		
+		System.out.println();
+		
+		aObj.cargarPiezasValidasEnCoche(coche);
+		
+		piezasValidas = coche.obtenerPiezasValidas();
+		
+		for(PiezaImpl pieza:piezasValidas)
+		{
+			System.out.println(pieza.getNombre());
+		}
+		
+		try 
+		{
+			aObj.insertarCoche(new CocheImpl("Toyota", "Prius", 21200));
+		} catch (SQLServerException e) 
+		{
+			if(e.getErrorCode() == 2627)
+			{
+				System.out.println("Este coche ya existe en la base de datos.");
+			}
+		}
+		
+		coche.setPrecioBase(300);
+		
+		System.out.println(aObj.actualizarCoche(new CocheImpl("Citroen", "C3", 9500)));
+		
+		System.out.println();
+		
+		ConfiguracionImpl conf = aObj.obtenerConfiguracion("FB619D46-359D-46A0-B68D-6CCBE62714DC");
+		
+		System.out.println(conf.getFecha().getTime()); */
+		
+		ConfiguracionImpl conf = aObj.obtenerConfiguracion("2B4B87BD-E79C-440F-A429-8D15F2F476FE");
+		
+		System.out.println(conf.getFecha().getTime());
+		
+		System.out.println();
+		
+		CocheImpl coche = aObj.obtenerCoche(conf);
+		CuentaImpl cuenta = aObj.obtenerCuenta(conf);
+		
+		System.out.println(coche.getPrecioBase());
+		System.out.println(cuenta.getContrasena());
+		
+		ArrayList<PiezaImpl> piezas = aObj.obtenerPiezas(conf);
+		
+		for(PiezaImpl pz:piezas)
+		{
+			System.out.println(pz.getClass().getTypeName());
+		}
+		
+		Utils utils = new Utils();
+		
+		GregorianCalendar fecha = utils.dateTimeToGregorianCalendar("2019-06-08 21:32:22.990");
+		
+		System.out.println(fecha.getTime());
+		
+		System.out.println();
+		
+		ArrayList<VotacionImpl> votaciones = aObj.obtenerVotaciones(conf);
+		
+		for(VotacionImpl votacion:votaciones)
+		{
+			System.out.println(votacion.getCalificacion());
+		}
+		
+		aObj.cargarRelacionesEnConfiguracion(conf);
+		
+		System.out.println(conf.obtenerCoche().getMarca());
+		System.out.println(conf.obtenerCuenta().getNombreUsuario());
+
+		piezas = conf.obtenerPiezas();
+		
+		for(PiezaImpl pieza:piezas) { System.out.println(pieza.getNombre()); }
+		
+		votaciones = conf.obtenerVotaciones();
+		
+		for(VotacionImpl votacion:votaciones)
+		{
+			System.out.println(votacion.getFecha().getTime());
+		}
+		
+		Scanner teclado = new Scanner(System.in);
+		
+		System.out.print("Introduce nombre usuario: ");
+		String nombreUsuario = teclado.nextLine();
+		
+		CuentaImpl cuentaa = aObj.obtenerCuenta(nombreUsuario);
+		
+		System.out.print("Introduce contrasena: ");
+		String contrasena = utils.obtenerMD5(teclado.nextLine());
+		
+		if(contrasena.equals(cuentaa.getContrasena()))
+		{
+			System.out.println("Inicio de sesion correcto.");
+		}
+		else
+		{
+			System.out.println("contrasena de la cuenta: " + cuentaa.getContrasena());
+			System.out.println("contrasena introducida: " + contrasena);
+			System.out.println("Contrasena incorrecta.");
+		}
 	}
 	
 }

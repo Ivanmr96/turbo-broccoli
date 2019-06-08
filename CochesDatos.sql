@@ -6,7 +6,7 @@ BEGIN TRAN
 
 	DECLARE @configuracion AS int
 
-	INSERT INTO Configuraciones VALUES ('testuser')
+	INSERT INTO Configuraciones VALUES (NEWID(), 'testuser', CURRENT_TIMESTAMP, 'AUDI', 'A1')
 	
 	SET @configuracion = ( SELECT ID FROM Configuraciones WHERE Usuario = 'testuser' )
 
@@ -14,26 +14,28 @@ BEGIN TRAN
     (N'AUDI',N'A1',28580);
 
 	INSERT INTO Piezas VALUES
-    (1,N'Pintura gris oscuro', NULL, 450),
-    (2,N'Llantas 5 brazos', NULL, 975),
-    (3,N'30 TFSI 6 vel.', NULL, 0),
-    (4,N'Pintura azul metalizado', NULL, 450);
+	(5,'Asistente de aparcamiento', NULL, 815, NULL),
+    (1,N'Pintura gris oscuro', NULL, 450, 'pintura'),
+    (2,N'Llantas 5 brazos', NULL, 975, 'llantas'),
+    (3,N'30 TFSI 6 vel.', NULL, 0, 'motor'),
+    (4,N'Pintura azul metalizado', NULL, 450, 'motor');
 
 	INSERT INTO Motores VALUES
-    (3,N'Gasolina',N'Delantera',6,4.80,116);
+    (3,N'Gasolina',N'Delantera',6,4.80,250,116,'G');
 
 	INSERT INTO Llantas VALUES
     (2,15);
 	
 	INSERT INTO Pinturas VALUES
-    (1,'gris oscuro'),
-    (4,'azul');
+    (1,'gris oscuro', 'metalizado'),
+    (4,'azul', 'mate');
 
 	INSERT INTO PiezasCoches VALUES
 	(1,N'AUDI',N'A1'),
     (2,N'AUDI',N'A1'),
     (3,N'AUDI',N'A1'),
-    (4,N'AUDI',N'A1');
+    (4,N'AUDI',N'A1'),
+	(5,N'AUDI',N'A1');
 
 --COMMIT
 ROLLBACK
