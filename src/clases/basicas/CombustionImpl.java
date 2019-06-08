@@ -21,17 +21,17 @@ package clases.basicas;
 
 public class CombustionImpl extends MotorImpl
 {
-	private char tipoCarburante;
+	private String tipoCarburante;
 	private double consumoCarburante;
 	
 	public CombustionImpl()
 	{
 		super();
-		this.tipoCarburante = ' ';
+		this.tipoCarburante = "";
 		this.consumoCarburante = 0.0;
 	}
 	
-	public CombustionImpl(int ID, String nombre, String descripcion, double precio, char traccion, int numeroVelocidades, int autonomia, int potencia, char tipoCarburante, double consumoCarburante)
+	public CombustionImpl(int ID, String nombre, String descripcion, double precio, char traccion, int numeroVelocidades, int autonomia, int potencia, String tipoCarburante, double consumoCarburante)
 	{
 		super(ID, nombre, descripcion, precio, traccion, numeroVelocidades, autonomia, potencia);
 		this.tipoCarburante = tipoCarburante;
@@ -45,9 +45,9 @@ public class CombustionImpl extends MotorImpl
 		this.consumoCarburante = otro.consumoCarburante;
 	}
 	
-	public char getTipoCarburante() { return this.tipoCarburante; }
+	public String getTipoCarburante() { return this.tipoCarburante; }
 	public double getConsumoCarburante() { return this.consumoCarburante; }
 	
-	public void setTipoCarburante(char tipoCarburante) { this.tipoCarburante = tipoCarburante; }
+	public void setTipoCarburante(String tipoCarburante) { this.tipoCarburante = tipoCarburante; }
 	public void setConsumoCarburante(double consumoCarburante) { this.consumoCarburante = consumoCarburante; }
 }

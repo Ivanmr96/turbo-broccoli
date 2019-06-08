@@ -31,6 +31,7 @@ import interfaces.Pieza;
 /* FUNCIONALIDADES AÑADIDAS
  * 
  * public ArrayList<CocheImpl> obtenerCochesValidos();
+ * public void establecerCochesValidos(ArrayList<CocheImpl> cochesValidos);
  */
 
 public class PiezaImpl implements Pieza
@@ -76,4 +77,6 @@ public class PiezaImpl implements Pieza
 	public void setPrecio(double precio) { this.precio = precio; }
 	
 	public ArrayList<CocheImpl> obtenerCochesValidos() { return this.cochesValidos; }
+	
+	public void establecerCochesValidos(ArrayList<CocheImpl> cochesValidos) { this.cochesValidos = cochesValidos; }
 }

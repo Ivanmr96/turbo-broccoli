@@ -1,0 +1,36 @@
+ConfiguracionImpl conf = new ConfiguracionImpl(nuevo UUID, fechaActual)
+
+conf.establecerCuenta(cuentaQueInicioSesion);
+
+preguntarCoche
+	Introducir marca y modelo
+		Se busca en la bbdd, si existe se continua, si no, patrá
+	Buscar por marca
+		preguntar marca
+		Enseñar lista de coches con esa marca
+		Usuario elige coche y se guarda en una variable
+
+conf.establecerCoche(coche);
+
+Mostrar menu con las piezas
+	1) Motor de serie
+		1) Cambiar motor
+			Enseñar motores validos para el coche
+			Elegir uno o volver atras
+		2) Volver atras
+	2) Lo mismo que con el motor para las llantas
+	3) Lo mismo, para la pintura
+	.
+	.
+	para cada pieza extra) piezaExtra
+		1) Eliminar
+		2) Volver atras
+	.
+	.
+	n) Añadir pieza extra
+		Mostrar piezas validas para el coche
+		Elegir uno o volver atras
+	ultima dos opciones:
+	guardar configuracion y salir
+	no guardar configuracion y salir
+		

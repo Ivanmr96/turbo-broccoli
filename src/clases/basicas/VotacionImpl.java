@@ -27,6 +27,9 @@ import java.util.GregorianCalendar;
  * 
  * public ConfiguracionImpl obtenerConfiguracion();
  * public CuentaImpl obtenerCuenta();
+ * 
+ * public void establecerConfiguracion(ConfiguracionImpl configuracion);
+ * public void establecerCuenta(CuentaImpl cuenta);
  */
 
 public class VotacionImpl 
@@ -77,4 +80,7 @@ public class VotacionImpl
 	
 	public ConfiguracionImpl obtenerConfiguracion() { return this.configuracion; }
 	public CuentaImpl obtenerCuenta() { return this.cuenta; }
+	
+	public void establecerConfiguracion(ConfiguracionImpl configuracion) { this.configuracion = configuracion; }
+	public void establecerCuenta(CuentaImpl cuenta) { this.cuenta = cuenta; }
 }

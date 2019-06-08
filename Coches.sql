@@ -86,6 +86,7 @@ CREATE TABLE Pinturas
 (
 	IDPieza int NOT NULL,
 	Color varchar(20) NOT NULL,
+	Acabado varchar(20) NULL,
 
 	CONSTRAINT PK_Pinturas PRIMARY KEY(IDPieza),
 	CONSTRAINT FK_Pinturas_IDPieza FOREIGN KEY (IDPieza) REFERENCES Piezas(ID) ON DELETE NO ACTION ON UPDATE CASCADE

@@ -30,6 +30,8 @@ import interfaces.Coche;
  * 
  * public ArrayList<PiezaImpl> obtenerPiezasValidas();
  * 
+ * public void establecerPiezasValidas(ArrayList<PiezaImpl> piezasValidas),
+ * 
  */
 
 public class CocheImpl implements Coche
@@ -72,5 +74,6 @@ public class CocheImpl implements Coche
 	public void setPrecioBase(double precioBase) { this.precioBase = precioBase; }
 	
 	public ArrayList<PiezaImpl> obtenerPiezasValidas() { return this.piezasValidas; }
+	
 	public void establecerPiezasValidas(ArrayList<PiezaImpl> piezasValidas) { this.piezasValidas = piezasValidas; }
 }

@@ -26,6 +26,9 @@ import interfaces.Cuenta;
  * 
  * public ArrayList<ConfiguracionImpl> obtenerConfiguraciones();
  * public ArrayList<VotacionImpl> obtenerVotaciones();
+ * 
+ * public void establecerConfiguraciones(ArrayList<ConfiguracionImpl> configuraciones);
+ * public void establecerVotaciones(ArrayList<VotacionImpl> votaciones);
  */
 
 public class CuentaImpl implements Cuenta
@@ -68,6 +71,8 @@ public class CuentaImpl implements Cuenta
 	public void setContrasena(String contrasena) { this.contrasena = contrasena; }
 	
 	public ArrayList<ConfiguracionImpl> obtenerConfiguraciones() { return this.configuraciones; }
-	
 	public ArrayList<VotacionImpl> obtenerVotaciones() { return this.votaciones; }  
+	
+	public void establecerConfiguraciones(ArrayList<ConfiguracionImpl> configuraciones) { this.configuraciones = configuraciones; }
+	public void establecerVotaciones(ArrayList<VotacionImpl> votaciones) { this.votaciones = votaciones; }
 }
