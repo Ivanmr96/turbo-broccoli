@@ -1,5 +1,7 @@
 package utils;
 
+import java.util.ArrayList;
+import java.util.GregorianCalendar;
 import java.util.Scanner;
 
 import clases.basicas.CocheImpl;
@@ -136,6 +138,50 @@ public class Validaciones
 		VotacionImpl votacion = null;
 		
 		return votacion;
+	}
+	
+	public String mostrarListaMarcasYValidarMarcaElegida()
+	{
+		String marca = null;
+		
+		return marca;
+	}
+	
+	public ConfiguracionImpl mostrarConfiguracionesYValidar(ArrayList<ConfiguracionImpl> configuraciones)
+	{
+		ConfiguracionImpl configuracionElegida = null;
+		
+		return configuracionElegida;
+	}
+	
+	public String mostrarListaModelosYValidarModeloElegido(String marca)
+	{
+		String modelo = null;
+		
+		return modelo;
+	}
+	
+	public CuentaImpl validarUsuario()
+	{
+		CuentaImpl cuenta = null;
+		
+		return cuenta;
+	}
+	
+	public double validarPrecio()
+	{
+		double precio;
+		
+		precio = 0.0;
+		
+		return precio;
+	}
+	
+	public GregorianCalendar leerYValidarFecha()
+	{
+		GregorianCalendar fecha = null;
+		
+		return fecha;
 	}
 	
 	public static void main(String[] args)

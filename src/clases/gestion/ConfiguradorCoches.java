@@ -82,21 +82,25 @@ public class ConfiguradorCoches
 {
 	public static void main(String[] args)
 	{
+		String URLConexion = "jdbc:sqlserver://localhost;"
+				  + "database=Coches;"
+				  + "user=usuarioCoches;"
+				  + "password=123;";
+		
 		Utils utils = new Utils();
 		Scanner teclado = new Scanner(System.in);
-		Validaciones validacion = new Validaciones();
+		Validaciones validacion = new Validaciones(URLConexion);
 		int opcionMenuPrincipal, opcionSesion, opcionSubMenuConfiguracionElegida, opcionMenuConfiguracionesComunidad, opcionMenuConfiguracionComunidadElegida;
 		CocheImpl opcionCoche;
-		CuentaImpl cuentaSesion;
+		CuentaImpl cuentaSesion, cuentaBuscar;
 		char confirmado;
-		String usuario, contrasena;
+		String usuario, contrasena, marca, modelo;
 		ConfiguracionImpl configuracionNueva, opcionConfiguracionPropia, configuracionComunidadElegida;
 		VotacionImpl calificacion;
 		ArrayList<ConfiguracionImpl> configuraciones;
-		AObjeto gestion = new AObjeto("jdbc:sqlserver://localhost;"
-				  + "database=Coches;"
-				  + "user=usuarioCoches;"
-				  + "password=123;");
+		AObjeto gestion = new AObjeto(URLConexion);
+		double precioMinimo, precioMaximo;
+		GregorianCalendar fechaBuscar;
 		
 		
 		//Mostrar menu principal y validar opcion
@@ -160,32 +164,60 @@ public class ConfiguradorCoches
 										
 										while (opcionMenuConfiguracionesComunidad != 0)
 										{
+											configuraciones = null;
+											
 											switch(opcionMenuConfiguracionesComunidad)
 											{
 												case 1:
 													//Mostrar todas las configuraciones de la comunidad
-													configuracionComunidadElegida = validacion.mostrarConfiguracionesYValidar(configuraciones);
-													
+													configuraciones = gestion.obtenerConfiguraciones();
 													break;
+													
 												case 2:
 													//Buscar por marca
+													marca = validacion.mostrarListaMarcasYValidarMarcaElegida();
 													
-													configuraciones = gestion.obtenerConfiguraciones();
+													configuraciones = gestion.obtenerConfiguraciones(marca);
 													
 													break;
+													
 												case 3:
 													//Buscar por marca y modelo
+													marca = validacion.mostrarListaMarcasYValidarMarcaElegida();
+													modelo = validacion.mostrarListaModelosYValidarModeloElegido(marca);
+													
+													configuraciones = gestion.obtenerConfiguraciones(marca, modelo);
+													
 													break;
+													
 												case 4:
 													//Buscar por usuario
+													cuentaBuscar = validacion.validarUsuario();
+													
+													configuraciones = gestion.obtenerConfiguraciones(cuentaBuscar);
+													
 													break;
+													
 												case 5:
 													//Buscar por rango de precio
+													precioMinimo = validacion.validarPrecio();
+													precioMaximo = validacion.validarPrecio();
+													
+													configuraciones = gestion.obtenerConfiguraciones(precioMinimo, precioMaximo);
+													
 													break;
+													
 												case 6:
 													//Buscar por fecha
+													fechaBuscar = validacion.leerYValidarFecha();
+													
+													configuraciones = gestion.obtenerConfiguraciones(fechaBuscar);
+													
 													break;
+													
 											}
+											
+											configuracionComunidadElegida = validacion.mostrarConfiguracionesYValidar(configuraciones);
 											
 											if(configuracionComunidadElegida != null)
 											{

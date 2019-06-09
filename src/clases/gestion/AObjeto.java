@@ -367,6 +367,13 @@ public class AObjeto
 		return configuracion;
 	}
 	
+
+	public ArrayList<ConfiguracionImpl> obtenerConfiguraciones();
+	public ArrayList<ConfiguracionImpl> obtenerConfiguraciones(String marca);
+	public ArrayList<ConfiguracionImpl> obtenerConfiguraciones(String marca, String modelo);
+	public ArrayList<ConfiguracionImpl> obtenerConfiguraciones(double precioMinimo, double precioMaximo);
+	public ArrayList<ConfiguracionImpl> obtenerConfiguraciones(GregorianCalendar fecha);
+	
 	/* INTERFAZ
 	 * Comentario: Obtiene el CocheImpl asociado a la ConfiguracionImpl dada, busca en la base de datos
 	 * Prototipo: public CocheImpl obtenerCoche(ConfiguracionImpl configuracion)
