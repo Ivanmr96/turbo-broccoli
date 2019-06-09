@@ -7,13 +7,10 @@ USE Coches
 CREATE TABLE Cuentas
 (
 	NombreUsuario varchar(25) NOT NULL,
-	Contraseña varchar(25) NOT NULL
+	Contraseña varchar(32) NOT NULL
 
 	CONSTRAINT PK_Cuentas PRIMARY KEY (NombreUsuario)
 )
-
-ALTER TABLE Cuentas
-ALTER COLUMN Contraseña varchar(32)
 
 CREATE TABLE Coches
 (
@@ -77,7 +74,7 @@ CREATE TABLE Votaciones
 CREATE TABLE Motores
 (
 	IDPieza int NOT NULL,
-	Carburante varchar(10) NOT NULL,
+	Carburante varchar(10) NULL,
 	Traccion varchar(10) NOT NULL,
 	NumeroVelocidades varchar(15) NOT NULL,
 	Consumo decimal(4,2) NULL,

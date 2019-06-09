@@ -254,7 +254,32 @@ public class AObjeto
 	 * 					- True. El coche ha sido borrado satisfactoriamente de la base de datos. Las configuraciones y las votaciones asociadas al cocha también se borran.
 	 * 					- False. El coche no se ha podido borrar de la base de datos (Puede que el coche(marca y modelo) no exista en la base de datos)
 	 */
-	public boolean eliminarCoche(CocheImpl coche);
+	public boolean eliminarCoche(CocheImpl coche)
+	{
+		boolean borrado = false;
+		
+		String marca = coche.getMarca();
+		String modelo = coche.getModelo();
+		
+		String delete = "DELETE FROM Coches "
+					  + "WHERE Marca = '" + marca + "' AND Modelo = '" + modelo + "'";
+		
+		try
+		{
+			Statement statement = conexion.createStatement();
+			
+			int filasAfectadas = statement.executeUpdate(delete);
+			
+			if (filasAfectadas > 0)
+				borrado = true;
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+		
+		return borrado;
+	}
 	
 	/* INTERFAZ
 	 * Comentario: Actualiza la información sobre un coche en la base de datos
@@ -1359,7 +1384,7 @@ public class AObjeto
 		
 		ConfiguracionImpl conf = aObj.obtenerConfiguracion("2B4B87BD-E79C-440F-A429-8D15F2F476FE");
 		
-		ArrayList<VotacionImpl> votaciones = aObj.obtenerVotaciones(conf);
+		ArrayList<VotacionImpl> votaciones = aObj.obtenerVotaciones(conf);º
 		
 		System.out.println(votaciones.size());
 		
@@ -1464,6 +1489,8 @@ public class AObjeto
 			else
 				e.printStackTrace();
 		}
+		
+		System.out.println(aObj.eliminarCoche(aObj.obtenerCoche("AUDI", "A1")));
 	}
 	
 }
