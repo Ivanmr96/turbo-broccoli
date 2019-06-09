@@ -232,7 +232,7 @@ public class ConfiguradorCoches
 													calificacion = validacion.validarCalificacion();
 													
 													//Insertar configuracion
-													
+													gestion.insertarVotacion(calificacion);
 												}
 											}
 										}

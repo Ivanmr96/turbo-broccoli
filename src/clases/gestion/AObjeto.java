@@ -1258,6 +1258,8 @@ public class AObjeto
 		}
 	}
 	
+	public boolean insertarVotacion(VotacionImpl votacion);
+	
 	//public boolean insertarPiezaPintura(PinturaImpl pieza);
 	//public boolean insertarPiezaLlantas(LlantasImpl pieza);
 	//public boolean insertarPiezaMotor(MotorImpl pieza);
