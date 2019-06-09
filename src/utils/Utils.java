@@ -38,6 +38,23 @@ public class Utils
 		return fecha;
 	}
 	
+	public String GregorianCalendarToDateTime(GregorianCalendar fecha)
+	{
+		String dateTime;
+		
+		int anho = fecha.get(GregorianCalendar.YEAR);
+		int mes = fecha.get(GregorianCalendar.MONTH);
+		int dia = fecha.get(GregorianCalendar.DAY_OF_MONTH);
+		
+		int hora = fecha.get(GregorianCalendar.HOUR_OF_DAY);
+		int minutos = fecha.get(GregorianCalendar.MINUTE);
+		int segundos = fecha.get(GregorianCalendar.SECOND);
+		
+		dateTime = anho + "-" + dia + "-" + (mes+1) + " " + hora + ":" + minutos + ":" + segundos;
+		
+		return dateTime;
+	}
+	
 	/* INTERFAZ
 	 * Comentario: Obtiene el codigo hash MD5 de un String
 	 * Prototipo: public String obtenerMD5(String str)

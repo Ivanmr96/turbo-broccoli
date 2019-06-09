@@ -101,11 +101,12 @@ public class AObjeto
 			
 			ResultSet resultado = statement.executeQuery(consulta);
 			
-			resultado.next();		//Salta a la primera y unica fila
-			
-			double precioBase = resultado.getDouble("PrecioBase");
-			
-			coche = new CocheImpl(marca, modelo, precioBase);
+			if(resultado.next())		//Salta a la primera y unica fila
+			{
+				double precioBase = resultado.getDouble("PrecioBase");
+				
+				coche = new CocheImpl(marca, modelo, precioBase);
+			}
 		} 
 		catch (SQLException e) 
 		{
@@ -635,7 +636,59 @@ public class AObjeto
 		cargarVotacionesEnConfiguracion(configuracion);
 	}
 	
-	public boolean insertarConfiguracion(ConfiguracionImpl configuracion);
+	/* INTERFAZ
+	 * Comentario: Inserta una nueva configuracion en la base de datos
+	 * Prototipo: public boolean insertarConfiguracion(ConfiguracionImpl configuracion) throws SQLServerException
+	 * Entrada: la ConfiguracionImpl que se desea insertar en la base de datos
+	 * Precondiciones: el objeto ConfiguracionImpl debe tener asignado un CocheImpl y una CuentaImpl, debido a que no se puede insertar
+	 * 					en la base de datos una configuracion que no tiene ninguna cuenta ni ningun coche asociado.
+	 * Salida: Un boolean indicando si se introdujo la configuracion satisfactoriamente o no.
+	 * Postcondiciones: Asociado al nombre devuelve:
+	 * 					- True. Por lo tanto la configuracion ha sido introducido correctamente en la base de datos
+	 * 					- False. La configuracion no se ha introducido correctamente en la base de datos.
+	 * 					- Lanza SQLServerException si se intenta introducir una configuracion que ya existe en la base de datos.
+	 */
+	public boolean insertarConfiguracion(ConfiguracionImpl configuracion) throws SQLServerException
+	{
+		Utils utils = new Utils();
+		
+		//cargarCocheEnConfiguracion(configuracion);
+		//cargarCuentaEnConfiguracion(configuracion);
+		
+		boolean insertado = false;
+		
+		String ID = configuracion.getID();
+		String fecha = utils.GregorianCalendarToDateTime(configuracion.getFecha());
+		
+		String usuario = configuracion.obtenerCuenta().getNombreUsuario();
+		
+		String marcaCoche = configuracion.obtenerCoche().getMarca();
+		String modeloCoche = configuracion.obtenerCoche().getModelo();
+		
+		String insert = "INSERT INTO Configuraciones "
+						+ "VALUES ('" + ID + "', '" + usuario + "', '" + fecha + "', '" + marcaCoche + "', '" + modeloCoche + "');";
+		try 
+		{
+			Statement statement = conexion.createStatement();
+			
+			int filasAfectadas = statement.executeUpdate(insert);
+			
+			if(filasAfectadas > 0)
+				insertado = true;
+		} 
+		catch (SQLServerException e)
+		{
+			throw e;
+		}
+		catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
+		
+		
+		return insertado;
+	}
+	
 	public boolean eliminarConfiguracion(ConfiguracionImpl configuracion);
 	public boolean actualizarConfiguracion(ConfiguracionImpl configuracion);
 	
@@ -664,12 +717,12 @@ public class AObjeto
 			
 			ResultSet resultado = statement.executeQuery(consulta);
 			
-			resultado.next();		//Salta a la primera y unica fila
-			
-			String contrasena = resultado.getString("Contraseña");
-			
-			cuenta = new CuentaImpl(nombreUsuario, contrasena);
-			
+			if(resultado.next())		//Salta a la primera y unica fila
+			{
+				String contrasena = resultado.getString("Contraseña");
+				
+				cuenta = new CuentaImpl(nombreUsuario, contrasena);
+			}
 		} 
 		catch (SQLException e) 
 		{
@@ -774,7 +827,48 @@ public class AObjeto
 		cargarVotacionesEnCuenta(cuenta);
 	}
 	
-	public boolean insertarCuenta(CuentaImpl cuenta);
+	/* INTERFAZ
+	 * Comentario: Inserta una nueva cuenta en la base de datos
+	 * Prototipo: public boolean insertarCuenta(CuentaImpl cuenta) throws SQLServerException
+	 * Entrada: la CuentaImpl que se desea insertar en la base de datos
+	 * Precondiciones: No hay
+	 * Salida: Un boolean indicando si se introdujo la cuenta satisfactoriamente o no.
+	 * Postcondiciones: Asociado al nombre devuelve:
+	 * 					- True. Por lo tanto la cuenta ha sido introducido correctamente en la base de datos
+	 * 					- False. La cuenta no se ha introducido correctamente en la base de datos.
+	 * 					- Lanza SQLServerException si se intenta introducir una cuenta que ya existe en la base de datos.
+	 */
+	public boolean insertarCuenta(CuentaImpl cuenta) throws SQLServerException
+	{
+		boolean insertado = false;
+		
+		String nombreUsuario = cuenta.getNombreUsuario();
+		String contrasena = cuenta.getContrasena();
+		
+		String insert = "INSERT INTO Cuentas "
+						+ "VALUES ('" + nombreUsuario + "', '" + contrasena + "');";
+		try 
+		{
+			Statement statement = conexion.createStatement();
+			
+			int filasAfectadas = statement.executeUpdate(insert);
+			
+			if(filasAfectadas > 0)
+				insertado = true;
+		} 
+		catch (SQLServerException e)
+		{
+			throw e;
+		}
+		catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
+		
+		
+		return insertado;
+	}
+	
 	public boolean eliminarCuenta(CuentaImpl cuenta);
 	public boolean actualizarCuenta(CuentaImpl cuenta);
 	
@@ -867,7 +961,50 @@ public class AObjeto
 		pieza.establecerCochesValidos(cochesValidos);
 	}
 	
-	public boolean insertarPieza(PiezaImpl pieza);
+	/* INTERFAZ
+	 * Comentario: Inserta una nueva pieza en la base de datos
+	 * Prototipo: public boolean insertarPieza(PiezaImpl pieza) throws SQLServerException
+	 * Entrada: la PiezaImpl que se desea insertar en la base de datos
+	 * Precondiciones: No hay
+	 * Salida: Un boolean indicando si se introdujo la cuenta satisfactoriamente o no.
+	 * Postcondiciones: Asociado al nombre devuelve:
+	 * 					- True. Por lo tanto la pieza ha sido introducida correctamente en la base de datos
+	 * 					- False. La pieza no se ha introducido correctamente en la base de datos.
+	 * 					- Lanza SQLServerException si se intenta introducir una pieza que ya existe en la base de datos.
+	 */
+	public boolean insertarPieza(PiezaImpl pieza) throws SQLServerException
+	{
+		boolean insertado = false;
+		
+		int ID = pieza.getID();
+		String nombre = pieza.getNombre();
+		String descripcion = pieza.getDescripcion();
+		double precio = pieza.getPrecio();
+		
+		String insert = "INSERT INTO Piezas "
+						+ "VALUES (" + ID + ", '" + nombre + "', '" + descripcion + "', " + precio + ");";
+		try 
+		{
+			Statement statement = conexion.createStatement();
+			
+			int filasAfectadas = statement.executeUpdate(insert);
+			
+			if(filasAfectadas > 0)
+				insertado = true;
+		} 
+		catch (SQLServerException e)
+		{
+			throw e;
+		}
+		catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
+		
+		
+		return insertado;
+	}
+	
 	public boolean eliminarPieza(PiezaImpl pieza);
 	public boolean actualizarPieza(PiezaImpl pieza);
 	
@@ -1168,7 +1305,62 @@ public class AObjeto
 			System.out.println(coche.getMarca());
 		}
 		
+		CocheImpl coche2 = aObj.obtenerCoche("AUDI", "A1");
+		
+		System.out.println(coche2.getPrecioBase());
+		
+		Utils utils = new Utils();
+		
+		ConfiguracionImpl confi = new ConfiguracionImpl("137D8ABC-FA8C-458D-891A-25B76CDD96BD", utils.dateTimeToGregorianCalendar("2019-06-08 21:06:20.280"));
+		
+		confi.establecerCoche(aObj.obtenerCoche("Toyota", "Prius"));
+		
+		confi.establecerCuenta(aObj.obtenerCuenta("testuser"));
+		
+		try 
+		{
+			aObj.insertarConfiguracion(confi);
+		} catch (SQLServerException e) 
+		{
+			if(e.getErrorCode() == 2627)
+			{
+				System.out.println("Configuracion ya existente en la base de datos, no se insertará.");
+			}
+			else
+				e.printStackTrace();
+		}
+		
+		ArrayList<ConfiguracionImpl> confis = aObj.obtenerConfiguraciones(aObj.obtenerCuenta("testuser"));
+		
+		for(ConfiguracionImpl configuracioncita:confis)
+		{
+			System.out.print(aObj.obtenerCoche(configuracioncita).getModelo() + ": ");
+			System.out.println(aObj.obtenerCoche(configuracioncita).getPrecioBase());
+		}
+		
+		try 
+		{
+			aObj.insertarCuenta(new CuentaImpl("Ivansito", utils.obtenerMD5("321")));
+		} 
+		catch (SQLServerException e) 
+		{
+			if(e.getErrorCode() == 2627)
+			{
+				System.out.println("Cuenta ya exitente en la base de datos, no se insertará.");
+			}
+			else
+				e.printStackTrace();
+		}
+		
+		CuentaImpl cuentecita = aObj.obtenerCuenta("Ivansito");
+		
+		System.out.println(cuentecita.getContrasena());
+		
 		//System.out.println(conf.getFecha().getTime());
+		
+		PiezaImpl pz = new LlantasImpl(3, "llantas", "de algo", 17, 13);
+		
+		System.out.println(pz.getClass().getSimpleName());
 	}
 	
 }
