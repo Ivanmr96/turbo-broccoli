@@ -85,4 +85,6 @@ public class ConfiguracionImpl
 	public void establecerCuenta(CuentaImpl cuenta) { this.cuenta = cuenta; }
 	public void establecerPiezas(ArrayList<PiezaImpl> piezas) { this.piezas = piezas; }
 	public void establecerVotaciones(ArrayList<VotacionImpl> votaciones ) { this.votaciones = votaciones; }
+	
+	//TODO Alguna funcion que pueda ser útil, como calcularPrecioTotal(), o calcularCalificacionMedia()
 }

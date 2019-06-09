@@ -297,6 +297,17 @@ public class AObjeto
 	
 	//ConfiguracionImpl
 	
+	/* INTERFAZ
+	 * Comentario: Obtiene una configuracion de la base de datos dado su ID
+	 * Prototipo: public ConfiguracionImpl obtenerConfiguracion(String ID)
+	 * Entrada: Un String con el ID de la configuración que se desea obtener
+	 * Precondiciones: El String debe tener un formato de UUID, es decir:
+	 * 					32 digitos hexadecimales divididos en cinco grupos separados por guiones divididos de la forma 8-4-4-4-12, por ejemplo: 550e8400-e29b-41d4-a716-446655440000
+	 * Salida: Un objeto ConfiguracionImpl con la configuracion del ID dado
+	 * Postcondiciones: Asociado al nombre devuelve un objeto ConfiguracionImpl.
+	 * 					- Si el ID es de una configuración existente en la base de datos, el objeto tendrá la información correspondiente a la configuración con su ID en la base de datos.
+	 * 					- Si el ID no existe en la base de datos, será null.
+	 */
 	public ConfiguracionImpl obtenerConfiguracion(String ID)
 	{
 		ConfiguracionImpl configuracion = null;
@@ -311,23 +322,35 @@ public class AObjeto
 			
 			ResultSet resultado = statement.executeQuery(consulta);
 			
-			resultado.next();		//Salta a la primera y unica fila
+			if(resultado.next())	//Salta a la primera y unica fila si la ID existe
+			{
+				String fechaStr = resultado.getString("Fecha");
+				
+				GregorianCalendar fecha = utils.dateTimeToGregorianCalendar(fechaStr);
+				
+				configuracion = new ConfiguracionImpl(ID, fecha);
+			}
 			
-			String fechaStr = resultado.getString("Fecha");
-			
-			GregorianCalendar fecha = utils.dateTimeToGregorianCalendar(fechaStr);
-			
-			configuracion = new ConfiguracionImpl(ID, fecha);
-			
-		} 
+		}
 		catch (SQLException e) 
 		{
+			System.out.println(e.getErrorCode());
 			e.printStackTrace();
 		}
 		
 		return configuracion;
 	}
 	
+	/* INTERFAZ
+	 * Comentario: Obtiene el CocheImpl asociado a la ConfiguracionImpl dada, busca en la base de datos
+	 * Prototipo: public CocheImpl obtenerCoche(ConfiguracionImpl configuracion)
+	 * Entrada: Un objeto ConfiguracionImpl del que se desea obtener su CocheImpl
+	 * Precondiciones: No hay
+	 * Salida: Un CocheImpl con el coche perteneciente(en la base de datos) a la configuracion dada
+	 * Postcondiciones: Asociado al nombre devuelve un CocheImpl.
+	 * 					- El objeto devuelto tendrá la información correspondiente al Coche que pertenece a la configuración dada si dicha configuración existe en la base de datos
+	 * 					- El objeto devuelto será null si la configuración no existe en la base de datos.
+	 */
 	public CocheImpl obtenerCoche(ConfiguracionImpl configuracion)
 	{
 		CocheImpl coche = null;
@@ -341,13 +364,15 @@ public class AObjeto
 			
 			ResultSet resultado = statement.executeQuery(consulta);
 			
-			resultado.next();		//Salta a la primera y unica fila
+			if(resultado.next())		//Salta a la primera y unica fila si la configuracion existe
+			{
 			
-			String marca = resultado.getString("MarcaCoche");
-			String modelo = resultado.getString("ModeloCoche");
-			double precioBase = resultado.getDouble("PrecioBase");
-			
-			coche = new CocheImpl(marca, modelo, precioBase);
+				String marca = resultado.getString("MarcaCoche");
+				String modelo = resultado.getString("ModeloCoche");
+				double precioBase = resultado.getDouble("PrecioBase");
+				
+				coche = new CocheImpl(marca, modelo, precioBase);
+			}
 			
 		} 
 		catch (SQLException e) 
@@ -358,6 +383,16 @@ public class AObjeto
 		return coche;
 	}
 	
+	/* INTERFAZ
+	 * Comentario: Obtiene la CuentaImpl de una Configuracion. Busca en la base de datos.
+	 * Prototipo: public CuentaImpl obtenerCuenta(ConfiguracionImpl configuracion)
+	 * Entrada: Una ConfiguracionImpl de la que se desea obtener la CuentaImpl que la hizo
+	 * Precodiciones: No hay
+	 * Salida: La CuentaImpl que pertenece (en la base de datos) a la Configuracion dada
+	 * Postcondiciones: Asociado al nombre devuelve una CuentaImpl
+	 * 					- El objeto tendrá la información con la cuenta correspondiente a la configuracion si dicha configuracion existe en la base de datos.
+	 * 					- El objeto será null si la configuración no existe en la base de datos.
+	 */
 	public CuentaImpl obtenerCuenta(ConfiguracionImpl configuracion)
 	{
 		CuentaImpl cuenta = null;
@@ -371,12 +406,13 @@ public class AObjeto
 			
 			ResultSet resultado = statement.executeQuery(consulta);
 			
-			resultado.next();		//Salta a la primera y unica fila
-			
-			String nombreUsuario = resultado.getString("NombreUsuario");
-			String contrasena = resultado.getString("Contraseña");
-			
-			cuenta = new CuentaImpl(nombreUsuario, contrasena);
+			if(resultado.next())		//Salta a la primera y unica fila si la configuracion existe
+			{
+				String nombreUsuario = resultado.getString("NombreUsuario");
+				String contrasena = resultado.getString("Contraseña");
+				
+				cuenta = new CuentaImpl(nombreUsuario, contrasena);
+			}
 			
 		} 
 		catch (SQLException e) 
@@ -387,6 +423,17 @@ public class AObjeto
 		return cuenta;
 	}
 	
+	/* INTERFAZ
+	 * Comentario: Obtiene la lista de las piezas de una configuracion. Busca en la base de datos
+	 * Prototipo: public ArrayList<PiezaImpl> obtenerPiezas(ConfiguracionImpl configuracion)
+	 * Entrada: Una ConfiguracionImpl de la que se desea obtener la lista de sus piezas
+	 * Precondiciones: No hay
+	 * Salida: Un ArrayList de PiezaImpl con la lista de las piezas la configuracion dada.
+	 * Postcondiciones: Asociado al nombe devuelve un ArrayList<PiezaImpl>.
+	 * 					- Si la configuracion existe en la base de datos, la lista tendrá las piezas de dicha configuracion, es posible que la lista esté vacía.
+	 * 						Significa que la configuración no tiene ninguna pieza.
+	 * 					- Si la configuración no existe en la base de datos, el ArrayList<PiezaImpl> será null.
+	 */
 	public ArrayList<PiezaImpl> obtenerPiezas(ConfiguracionImpl configuracion)
 	{
 		ArrayList<PiezaImpl> piezas = null;
@@ -443,12 +490,23 @@ public class AObjeto
 		return piezas;
 	}
 	
+	/* INTERFAZ
+	 * Comentario: Obtiene las votaciones de una configuracion. Busca en la base de datos
+	 * Prototipo: public ArrayList<VotacionImpl> obtenerVotaciones(ConfiguracionImpl configuracion)
+	 * Entrada: Una ConfiguracionImpl de la que se desean obtener sus votaciones.
+	 * Precondiciones: No hay
+	 * Salida: Un ArrayList de VotacionImpl con la lista de votaciones de la configuracion dada.
+	 * Postcondiciones: Asociado al nombre devuelve un ArrayList<VotacionImpl>.
+	 * 					- Si la configuración existe en la base de datos, devuelve una lista con las votaciones realizadas a dicha configuracion.
+	 * 						La lista puede estar vacía, esto significa que la configuración no tiene ninguna votación.
+	 * 					- Si la configuración no existe en la base de datos, el ArrayList<VotacionImpl> es null.
+	 */
 	public ArrayList<VotacionImpl> obtenerVotaciones(ConfiguracionImpl configuracion)
 	{
 		ArrayList<VotacionImpl> votaciones = null;
 		
 		String consulta = "SELECT ID, Calificacion, Fecha FROM Votaciones " 
-						+ "WHERE IDConfiguracion = '" + configuracion.getID() + "'";
+						+ "WHERE IDConfiguracion = '" + configuracion.getID() + "'";		//TODO Como hacer que devuelva NULL si la configuracion no existe en la bbdd
 		
 		Utils utils = new Utils();
 		
@@ -483,6 +541,16 @@ public class AObjeto
 		return votaciones;
 	}
 	
+	/* INTERFAZ
+	 * Comentario: Carga el coche de una configuración en ella, buscando en la base de datos.
+	 * Prototipo: public void cargarCocheEnConfiguracion(ConfiguracionImpl configuracion)
+	 * Entrada: No hay
+	 * Precondiciones: No hay
+	 * Salida: No hay
+	 * Entrada/Salida: Una ConfiguracionImpl a la que se le desea cargar el CocheImpl que tiene asociado en la base de datos.
+	 * Postcondiciones: El objeto ConfiguracionImpl pasado por parámetro tiene el objeto CocheImpl cargado dentro de él.
+	 * 					Si la configuración no existe en la base de datos, el CocheImpl será null.
+	 */
 	public void cargarCocheEnConfiguracion(ConfiguracionImpl configuracion)
 	{
 		CocheImpl coche = obtenerCoche(configuracion);
@@ -490,6 +558,17 @@ public class AObjeto
 		configuracion.establecerCoche(coche);
 	}
 	
+	/* INTERFAZ
+	 * Comentario: Carga la CuentaImpl en una ConfiguracionImpl, buscando en la base de datos.
+	 * Prototipo: public void cargarCuentaEnConfiguracion(ConfiguracionImpl configuracion)
+	 * Entrada: No hay
+	 * Precondiciones: No hay
+	 * Salida: No hay
+	 * Entrada/Salida: Una ConfiguracionImpl a la que se le desea cargar la CuentaImpl que tiene asociada en la base de datos.
+	 * Postcondiciones: El Objeto ConfiguracionImpl pasado por parámetro tiene el objeto CuentaImpl cargado, esta cuenta es la cuenta
+	 * 					que le corresponde a la configuracion en la base de datos.
+	 * 					Si la configuración no existe en la base de datos, la CuentaImpl será null.
+	 */
 	public void cargarCuentaEnConfiguracion(ConfiguracionImpl configuracion)
 	{
 		CuentaImpl cuenta = obtenerCuenta(configuracion);
@@ -497,6 +576,17 @@ public class AObjeto
 		configuracion.establecerCuenta(cuenta);
 	}
 	
+	/* INTERFAZ
+	 * Comentario: Carga las piezas de una configuracion en dicha configuracion, buscando en la base de datos.
+	 * Prototipo: public void cargarPiezasEnConfiguracion(ConfiguracionImpl configuracion)
+	 * Entrada: No hay
+	 * Precondiciones: No hay
+	 * Salida: No hay
+	 * Entrada/Salida: Una ConfiguracionImpl a la que se le desea cargar la lista de piezas que tiene asociada, buscando en la base de datos.
+	 * Postcondiciones: El objeto ConfiguracionImpl pasado por parámetro tiene la lista de las piezas, esta lista de piezas son las piezas
+	 * 					que le corresponden a la configuración en la base de datos.
+	 * 					Si la configuración no existe en la base de datos, la lista de las piezas será null.
+	 */
 	public void cargarPiezasEnConfiguracion(ConfiguracionImpl configuracion)
 	{
 		ArrayList<PiezaImpl> piezas = obtenerPiezas(configuracion);
@@ -504,6 +594,16 @@ public class AObjeto
 		configuracion.establecerPiezas(piezas);
 	}
 	
+	/* INTERFAZ
+	 * Comentario: Carga la lista con las votaciones de una configuración en dicha configuracion, buscando en la base de datos
+	 * Prototipo: public void cargarVotacionesEnConfiguracion(ConfiguracionImpl configuracion)
+	 * Entrada: No hay
+	 * Precondiciones: No hay
+	 * Salida: No hay
+	 * Entrada/Salida: Una ConfiguracionImpl a la que se le desea cargar la lista de votaciones que tiene asociada, buscando en la base de datos.
+	 * Postcondiciones: El objeto ConfiguracionImpl pasado por parámetro tiene la lista de las votaciones que le pertenecen según la base de datos.
+	 * 					Si la configuración no existe en la base de datos, la lista de las votaciones será null.
+	 */
 	public void cargarVotacionesEnConfiguracion(ConfiguracionImpl configuracion)
 	{
 		ArrayList<VotacionImpl> votaciones = obtenerVotaciones(configuracion);
@@ -511,6 +611,22 @@ public class AObjeto
 		configuracion.establecerVotaciones(votaciones);
 	}
 	
+	/* INTERFAZ
+	 * Comentario: Carga todas las relaciones con otros objetos que tiene una configuracion en ella misma, es decir, carga el Coche que le pertenece,
+	 * 				La Cuenta que le pertenece, las piezas y las votaciones.
+	 * Prototipo: public void cargarRelacionesEnConfiguracion(ConfiguracionImpl configuracion)
+	 * Entrada: No hay
+	 * Precondiciones: No hay
+	 * Salida: No hay
+	 * Entrada/Salida: Una ConfiguracionImpl a la que se le desea cargar todas sus relaciones con otros objetos, busca en la base de datos.
+	 * Postcondiciones: El objeto ConfiguracionImpl tiene cargada todas sus relaciones con otros objetos, es decir:
+	 * 						- Carga en el objeto ConfiguracionImpl el CocheImpl que le pertenece según la base de datos.
+	 * 						- Carga en el objeto ConfiguracionImpl la CuentaImpl que le pertenece según la base de datos.
+	 * 						- Carga en el objeto ConfiguracionImpl el ArrayList<PiezaImpl> que le pertenece según la base de datos.
+	 * 						- Carga en el objeto ConfiguracionImpl el ArrayList<VotacionImpl> que le pertenece según la base de datos.
+	 * 						- Si la configuración no existe en la base de datos, lógicamente no podrá obtener las relaciones de la base de datos, por lo tanto las relaciones
+	 * 						quedarán con valores null.
+	 */
 	public void cargarRelacionesEnConfiguracion(ConfiguracionImpl configuracion)
 	{
 		cargarCocheEnConfiguracion(configuracion);
@@ -527,6 +643,15 @@ public class AObjeto
 	
 	//CuentaImpl
 	
+	/* INTERFAZ
+	 * Comentario: Obtiene una Cuenta a partir de su nombre de usuario buscando en la base de datos, la contraseña está cifrada con MD5.
+	 * Prototipo: public CuentaImpl obtenerCuenta(String nombreUsuario)
+	 * Entrada: Un String con el nombre de usuario de la cuenta a buscar
+	 * Precondiciones: No hay
+	 * Salida: Una CuentaImpl con la cuenta perteneciente a ese nombre de usuario.
+	 * Postcondiciones: Asociado al nombre devuelve una CuentaImpl perteneciente al nombre de usuario dado, busca en la base de datos.
+	 * 					Si el nombre de usuario no existe, devuelve una CuentaImpl null.
+	 */
 	public CuentaImpl obtenerCuenta(String nombreUsuario)
 	{
 		CuentaImpl cuenta = null;
@@ -554,8 +679,80 @@ public class AObjeto
 		return cuenta;
 	}
 	
-	public ArrayList<ConfiguracionImpl> obtenerConfiguraciones(CuentaImpl cuenta);
-	public ArrayList<VotacionImpl> obtenerVotaciones(CuentaImpl cuenta);
+	public ArrayList<ConfiguracionImpl> obtenerConfiguraciones(CuentaImpl cuenta)
+	{
+		ArrayList<ConfiguracionImpl> configuraciones = null;
+		ConfiguracionImpl configuracion = null;
+		Utils utils = new Utils();
+		
+		String consulta = "SELECT ID, Fecha FROM Configuraciones "
+						+ "WHERE Usuario = '" + cuenta.getNombreUsuario() + "'";
+		try 
+		{
+			Statement statement = conexion.createStatement();
+			
+			ResultSet resultado = statement.executeQuery(consulta);
+			
+			configuraciones = new ArrayList<ConfiguracionImpl>();
+			
+			while(resultado.next())
+			{
+				String ID = resultado.getString("ID");
+				GregorianCalendar fecha = utils.dateTimeToGregorianCalendar(resultado.getString("Fecha"));
+				
+				configuracion = new ConfiguracionImpl(ID, fecha);
+				
+				configuracion.establecerCuenta(cuenta);
+				
+				configuraciones.add(configuracion);
+			}
+			
+		} 
+		catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
+		
+		return configuraciones;
+	}
+	
+	public ArrayList<VotacionImpl> obtenerVotaciones(CuentaImpl cuenta)
+	{
+		ArrayList<VotacionImpl> votaciones = null;
+		VotacionImpl votacion = null;
+		Utils utils = new Utils();
+		
+		String consulta = "SELECT ID, Fecha, Calificacion FROM Votaciones "
+						+ "WHERE Usuario = '" + cuenta.getNombreUsuario() + "'";
+		try 
+		{
+			Statement statement = conexion.createStatement();
+			
+			ResultSet resultado = statement.executeQuery(consulta);
+			
+			votaciones = new ArrayList<VotacionImpl>();
+			
+			while(resultado.next())
+			{
+				String ID = resultado.getString("ID");
+				GregorianCalendar fecha = utils.dateTimeToGregorianCalendar(resultado.getString("Fecha"));
+				int calificacion = resultado.getInt("Calificacion");
+				
+				votacion = new VotacionImpl(ID, fecha, calificacion);
+				
+				votacion.establecerCuenta(cuenta);
+				
+				votaciones.add(votacion);
+			}
+			
+		} 
+		catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
+		
+		return votaciones;
+	}
 	
 	public void cargarConfiguracionesEnCuenta(CuentaImpl cuenta)
 	{
@@ -585,6 +782,18 @@ public class AObjeto
 	
 	//PiezaImpl
 	
+	/* INTERFAZ
+	 * Comentario: Obtiene una pieza dado su ID, busca en la base de datos
+	 * Prototipo: public PiezaImpl obtenerPieza(int ID)
+	 * Entrada: Un int con la ID de la pieza a buscar
+	 * Precondiciones: No hay
+	 * Salida: la PiezaImpl con el ID dado, busca en la base de datos.
+	 * Postcondiciones: Asociado al nombre devuelve una PiezaImpl perteneciente a la pieza con el ID dado buscando en la base de datos.
+	 * 					- Este método no debe utilizarse para obtener piezas especializadas, es decir, motores, llantas o pinturas. 
+	 * 						Este método no obtiene la información extra que tienen estas piezas especializadas, solo la parte común a todas las piezas.
+	 * 						Para las piezas especializadas, usar los métodos obtenerPiezaPintura, obtenerPiezaLlantas y obtenerPiezaMotor...
+	 * 					- Si el ID no es de ninguna pieza existente en la base de datos, devuelve null.
+	 */
 	public PiezaImpl obtenerPieza(int ID)
 	{
 		PiezaImpl pieza = null;
@@ -598,13 +807,14 @@ public class AObjeto
 			
 			ResultSet resultado = statement.executeQuery(consulta);
 			
-			resultado.next();
-			
-			String nombre = resultado.getString("Nombre");
-			String descripcion = resultado.getString("Descripcion");
-			double precio = resultado.getDouble("Precio");
-			
-			pieza = new PiezaImpl(ID, nombre, descripcion,precio);
+			if(resultado.next())
+			{
+				String nombre = resultado.getString("Nombre");
+				String descripcion = resultado.getString("Descripcion");
+				double precio = resultado.getDouble("Precio");
+				
+				pieza = new PiezaImpl(ID, nombre, descripcion,precio);
+			}
 		}
 		catch(SQLException e)
 		{
@@ -614,7 +824,41 @@ public class AObjeto
 		return pieza;
 	}
 	
-	public ArrayList<CocheImpl> obtenerCochesValidos(PiezaImpl pieza);
+	public ArrayList<CocheImpl> obtenerCochesValidos(PiezaImpl pieza)
+	{
+		ArrayList<CocheImpl> cochesValidos = null;
+		CocheImpl coche = null;
+		
+		String consulta = "SELECT Marca, Modelo, PrecioBase FROM Coches AS c "
+						+ "INNER JOIN PiezasCoches  AS pz ON pz.MarcaCoche = c.Marca AND pz.ModeloCoche = c.Modelo "
+						+ "WHERE pz.IDPieza = " + pieza.getID();
+		try 
+		{
+			Statement statement = conexion.createStatement();
+			
+			ResultSet resultado = statement.executeQuery(consulta);
+			
+			cochesValidos = new ArrayList<CocheImpl>();
+			
+			while(resultado.next())
+			{
+				String marca = resultado.getString("Marca");
+				String modelo = resultado.getString("Modelo");
+				double precioBase = resultado.getDouble("PrecioBase");
+				
+				coche = new CocheImpl(marca, modelo, precioBase);
+				
+				cochesValidos.add(coche);
+			}
+			
+		} 
+		catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
+		
+		return cochesValidos;
+	}
 	
 	public void cargarCochesValidosEnPieza(PiezaImpl pieza)
 	{
@@ -629,6 +873,16 @@ public class AObjeto
 	
 	//-------------------------------------------------------
 	
+	/* INTERFAZ
+	 * Comentario: Obtiene la pieza de tipo pintura según un ID dado. Busca en la base de datos
+	 * Prototipo: public PinturaImpl obtenerPiezaPintura(int ID)
+	 * Entrada: Un int con la ID de la pieza tipo pintura que se desea obtener de la base de datos.
+	 * Precondiciones: No hay
+	 * Salida: Una PinturaImpl que pertenece a la pintura con la ID dada en la base de datos.
+	 * Postcondiciones: Asociado al nombre devuelve devuelve una PinturaImpl.
+	 * 					- Si la ID dada pertenece a una pintura existente en la base de datos, devuelve el objeto con la información.
+	 * 					- Si la ID dada no pertenece a una pintura existente en la base de datos, devuelve el objeto null.
+	 */
 	public PinturaImpl obtenerPiezaPintura(int ID)
 	{
 		PinturaImpl pintura = null;
@@ -643,15 +897,16 @@ public class AObjeto
 			
 			ResultSet resultado = statement.executeQuery(consulta);
 			
-			resultado.next();
-			
-			String nombre = resultado.getString("Nombre");
-			String descripcion = resultado.getString("Descripcion");
-			double precio = resultado.getDouble("Precio");
-			String color = resultado.getString("Color");
-			String acabado = resultado.getString("Acabado");
-			
-			pintura = new PinturaImpl(ID, nombre, descripcion,precio, color, acabado);
+			if(resultado.next())
+			{
+				String nombre = resultado.getString("Nombre");
+				String descripcion = resultado.getString("Descripcion");
+				double precio = resultado.getDouble("Precio");
+				String color = resultado.getString("Color");
+				String acabado = resultado.getString("Acabado");
+				
+				pintura = new PinturaImpl(ID, nombre, descripcion,precio, color, acabado);
+			}
 		}
 		catch(SQLException e)
 		{
@@ -661,6 +916,16 @@ public class AObjeto
 		return pintura;
 	}
 	
+	/* INTERFAZ
+	 * Comentario: Obtiene la pieza de tipo llantas según un ID dado. Busca en la base de datos
+	 * Prototipo: public LlantasImpl obtenerPiezaLlantas(int ID)
+	 * Entrada: Un int con la ID de la pieza tipo llantas que se desea obtener de la base de datos.
+	 * Precondiciones: No hay
+	 * Salida: Una LlantasImpl que pertenece a las llantas con la ID dada en la base de datos.
+	 * Postcondiciones: Asociado al nombre devuelve devuelve un objeto LlantasImpl.
+	 * 					- Si la ID dada pertenece a unas llantas existentes en la base de datos, devuelve el objeto con la información.
+	 * 					- Si la ID dada no pertenece a unas llantas existentes en la base de datos, devuelve el objeto null.
+	 */
 	public LlantasImpl obtenerPiezaLlantas(int ID)
 	{
 		LlantasImpl llantas = null;
@@ -675,14 +940,15 @@ public class AObjeto
 			
 			ResultSet resultado = statement.executeQuery(consulta);
 			
-			resultado.next();
-			
-			String nombre = resultado.getString("Nombre");
-			String descripcion = resultado.getString("Descripcion");
-			double precio = resultado.getDouble("Precio");
-			int pulgadas = resultado.getInt("Pulgadas");
-			
-			llantas = new LlantasImpl(ID, nombre, descripcion, precio, pulgadas);
+			if(resultado.next())
+			{
+				String nombre = resultado.getString("Nombre");
+				String descripcion = resultado.getString("Descripcion");
+				double precio = resultado.getDouble("Precio");
+				int pulgadas = resultado.getInt("Pulgadas");
+				
+				llantas = new LlantasImpl(ID, nombre, descripcion, precio, pulgadas);
+			}
 		}
 		catch(SQLException e)
 		{
@@ -692,6 +958,16 @@ public class AObjeto
 		return llantas;
 	}
 	
+	/* INTERFAZ
+	 * Comentario: Obtiene la pieza de tipo motor según un ID dado. Busca en la base de datos
+	 * Prototipo: public MotorImpl obtenerPiezaMotor(int ID)
+	 * Entrada: Un int con la ID de la pieza tipo motor que se desea obtener de la base de datos.
+	 * Precondiciones: No hay
+	 * Salida: Una MotorImpl que pertenece al motor con la ID dada en la base de datos.
+	 * Postcondiciones: Asociado al nombre devuelve devuelve un objeto MotorImpl.
+	 * 					- Si la ID dada pertenece a un motor existente en la base de datos, devuelve el objeto con la información.
+	 * 					- Si la ID dada no pertenece a un motor existente en la base de datos, devuelve el objeto null.
+	 */
 	public MotorImpl obtenerPiezaMotor(int ID)
 	{
 		{
@@ -707,17 +983,18 @@ public class AObjeto
 				
 				ResultSet resultado = statement.executeQuery(consulta);
 				
-				resultado.next();
-				
-				String nombre = resultado.getString("Nombre");
-				String descripcion = resultado.getString("Descripcion");
-				double precio = resultado.getDouble("Precio");
-				char traccion = resultado.getString("Traccion").charAt(0);
-				int numeroVelocidades = resultado.getInt("NumeroVelocidades");
-				int autonomia = resultado.getInt("Autonomia");
-				int potencia = resultado.getInt("Potencia");
-				
-				motor = new MotorImpl(ID, nombre, descripcion, precio, traccion, numeroVelocidades, autonomia, potencia);
+				if(resultado.next())
+				{
+					String nombre = resultado.getString("Nombre");
+					String descripcion = resultado.getString("Descripcion");
+					double precio = resultado.getDouble("Precio");
+					char traccion = resultado.getString("Traccion").charAt(0);
+					int numeroVelocidades = resultado.getInt("NumeroVelocidades");
+					int autonomia = resultado.getInt("Autonomia");
+					int potencia = resultado.getInt("Potencia");
+					
+					motor = new MotorImpl(ID, nombre, descripcion, precio, traccion, numeroVelocidades, autonomia, potencia);
+				}
 			}
 			catch(SQLException e)
 			{
@@ -782,6 +1059,11 @@ public class AObjeto
 		ConfiguracionImpl conf = aObj.obtenerConfiguracion("FB619D46-359D-46A0-B68D-6CCBE62714DC");
 		
 		System.out.println(conf.getFecha().getTime()); */
+		
+		
+		
+		
+		/*
 		
 		ConfiguracionImpl conf = aObj.obtenerConfiguracion("2B4B87BD-E79C-440F-A429-8D15F2F476FE");
 		
@@ -852,7 +1134,82 @@ public class AObjeto
 			System.out.println("contrasena de la cuenta: " + cuentaa.getContrasena());
 			System.out.println("contrasena introducida: " + contrasena);
 			System.out.println("Contrasena incorrecta.");
+		}*/
+		
+		ConfiguracionImpl conf = aObj.obtenerConfiguracion("2B4B87BD-E79C-440F-A429-8D15F2F476FE");
+		
+		ArrayList<VotacionImpl> votaciones = aObj.obtenerVotaciones(conf);
+		
+		System.out.println(votaciones.size());
+		
+		for(VotacionImpl votacion:votaciones)
+		{
+			System.out.println(votacion.getID());
 		}
+		
+		System.out.println();
+		
+		for(ConfiguracionImpl config:aObj.obtenerConfiguraciones(aObj.obtenerCuenta("testuser")))
+		{
+			System.out.println(config.getID());
+		}
+		
+		System.out.println();
+		
+		for(VotacionImpl votacion:aObj.obtenerVotaciones(aObj.obtenerCuenta("testuser")))
+		{
+			System.out.println(votacion.getFecha().getTime());
+		}
+		
+		System.out.println();
+		
+		for(CocheImpl coche:aObj.obtenerCochesValidos(aObj.obtenerPieza(1)))
+		{
+			System.out.println(coche.getMarca());
+		}
+		
+		//System.out.println(conf.getFecha().getTime());
 	}
 	
 }
+
+/* TODO >>
+ * Por implementar:
+	public boolean insertarConfiguracion(ConfiguracionImpl configuracion);
+	// Tengo que ver si al insertar una configuracion, inserto tambien sus votaciones y sus piezas.
+
+	public boolean eliminarConfiguracion(ConfiguracionImpl configuracion);
+	// Posible procedimiento almacenado (O borrado en cascada)
+
+	public boolean actualizarConfiguracion(ConfiguracionImpl configuracion);
+	// Tengo que ver como se harán las actualizaciones, en el caso de la configuracion,
+	// No hay nada que actualizar salvo las piezas, quizás sería buena idea
+	// Ponerle métodos a la clase para añadir/quitar piezas. Y luego
+	// Un método en la clase de gestión para actualizar solo las piezas, en lugar de todo.
+	//
+	// Otra solución sería que las funcionalidades de añadir/quitar piezas lo hagan directamente
+	// A la base de datos en lugar de cambiarlo primero en el objeto y luego con ese objeto actualizar
+	// La base de datos.
+
+	public ArrayList<ConfiguracionImpl> obtenerConfiguraciones(CuentaImpl cuenta);
+
+	public ArrayList<VotacionImpl> obtenerVotaciones(CuentaImpl cuenta);
+
+	public boolean insertarCuenta(CuentaImpl cuenta);
+
+	public boolean eliminarCuenta(CuentaImpl cuenta)
+	// Debe de haber dos formas de borrar una cuenta:
+	// Borrando tambien sus configuraciones y votaciones, o borrando solo la cuenta sin borrar lo demas.
+
+	public boolean actualizarCuenta(CuentaImpl cuenta)
+	// Es solo cambiar contraseña.
+
+	public ArrayList<CocheImpl> obtenerCochesValidos(PiezaImpl pieza);
+
+	public boolean insertarPieza(PiezaImpl pieza);
+
+	public boolean eliminarPieza(PiezaImpl pieza)
+	// Al borrar una pieza, se deben borrar las configuraciones que usan dicha pieza
+
+	public boolean actualizarPieza(PiezaImpl pieza);
+ */

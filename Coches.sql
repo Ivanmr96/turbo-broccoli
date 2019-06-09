@@ -12,6 +12,9 @@ CREATE TABLE Cuentas
 	CONSTRAINT PK_Cuentas PRIMARY KEY (NombreUsuario)
 )
 
+ALTER TABLE Cuentas
+ALTER COLUMN Contraseña varchar(32)
+
 CREATE TABLE Coches
 (
 	Marca varchar(20) NOT NULL,
