@@ -982,6 +982,7 @@ public class AObjeto
 		double precio = pieza.getPrecio();
 		
 		String insert = "INSERT INTO Piezas "
+						+ "(ID, Nombre, Descripcion, Precio) "
 						+ "VALUES (" + ID + ", '" + nombre + "', '" + descripcion + "', " + precio + ");";
 		try 
 		{
@@ -1018,6 +1019,7 @@ public class AObjeto
 	 */
 	public boolean insertarPiezaMotor(MotorImpl motor) throws SQLServerException
 	{
+		
 		boolean insertado = false;
 		
 		int ID = motor.getID();
@@ -1032,26 +1034,53 @@ public class AObjeto
 		String tipo = motor.getTipo();
 		
 		String insertPieza = "INSERT INTO Piezas "
-							+ "VALUES (" + ID + ", '" + nombre + "', '" + descripcion + "', " + precio + ");";
+							+ "VALUES (" + ID + ", '" + nombre + "', '" + descripcion + "', " + precio + ", 'motor');";
 		
 		String insertMotor = "INSERT INTO Motores "
-							+ "(ID, Traccion, NumeroVelocidades, Autonomia, Potencia, Tipo) "
+							+ "(IDPieza, Traccion, NumeroVelocidades, Autonomia, Potencia, Tipo) "
 							+ "VALUES (" + ID + ", '" + traccion + "', " + numeroVelocidades + ", " + autonomia + ", " + potencia + ", '" + tipo + "');";
 		try 
 		{
 			Statement statement = conexion.createStatement();
 			
-			int filasAfectadas = statement.executeUpdate(insert);
+			statement.execute("BEGIN TRAN");
 			
-			if(filasAfectadas > 0)
+			int filasAfectadas = statement.executeUpdate(insertPieza);
+			
+			filasAfectadas += statement.executeUpdate(insertMotor);
+			
+			System.out.println("QUE?");
+			
+			System.out.println(filasAfectadas);
+			
+			if(filasAfectadas == 2)
+			{
 				insertado = true;
+				statement.execute("COMMIT");
+			}
 		} 
 		catch (SQLServerException e)
 		{
+			Statement statement;
+			try {
+				statement = conexion.createStatement();
+				
+				statement.execute("ROLLBACK");
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
 			throw e;
 		}
 		catch (SQLException e) 
 		{
+			Statement statement;
+			try {
+				statement = conexion.createStatement();
+				
+				statement.execute("ROLLBACK");
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
 			e.printStackTrace();
 		}
 		
@@ -1413,9 +1442,28 @@ public class AObjeto
 		
 		//System.out.println(conf.getFecha().getTime());
 		
-		PiezaImpl pz = new LlantasImpl(3, "llantas", "de algo", 17, 13);
+		PiezaImpl pz = new LlantasImpl(6, "llantas", "de algo", 17, 13);
 		
-		System.out.println(pz.getClass().getSimpleName());
+		try {
+			aObj.insertarPieza(pz);
+		} catch (SQLServerException e) {
+			System.out.println("Pieza ya exitente en la base de datos, no se insertará.");
+		}
+		
+		MotorImpl motor = new MotorImpl(10, "Motor", "Un motor", 2300, 'T', 6, 300, 160, "D");
+		
+		try 
+		{
+			System.out.println(aObj.insertarPiezaMotor(motor));
+		} catch (SQLServerException e) 
+		{
+			if(e.getErrorCode() == 2627)
+			{
+				System.out.println("Pieza ya existente en la base de datos, no se insertará.");
+			}
+			else
+				e.printStackTrace();
+		}
 	}
 	
 }
