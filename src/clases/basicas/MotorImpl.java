@@ -28,6 +28,7 @@ public class MotorImpl extends PiezaImpl
 	private int numeroVelocidades;
 	private int autonomia;
 	private int potencia;
+	private String tipo;
 	
 	public MotorImpl()
 	{
@@ -36,15 +37,17 @@ public class MotorImpl extends PiezaImpl
 		this.numeroVelocidades = 0;
 		this.autonomia = 0;
 		this.potencia = 0;
+		this.tipo = "";
 	}
 	
-	public MotorImpl(int ID, String nombre, String descripcion, double precio, char traccion, int numeroVelocidades, int autonomia, int potencia)
+	public MotorImpl(int ID, String nombre, String descripcion, double precio, char traccion, int numeroVelocidades, int autonomia, int potencia, String tipo)
 	{
 		super(ID, nombre, descripcion, precio);
 		this.traccion = traccion;
 		this.numeroVelocidades = numeroVelocidades;
 		this.autonomia = autonomia;
 		this.potencia = potencia;
+		this.tipo = tipo;
 	}
 	
 	public MotorImpl(MotorImpl otro)
@@ -54,15 +57,18 @@ public class MotorImpl extends PiezaImpl
 		this.numeroVelocidades = otro.numeroVelocidades;
 		this.autonomia = otro.autonomia;
 		this.potencia = otro.potencia;
+		this.tipo = otro.tipo;
 	}
 	
 	public char getTraccion() { return this.traccion; }
 	public int getNumeroVelocidades() { return this.numeroVelocidades; }
 	public int getAutonomia() { return this.autonomia; }
 	public int getPotencia() { return this.potencia; }
+	public String getTipo() { return this.tipo; }
 	 
 	public void setTraccion(char traccion) { this.traccion = traccion; }
 	public void setNumeroVelocidades(int numeroVelocidades) { this.numeroVelocidades = numeroVelocidades; }
 	public void setAutonomia(int autonomia) { this.autonomia = autonomia; }
 	public void setPotencia(int potencia) {  this.potencia = potencia; }
+	public void setTipo(String tipo) { this.tipo = tipo; }
 }

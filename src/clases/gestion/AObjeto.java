@@ -1005,6 +1005,60 @@ public class AObjeto
 		return insertado;
 	}
 	
+	/* INTERFAZ
+	 * Comentario: Inserta un nuevo motor en la base de datos
+	 * Prototipo: public boolean insertarPiezaMotor(MotorImpl motor) throws SQLServerException
+	 * Entrada: el MotorImpl que se desea insertar en la base de datos
+	 * Precondiciones: No hay
+	 * Salida: Un boolean indicando si se introdujo la cuenta satisfactoriamente o no.
+	 * Postcondiciones: Asociado al nombre devuelve:
+	 * 					- True. Por lo tanto el motor ha sido introducido correctamente en la base de datos
+	 * 					- False. El motor no se ha introducido correctamente en la base de datos.
+	 * 					- Lanza SQLServerException si se intenta introducir un motor que ya existe en la base de datos.
+	 */
+	public boolean insertarPiezaMotor(MotorImpl motor) throws SQLServerException
+	{
+		boolean insertado = false;
+		
+		int ID = motor.getID();
+		String nombre = motor.getNombre();
+		String descripcion = motor.getDescripcion();
+		double precio = motor.getPrecio();
+		
+		char traccion = motor.getTraccion();
+		int numeroVelocidades = motor.getNumeroVelocidades();
+		int autonomia = motor.getAutonomia();
+		int potencia = motor.getPotencia();
+		String tipo = motor.getTipo();
+		
+		String insertPieza = "INSERT INTO Piezas "
+							+ "VALUES (" + ID + ", '" + nombre + "', '" + descripcion + "', " + precio + ");";
+		
+		String insertMotor = "INSERT INTO Motores "
+							+ "(ID, Traccion, NumeroVelocidades, Autonomia, Potencia, Tipo) "
+							+ "VALUES (" + ID + ", '" + traccion + "', " + numeroVelocidades + ", " + autonomia + ", " + potencia + ", '" + tipo + "');";
+		try 
+		{
+			Statement statement = conexion.createStatement();
+			
+			int filasAfectadas = statement.executeUpdate(insert);
+			
+			if(filasAfectadas > 0)
+				insertado = true;
+		} 
+		catch (SQLServerException e)
+		{
+			throw e;
+		}
+		catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
+		
+		
+		return insertado;
+	}
+	
 	public boolean eliminarPieza(PiezaImpl pieza);
 	public boolean actualizarPieza(PiezaImpl pieza);
 	
@@ -1110,7 +1164,7 @@ public class AObjeto
 		{
 			MotorImpl motor = null;
 			
-			String consulta = "SELECT Nombre, Descripcion, Precio, Traccion, NumeroVelocidades, Autonomia, Potencia FROM Motores AS M "
+			String consulta = "SELECT Nombre, Descripcion, Precio, Traccion, NumeroVelocidades, Autonomia, Potencia, Tipo FROM Motores AS M "
 							+ "INNER JOIN Piezas AS Pz ON pz.ID = M.IDPieza "
 							+ "WHERE pz.ID = " + ID;
 			
@@ -1129,8 +1183,9 @@ public class AObjeto
 					int numeroVelocidades = resultado.getInt("NumeroVelocidades");
 					int autonomia = resultado.getInt("Autonomia");
 					int potencia = resultado.getInt("Potencia");
+					String tipo = resultado.getString("Tipo");
 					
-					motor = new MotorImpl(ID, nombre, descripcion, precio, traccion, numeroVelocidades, autonomia, potencia);
+					motor = new MotorImpl(ID, nombre, descripcion, precio, traccion, numeroVelocidades, autonomia, potencia, tipo);
 				}
 			}
 			catch(SQLException e)
