@@ -10,6 +10,7 @@ import com.microsoft.sqlserver.jdbc.SQLServerException;
 import clases.basicas.CocheImpl;
 import clases.basicas.ConfiguracionImpl;
 import clases.basicas.CuentaImpl;
+import clases.basicas.PiezaImpl;
 import clases.basicas.VotacionImpl;
 import utils.Utils;
 import utils.Validaciones;
@@ -261,9 +262,17 @@ public class ConfiguradorCoches
 											
 											configuracionComunidadElegida = validacion.mostrarObjetosYValidarObjetoElegido(configuraciones);
 											
-											if(configuracionComunidadElegida != null)
+											while(configuracionComunidadElegida != null)
 											{
 												//Mostrar estadisticas
+												gestion.cargarPiezasEnConfiguracion(configuracionComunidadElegida);
+												
+												for(PiezaImpl pz:configuracionComunidadElegida.obtenerPiezas())
+												{
+													System.out.println(pz.getNombre());
+												}
+												
+												if(configuracionComunidadElegida.obtenerPiezas().size() < 1) System.out.println("No hay piezas");
 												
 												//Mostrar menu de configuracion de la comunidad elegida
 												opcionMenuConfiguracionComunidadElegida = validacion.mostarMenuConfiguracionComunidadElegida();
@@ -276,6 +285,8 @@ public class ConfiguradorCoches
 													//Insertar configuracion
 													gestion.insertarVotacion(calificacion);
 												}
+												
+												configuracionComunidadElegida = validacion.mostrarObjetosYValidarObjetoElegido(configuraciones);
 											}
 											
 											opcionMenuConfiguracionesComunidad = validacion.mostrarMenuConfiguracionesComunidadYValidarOpcion();
@@ -313,12 +324,29 @@ public class ConfiguradorCoches
 						
 						if(confirmado == 'S')
 							//Registrar cuenta
-							System.out.println(contrasena);
+							//System.out.println(contrasena);
+							try 
+							{
+								if(gestion.insertarCuenta(new CuentaImpl(usuario, contrasena)))
+									System.out.println("Cuenta creada con exito.");
+								else
+									System.out.println("La cuenta no ha podido crearse, intentalo de nuevo.");
+							} 
+							catch (SQLServerException e) 
+							{
+								if(e.getErrorCode() == 2627)
+									System.out.println("Este usuario ya existe, no se creara la cuenta.");
+								else
+									e.printStackTrace();
+							}
 					break;
 			}
 			
 			//Mostrar menu principal y validar opcion
 			opcionMenuPrincipal = validacion.mostrarMenuPrincipalYValidarOpcion();
 		}
+		
+		gestion.cerrarConexion();
+		validacion.cerrarConexion();
 	}
 }

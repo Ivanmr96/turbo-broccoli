@@ -1427,40 +1427,146 @@ public class AObjeto
 	 */
 	public MotorImpl obtenerPiezaMotor(int ID)
 	{
+		MotorImpl motor = null;
+		
+		String consulta = "SELECT Nombre, Descripcion, Precio, Traccion, NumeroVelocidades, Autonomia, Potencia, M.Tipo FROM Motores AS M "
+						+ "INNER JOIN Piezas AS Pz ON pz.ID = M.IDPieza "
+						+ "WHERE pz.ID = " + ID;
+		
+		try
 		{
-			MotorImpl motor = null;
+			Statement statement = conexion.createStatement();
 			
-			String consulta = "SELECT Nombre, Descripcion, Precio, Traccion, NumeroVelocidades, Autonomia, Potencia, Tipo FROM Motores AS M "
-							+ "INNER JOIN Piezas AS Pz ON pz.ID = M.IDPieza "
-							+ "WHERE pz.ID = " + ID;
+			ResultSet resultado = statement.executeQuery(consulta);
 			
-			try
+			if(resultado.next())
 			{
-				Statement statement = conexion.createStatement();
+				String nombre = resultado.getString("Nombre");
+				String descripcion = resultado.getString("Descripcion");
+				double precio = resultado.getDouble("Precio");
+				char traccion = resultado.getString("Traccion").charAt(0);
+				int numeroVelocidades = resultado.getInt("NumeroVelocidades");
+				int autonomia = resultado.getInt("Autonomia");
+				int potencia = resultado.getInt("Potencia");
+				String tipo = resultado.getString("Tipo");
 				
-				ResultSet resultado = statement.executeQuery(consulta);
-				
-				if(resultado.next())
-				{
-					String nombre = resultado.getString("Nombre");
-					String descripcion = resultado.getString("Descripcion");
-					double precio = resultado.getDouble("Precio");
-					char traccion = resultado.getString("Traccion").charAt(0);
-					int numeroVelocidades = resultado.getInt("NumeroVelocidades");
-					int autonomia = resultado.getInt("Autonomia");
-					int potencia = resultado.getInt("Potencia");
-					String tipo = resultado.getString("Tipo");
-					
-					motor = new MotorImpl(ID, nombre, descripcion, precio, traccion, numeroVelocidades, autonomia, potencia, tipo);
-				}
+				motor = new MotorImpl(ID, nombre, descripcion, precio, traccion, numeroVelocidades, autonomia, potencia, tipo);
 			}
-			catch(SQLException e)
-			{
-				e.printStackTrace();
-			}
-			
-			return motor;
 		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+		
+		return motor;
+	}
+	
+	public MotorImpl obtenerPiezaMotor(ConfiguracionImpl configuracion)
+	{
+		MotorImpl motor = null;
+		
+		String consulta = "SELECT pz.ID, Nombre, Descripcion, Precio, Traccion, NumeroVelocidades, Autonomia, Potencia, mot.Tipo FROM Configuraciones AS conf "
+						+ "INNER JOIN PiezasConfiguracionCoche AS pzConf ON pzConf.IDConfiguracion = conf.ID "
+						+ "INNER JOIN Piezas AS pz ON pz.ID = pzConf.IDPieza "
+						+ "INNER JOIN Motores AS mot ON mot.IDPieza = pz.ID "
+						+ "WHERE conf.ID = '" + configuracion.getID() + "' AND pz.Tipo = 'motor'";
+		
+		try
+		{
+			Statement statement = conexion.createStatement();
+			
+			ResultSet resultado = statement.executeQuery(consulta);
+			
+			if(resultado.next())
+			{
+				int ID = resultado.getInt("ID");
+				String nombre = resultado.getString("Nombre");
+				String descripcion = resultado.getString("Descripcion");
+				double precio = resultado.getDouble("Precio");
+				char traccion = resultado.getString("Traccion").charAt(0);
+				int numeroVelocidades = resultado.getInt("NumeroVelocidades");
+				int autonomia = resultado.getInt("Autonomia");
+				int potencia = resultado.getInt("Potencia");
+				String tipo = resultado.getString("Tipo");
+				
+				motor = new MotorImpl(ID, nombre, descripcion, precio, traccion, numeroVelocidades, autonomia, potencia, tipo);
+			}
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+		
+		return motor;
+	}
+	
+	public LlantasImpl obtenerPiezaLlantas(ConfiguracionImpl configuracion)
+	{
+		LlantasImpl llantas = null;
+		
+		String consulta = "SELECT ID, Nombre, Descripcion, Precio, Pulgadas FROM PiezasConfiguracionCoche AS pzasConfi "
+						+ "INNER JOIN Piezas AS pzas ON pzas.ID = pzasConfi.IDPieza "
+						+ "INNER JOIN Llantas AS ll ON ll.IDPieza = pzas.ID "
+						+ "WHERE pzasConfi.IDConfiguracion = '" + configuracion.getID() + "'";
+		
+		try
+		{
+			Statement statement = conexion.createStatement();
+			
+			ResultSet resultado = statement.executeQuery(consulta);
+			
+			if(resultado.next())
+			{
+				int ID = resultado.getInt("ID");
+				String nombre = resultado.getString("Nombre");
+				String descripcion = resultado.getString("Descripcion");
+				double precio = resultado.getDouble("Precio");
+				int pulgadas = resultado.getInt("Pulgadas");
+				
+				llantas = new LlantasImpl(ID, nombre, descripcion, precio, pulgadas);
+			}
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+		
+		return llantas;
+	}
+	
+	public PinturaImpl obtenerPiezaPintura(ConfiguracionImpl configuracion)
+	{
+		PinturaImpl pintura = null;
+		
+		String consulta = "SELECT ID, Nombre, Descripcion, Precio, Color, Acabado FROM PiezasConfiguracionCoche AS pzasConfi " 
+						+ "INNER JOIN Piezas AS pzas ON pzas.ID = pzasConfi.IDPieza " 
+						+ "INNER JOIN Pinturas AS pint ON pint.IDPieza = pzas.ID "
+						+ "WHERE pzasConfi.IDConfiguracion = '" + configuracion.getID() + "'";
+		
+		try
+		{
+			Statement statement = conexion.createStatement();
+			
+			ResultSet resultado = statement.executeQuery(consulta);
+			
+			if(resultado.next())
+			{
+				int ID = resultado.getInt("ID");
+				String nombre = resultado.getString("Nombre");
+				String descripcion = resultado.getString("Descripcion");
+				double precio = resultado.getDouble("Precio");
+				String color = resultado.getString("Color");
+				String acabado = resultado.getString("Acabado");
+				
+				pintura = new PinturaImpl(ID, nombre, descripcion, precio, color, acabado);
+			}
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+		
+		return pintura;
 	}
 	
 	public boolean insertarVotacion(VotacionImpl votacion);
