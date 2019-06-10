@@ -1,5 +1,6 @@
 package clases.gestion;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -8,8 +9,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.Scanner;
-
-import javax.sound.midi.Soundbank;
 
 import com.microsoft.sqlserver.jdbc.SQLServerException;
 
@@ -114,6 +113,56 @@ public class AObjeto
 		}
 		
 		return coche;
+	}
+	
+	public ArrayList<String> obtenerMarcas()
+	{
+		ArrayList<String> marcas = new ArrayList<String>();
+		
+		String consulta = "SELECT DISTINCT Marca FROM Coches";
+		
+		try
+		{
+			Statement statement = conexion.createStatement();
+			
+			ResultSet resultado = statement.executeQuery(consulta);
+			
+			while(resultado.next())
+			{
+				marcas.add(resultado.getString("Marca"));
+			}
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+		
+		return marcas;
+	}
+	
+	public ArrayList<String> obtenerModelos(String marca)
+	{
+		ArrayList<String> modelos = new ArrayList<String>();
+		
+		String consulta = "SELECT Modelo FROM Coches WHERE Marca = '" + marca + "'";
+		
+		try
+		{
+			Statement statement = conexion.createStatement();
+			
+			ResultSet resultado = statement.executeQuery(consulta);
+			
+			while(resultado.next())
+			{
+				modelos.add(resultado.getString("Modelo"));
+			}
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+		
+		return modelos;
 	}
 	
 	/* INTERFAZ
@@ -368,9 +417,77 @@ public class AObjeto
 	}
 	
 
-	public ArrayList<ConfiguracionImpl> obtenerConfiguraciones();
+	public ArrayList<ConfiguracionImpl> obtenerConfiguraciones()
+	{
+		ArrayList<ConfiguracionImpl> configuraciones = new ArrayList<ConfiguracionImpl>();
+		Utils utils = new Utils();
+		ConfiguracionImpl configuracion;
+		String ID;
+		GregorianCalendar fecha;
+		
+		String consulta = "SELECT ID, Fecha FROM Configuraciones";
+		
+		try
+		{
+			Statement statement = conexion.createStatement();
+			
+			ResultSet resultado = statement.executeQuery(consulta);
+			
+			while(resultado.next())
+			{
+				ID = resultado.getString("ID");
+				fecha = utils.dateTimeToGregorianCalendar(resultado.getString("Fecha"));
+				
+				configuracion = new ConfiguracionImpl(ID, fecha);
+				
+				configuraciones.add(configuracion);
+			}
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+		
+		return configuraciones;
+	}
+	
 	public ArrayList<ConfiguracionImpl> obtenerConfiguraciones(String marca);
-	public ArrayList<ConfiguracionImpl> obtenerConfiguraciones(String marca, String modelo);
+	
+	public ArrayList<ConfiguracionImpl> obtenerConfiguraciones(CocheImpl coche)
+	{
+		ArrayList<ConfiguracionImpl> configuraciones = new ArrayList<ConfiguracionImpl>();
+		Utils utils = new Utils();
+		ConfiguracionImpl configuracion;
+		String ID;
+		GregorianCalendar fecha;
+		
+		String consulta = "SELECT ID, Fecha FROM Configuraciones "
+						+ "WHERE MarcaCoche = '" + coche.getMarca() + "' AND ModeloCoche = '" + coche.getModelo() + "'";
+		
+		try
+		{
+			Statement statement = conexion.createStatement();
+			
+			ResultSet resultado = statement.executeQuery(consulta);
+			
+			while(resultado.next())
+			{
+				ID = resultado.getString("ID");
+				fecha = utils.dateTimeToGregorianCalendar(resultado.getString("Fecha"));
+				configuracion = new ConfiguracionImpl(ID, fecha);
+				
+				configuraciones.add(configuracion);
+			}
+			
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+		
+		return configuraciones;
+	}
+	
 	public ArrayList<ConfiguracionImpl> obtenerConfiguraciones(double precioMinimo, double precioMaximo);
 	public ArrayList<ConfiguracionImpl> obtenerConfiguraciones(GregorianCalendar fecha);
 	
@@ -524,6 +641,59 @@ public class AObjeto
 	}
 	
 	/* INTERFAZ
+	 * Comentario: Comprueba en la base de datos si una configuracion existe
+	 * Prototipo: public boolean existeConfiguracion(ConfiguracionImpl configuracion)
+	 */
+	public boolean existeConfiguracion(ConfiguracionImpl configuracion)
+	{
+		boolean existe = false;
+		
+		String execute = "SELECT dbo.ExisteConfiguracion('" + configuracion.getID() + "') AS Existe";
+		
+		try
+		{	
+			CallableStatement stmnt = conexion.prepareCall(execute);
+			
+			ResultSet resultado = stmnt.executeQuery();
+			
+			if(resultado.next())
+			{
+				existe = resultado.getBoolean("Existe");
+			}
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+		
+		return existe;
+	}
+	
+	public boolean existeUsuario(String usuario)
+	{
+		boolean existe = false;
+		
+		String consulta = "SELECT NombreUsuario FROM Cuentas WHERE NombreUsuario = '" + usuario + "'";
+		
+		try
+		{
+			Statement statement = conexion.createStatement();
+			
+			ResultSet resultado = statement.executeQuery(consulta);
+			
+			if(resultado.next())
+				existe = true;
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+		
+		
+		return existe;
+	}
+	
+	/* INTERFAZ
 	 * Comentario: Obtiene las votaciones de una configuracion. Busca en la base de datos
 	 * Prototipo: public ArrayList<VotacionImpl> obtenerVotaciones(ConfiguracionImpl configuracion)
 	 * Entrada: Una ConfiguracionImpl de la que se desean obtener sus votaciones.
@@ -532,7 +702,7 @@ public class AObjeto
 	 * Postcondiciones: Asociado al nombre devuelve un ArrayList<VotacionImpl>.
 	 * 					- Si la configuración existe en la base de datos, devuelve una lista con las votaciones realizadas a dicha configuracion.
 	 * 						La lista puede estar vacía, esto significa que la configuración no tiene ninguna votación.
-	 * 					- Si la configuración no existe en la base de datos, el ArrayList<VotacionImpl> es null.
+	 * 					- Si la configuración no existe en la base de datos, el ArrayList<VotacionImpl> estará vacio.
 	 */
 	public ArrayList<VotacionImpl> obtenerVotaciones(ConfiguracionImpl configuracion)
 	{
@@ -722,6 +892,7 @@ public class AObjeto
 	}
 	
 	public boolean eliminarConfiguracion(ConfiguracionImpl configuracion);
+	
 	public boolean actualizarConfiguracion(ConfiguracionImpl configuracion);
 	
 	//-------------------------------------------------------
@@ -762,6 +933,40 @@ public class AObjeto
 		}
 		
 		return cuenta;
+	}
+	
+	public ArrayList<CocheImpl> obtenerCoches()
+	{
+		ArrayList<CocheImpl> coches = new ArrayList<CocheImpl>();
+		CocheImpl coche;
+		String marca, modelo;
+		double precioBase;
+		
+		String consulta = "SELECT Marca, Modelo, PrecioBase FROM Coches";
+		
+		try
+		{
+			Statement statement = conexion.createStatement();
+			
+			ResultSet resultado = statement.executeQuery(consulta);
+			
+			while(resultado.next())
+			{
+				marca = resultado.getString("Marca");
+				modelo = resultado.getString("Modelo");
+				precioBase = resultado.getDouble("PrecioBase");
+				
+				coche = new CocheImpl(marca, modelo, precioBase);
+				
+				coches.add(coche);
+			}
+		}
+		catch(SQLException e) 
+		{
+			e.printStackTrace();
+		}
+		
+		return coches;
 	}
 	
 	public ArrayList<ConfiguracionImpl> obtenerConfiguraciones(CuentaImpl cuenta)
@@ -1391,6 +1596,8 @@ public class AObjeto
 			System.out.println("Contrasena incorrecta.");
 		}*/
 		
+		/*
+		
 		ConfiguracionImpl conf = aObj.obtenerConfiguracion("2B4B87BD-E79C-440F-A429-8D15F2F476FE");
 		
 		ArrayList<VotacionImpl> votaciones = aObj.obtenerVotaciones(conf);º
@@ -1499,7 +1706,13 @@ public class AObjeto
 				e.printStackTrace();
 		}
 		
-		System.out.println(aObj.eliminarCoche(aObj.obtenerCoche("AUDI", "A1")));
+		System.out.println(aObj.eliminarCoche(aObj.obtenerCoche("AUDI", "A1"))); */
+		
+		ConfiguracionImpl configuracion = aObj.obtenerConfiguracion("C59F23B1-BB9A-4C0B-B8C0-0854D291157F");
+		
+		System.out.println(aObj.existeConfiguracion(configuracion));
+		
+		System.out.println(aObj.existeUsuario("testuser"));
 	}
 	
 }

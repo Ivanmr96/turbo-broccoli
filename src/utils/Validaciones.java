@@ -25,12 +25,34 @@ public class Validaciones
 	public int mostrarMenuPrincipalYValidarOpcion()
 	{
 		int opcion;
+		Scanner teclado = new Scanner(System.in);
 		
-		opcion = 0;
+		System.out.println("MENU PRINCIPAL");
+		System.out.println("1) Iniciar Sesion");
+		System.out.println("2) Registrarse");
+		System.out.println("0) Salir");
+		
+		do
+		{
+			
+			System.out.print("Elige una opcion: ");
+			
+			opcion = teclado.nextInt();
+			
+		}while(opcion < 0 || opcion > 2);
 		
 		return opcion;
 	}
 	
+	/* INTERFAZ
+	 * Comentario: Realiza el inicio de sesion comprobando que existe en la base de datos
+	 * Prototipo: public CuentaImpl iniciarSesion()
+	 * Entrada: No hay
+	 * Precondiciones: No hay
+	 * Salida: Una CuentaImpl con la cuenta que ha iniciado sesion
+	 * Postcondiciones: Asociado al nombre devuelve una CuentaImpl con la cuenta que ha iniciado sesion
+	 * 					Si el usuario no inicio sesion, la CuentaImpl es null.
+	 */
 	public CuentaImpl iniciarSesion()
 	{
 		CuentaImpl cuenta;
@@ -52,14 +74,13 @@ public class Validaciones
 		do
 		{
 			System.out.print("Introduce contrasena: ");
-			contrasena = utils.obtenerMD5(teclado.nextLine());
+			contrasena = teclado.nextLine();
+			contrasena = utils.obtenerMD5(contrasena);
 			
 			if(contrasena.equals(cuenta.getContrasena()))
 				contrasenaCorrecta = true;
 			
 		}while(!contrasenaCorrecta);
-		
-		cuenta = new CuentaImpl();
 		
 		return cuenta;
 	}
@@ -67,8 +88,21 @@ public class Validaciones
 	public int mostrarMenuSesionYValidarOpcion()
 	{
 		int opcion;
+		Scanner teclado = new Scanner(System.in);
 		
-		opcion = 0;
+		System.out.println("MENU SESION");
+		System.out.println("1) Nueva configuracion");
+		System.out.println("2) Ver configuraciones propias");
+		System.out.println("3) Ver configuraciones de la comunidad");
+		System.out.println("4) Editar cuenta");
+		System.out.println("0) Cerrar sesion");
+		
+		do
+		{
+			System.out.print("Elige una opcion: ");
+			opcion = teclado.nextInt();
+			
+		}while(opcion < 0 || opcion > 4);
 		
 		return opcion;
 	}
@@ -76,34 +110,57 @@ public class Validaciones
 	public String validarNuevoNombreUsuario()
 	{
 		String usuario;
+		Scanner teclado = new Scanner(System.in);
 		
-		usuario = "";
+		do
+		{
+			System.out.print("Introduce nuevo nombre de usuario: ");
+			
+			usuario = teclado.nextLine();
+			
+		}while(gestion.existeUsuario(usuario));
 		
 		return usuario;
 	}
 	
 	public String contrasena()
 	{
+		Scanner teclado = new Scanner(System.in);
+		
 		String contrasena = "";
 		Utils utils = new Utils();
+		
+		System.out.print("Introduce contrasena: ");
+		contrasena = teclado.nextLine();
 		
 		contrasena = utils.obtenerMD5(contrasena);
 		
 		return contrasena;
 	}
 	
-	public CocheImpl mostrarCochesDisponiblesYValidarOpcionCocheElegido()
+	public <T> T mostrarObjetosYValidarObjetoElegido(ArrayList<T> lista)
 	{
-		CocheImpl cocheElegido = null;
+		T objeto = null;
+		Scanner teclado = new Scanner(System.in);
+		int opcion;
 		
-		return cocheElegido;
-	}
-	
-	public ConfiguracionImpl mostrarConfiguracionesPropiasYValidarOpcionElegida(CuentaImpl cuentaSesion)
-	{
-		ConfiguracionImpl configuracionElegida = null;
+		System.out.println("0) Volver atras");
 		
-		return configuracionElegida;
+		for(int i = 0 ; i < lista.size() ; i++)
+		{
+			System.out.println((i+1) + ") " + lista.get(i).toString());
+		}
+		
+		do
+		{
+			System.out.print("Elige una opcion: ");
+			opcion = teclado.nextInt();
+		}while(opcion < 0 || opcion > (lista.size()+1));
+		
+		if(opcion > 0)
+			objeto = lista.get(opcion-1);
+		
+		return objeto;
 	}
 	
 	public int mostrarSubMenuConfiguracionElegidaYValidarOpcion()
@@ -117,9 +174,23 @@ public class Validaciones
 	
 	public int mostrarMenuConfiguracionesComunidadYValidarOpcion()
 	{
-		int opcion;
+		int opcion;		
+		Scanner teclado = new Scanner(System.in);
 		
-		opcion = 0;
+		System.out.println("1) Todas las configuraciones");
+		System.out.println("2) Buscar por marca");
+		System.out.println("3) Buscar por marca y modelo");
+		System.out.println("4) Buscar por usuario");
+		System.out.println("5) Buscar por rango de precio");
+		System.out.println("6) Buscar por fecha");
+		System.out.println("0) Volver atras");
+		
+		do
+		{
+			System.out.print("Elige una opcion: ");
+			opcion = teclado.nextInt();
+			
+		}while(opcion < 0 || opcion > 6);
 		
 		return opcion;
 	}
@@ -158,12 +229,21 @@ public class Validaciones
 	{
 		String modelo = null;
 		
+		gestion.obtenerModelos(marca);
+		
 		return modelo;
 	}
 	
 	public CuentaImpl validarUsuario()
 	{
 		CuentaImpl cuenta = null;
+		Scanner teclado = new Scanner(System.in);
+		
+		do
+		{
+			System.out.print("Nombre de usuario: ");
+			cuenta = gestion.obtenerCuenta(teclado.nextLine());
+		}while(cuenta == null);
 		
 		return cuenta;
 	}
@@ -190,7 +270,42 @@ public class Validaciones
 				  + "database=Coches;"
 				  + "user=usuarioCoches;"
 				  + "password=123;");
+		
+		AObjeto gestion = new AObjeto("jdbc:sqlserver://localhost;"
+				  + "database=Coches;"
+				  + "user=usuarioCoches;"
+				  + "password=123;");
+		
 		val.abrirConexion();
-		val.iniciarSesion();
+		
+		gestion.abrirConexion();
+		
+		CuentaImpl cuenta = gestion.obtenerCuenta("testuser");
+		
+		System.out.println(cuenta.getNombreUsuario());
+		
+		ArrayList<ConfiguracionImpl> lista = gestion.obtenerConfiguraciones(cuenta);
+		
+		for(ConfiguracionImpl confi:lista)
+		{
+			gestion.cargarRelacionesEnConfiguracion(confi);
+		}
+		
+		//val.mostrarObjetosYValidarObjetoElegido(lista);
+		
+		//CocheImpl cochesito = val.mostrarObjetosYValidarObjetoElegido(gestion.obtenerCochesValidos(gestion.obtenerPieza(2)));
+		
+		//System.out.println(cochesito.getModelo());
+		
+		lista = gestion.obtenerConfiguraciones(gestion.obtenerCoche("AUDI", "A1"));
+		
+		for(ConfiguracionImpl confi:lista)
+		{
+			gestion.cargarRelacionesEnConfiguracion(confi);
+		}
+		
+		ConfiguracionImpl opcion = val.mostrarObjetosYValidarObjetoElegido(lista);
+		
+		System.out.println(opcion.getFecha().getTime());
 	}
 }

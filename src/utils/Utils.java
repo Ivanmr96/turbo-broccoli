@@ -86,4 +86,10 @@ public class Utils
 		
 		return md5;
 	}
+	
+	public static void main(String[] args)
+	{
+		Utils utils = new Utils();
+		System.out.println(utils.obtenerMD5("123"));
+	}
 }

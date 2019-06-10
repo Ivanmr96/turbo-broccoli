@@ -55,6 +55,7 @@ public class CocheImpl implements Coche
 		this.marca = marca;
 		this.modelo = modelo;
 		this.precioBase = precioBase;
+		this.piezasValidas = null;
 	}
 	
 	public CocheImpl(CocheImpl otro)
@@ -76,4 +77,10 @@ public class CocheImpl implements Coche
 	public ArrayList<PiezaImpl> obtenerPiezasValidas() { return this.piezasValidas; }
 	
 	public void establecerPiezasValidas(ArrayList<PiezaImpl> piezasValidas) { this.piezasValidas = piezasValidas; }
+	
+	@Override
+	public String toString()
+	{
+		return marca + " " + modelo + " - " + precioBase;
+	}
 }

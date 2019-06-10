@@ -3,6 +3,9 @@ package clases.gestion;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.Scanner;
+import java.util.UUID;
+
+import com.microsoft.sqlserver.jdbc.SQLServerException;
 
 import clases.basicas.CocheImpl;
 import clases.basicas.ConfiguracionImpl;
@@ -91,7 +94,7 @@ public class ConfiguradorCoches
 		Scanner teclado = new Scanner(System.in);
 		Validaciones validacion = new Validaciones(URLConexion);
 		int opcionMenuPrincipal, opcionSesion, opcionSubMenuConfiguracionElegida, opcionMenuConfiguracionesComunidad, opcionMenuConfiguracionComunidadElegida;
-		CocheImpl opcionCoche;
+		CocheImpl opcionCoche, coche;
 		CuentaImpl cuentaSesion, cuentaBuscar;
 		char confirmado;
 		String usuario, contrasena, marca, modelo;
@@ -102,6 +105,8 @@ public class ConfiguradorCoches
 		double precioMinimo, precioMaximo;
 		GregorianCalendar fechaBuscar;
 		
+		gestion.abrirConexion();
+		validacion.abrirConexion();
 		
 		//Mostrar menu principal y validar opcion
 		opcionMenuPrincipal = validacion.mostrarMenuPrincipalYValidarOpcion();
@@ -125,22 +130,43 @@ public class ConfiguradorCoches
 								case 1: 
 									//Nueva configuracion
 										//Mostrar coches disponibles y validar opcion de coche elegido
-										opcionCoche = validacion.mostrarCochesDisponiblesYValidarOpcionCocheElegido();
+										opcionCoche = validacion.mostrarObjetosYValidarObjetoElegido(gestion.obtenerCoches());
 										
-										configuracionNueva = new ConfiguracionImpl(utils.toString(), new GregorianCalendar());		//Instancia de nueva configuracion
+										configuracionNueva = new ConfiguracionImpl(UUID.randomUUID().toString(), new GregorianCalendar());		//Instancia de nueva configuracion
 										configuracionNueva.establecerCoche(opcionCoche);											//Establecer la relacion del coche elegido con la nueva configuracion creada.
-										
+										configuracionNueva.establecerCuenta(cuentaSesion);
 										
 										if(opcionCoche != null)
 										{
+											try 
+											{
+												gestion.insertarConfiguracion(configuracionNueva);
+											} 
+											catch (SQLServerException e) 
+											{
+												if(e.getErrorCode() == 2627)
+												{
+													System.out.println("Esta configuracion ya existe");
+												}
+												e.printStackTrace();
+											}
+											
 											//Modulo Editar configuracion
+											System.out.println("Editar configuracion en construccion");
 										}
 									break;
 									
 								case 2: 
 									//Ver configuraciones propias
 										//Mostrar configuraciones propias y validar opcion de configuracion elegida
-										opcionConfiguracionPropia = validacion.mostrarConfiguracionesPropiasYValidarOpcionElegida(cuentaSesion);
+										configuraciones = gestion.obtenerConfiguraciones(cuentaSesion);
+										
+										for(ConfiguracionImpl configuracion:configuraciones)
+										{
+											gestion.cargarRelacionesEnConfiguracion(configuracion);
+										}
+										
+										opcionConfiguracionPropia = validacion.mostrarObjetosYValidarObjetoElegido(configuraciones);
 									
 										while(opcionConfiguracionPropia != null)
 										{
@@ -152,7 +178,11 @@ public class ConfiguradorCoches
 											while(opcionSubMenuConfiguracionElegida != 0)
 											{
 												//Modulo editar configuracion
+												
+												opcionSubMenuConfiguracionElegida = validacion.mostrarSubMenuConfiguracionElegidaYValidarOpcion();
 											}
+											
+											opcionConfiguracionPropia = validacion.mostrarObjetosYValidarObjetoElegido(configuraciones);
 										}
 										
 									break;
@@ -183,10 +213,15 @@ public class ConfiguradorCoches
 													
 												case 3:
 													//Buscar por marca y modelo
-													marca = validacion.mostrarListaMarcasYValidarMarcaElegida();
-													modelo = validacion.mostrarListaModelosYValidarModeloElegido(marca);
+
+													marca = validacion.mostrarObjetosYValidarObjetoElegido(gestion.obtenerMarcas());
 													
-													configuraciones = gestion.obtenerConfiguraciones(marca, modelo);
+													//modelo = validacion.mostrarListaModelosYValidarModeloElegido(marca);
+													modelo = validacion.mostrarObjetosYValidarObjetoElegido(gestion.obtenerModelos(marca));
+													
+													coche = gestion.obtenerCoche(marca, modelo);
+													
+													configuraciones = gestion.obtenerConfiguraciones(coche);
 													
 													break;
 													
@@ -200,10 +235,10 @@ public class ConfiguradorCoches
 													
 												case 5:
 													//Buscar por rango de precio
-													precioMinimo = validacion.validarPrecio();
-													precioMaximo = validacion.validarPrecio();
+													//precioMinimo = validacion.validarPrecio();
+													//precioMaximo = validacion.validarPrecio();
 													
-													configuraciones = gestion.obtenerConfiguraciones(precioMinimo, precioMaximo);
+													configuraciones = gestion.obtenerConfiguraciones();
 													
 													break;
 													
@@ -211,13 +246,20 @@ public class ConfiguradorCoches
 													//Buscar por fecha
 													fechaBuscar = validacion.leerYValidarFecha();
 													
-													configuraciones = gestion.obtenerConfiguraciones(fechaBuscar);
+													configuraciones = gestion.obtenerConfiguraciones();
 													
 													break;
 													
 											}
 											
-											configuracionComunidadElegida = validacion.mostrarConfiguracionesYValidar(configuraciones);
+											//configuracionComunidadElegida = validacion.mostrarConfiguracionesYValidar(configuraciones);
+											
+											for(ConfiguracionImpl configuracion:configuraciones)
+											{
+												gestion.cargarRelacionesEnConfiguracion(configuracion);
+											}
+											
+											configuracionComunidadElegida = validacion.mostrarObjetosYValidarObjetoElegido(configuraciones);
 											
 											if(configuracionComunidadElegida != null)
 											{
@@ -235,6 +277,8 @@ public class ConfiguradorCoches
 													gestion.insertarVotacion(calificacion);
 												}
 											}
+											
+											opcionMenuConfiguracionesComunidad = validacion.mostrarMenuConfiguracionesComunidadYValidarOpcion();
 										}
 									break;
 									
@@ -269,6 +313,7 @@ public class ConfiguradorCoches
 						
 						if(confirmado == 'S')
 							//Registrar cuenta
+							System.out.println(contrasena);
 					break;
 			}
 			

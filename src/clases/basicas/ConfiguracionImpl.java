@@ -86,5 +86,15 @@ public class ConfiguracionImpl
 	public void establecerPiezas(ArrayList<PiezaImpl> piezas) { this.piezas = piezas; }
 	public void establecerVotaciones(ArrayList<VotacionImpl> votaciones ) { this.votaciones = votaciones; }
 	
+	@Override
+	public String toString()
+	{
+		return this.ID + ", " + 
+			   this.fecha.getTime() + ", " + 
+			   coche.getMarca() + " " + 
+			   coche.getModelo() + ", " + 
+			   cuenta.getNombreUsuario();
+	}
+	
 	//TODO Alguna funcion que pueda ser útil, como calcularPrecioTotal(), o calcularCalificacionMedia()
 }

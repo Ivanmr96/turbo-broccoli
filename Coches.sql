@@ -4,6 +4,15 @@ DATABASE Coches
 
 USE Coches
 
+IF EXISTS (SELECT * FROM Votaciones)
+BEGIN
+	print 'si'
+END
+ELSE
+BEGIN
+	print 'no'
+END
+
 CREATE TABLE Cuentas
 (
 	NombreUsuario varchar(25) NOT NULL,
@@ -67,8 +76,8 @@ CREATE TABLE Votaciones
 	Usuario varchar(25) NOT NULL,
 
 	CONSTRAINT PK_Votaciones PRIMARY KEY (ID),
-	CONSTRAINT FK_Votaciones_IDConfiguracion FOREIGN KEY (IDConfiguracion) REFERENCES Configuraciones(ID) ON DELETE CASCADE ON UPDATE CASCADE,
-	CONSTRAINT FK_Votaciones_Usuario FOREIGN KEY (Usuario) REFERENCES Cuentas(NombreUsuario) ON DELETE NO ACTION ON UPDATE CASCADE -- Se deberá borrar la cuenta con un procedimiento
+	CONSTRAINT FK_Votaciones_IDConfiguracion FOREIGN KEY (IDConfiguracion) REFERENCES Configuraciones(ID) ON DELETE NO ACTION ON UPDATE CASCADE,
+	CONSTRAINT FK_Votaciones_Usuario FOREIGN KEY (Usuario) REFERENCES Cuentas(NombreUsuario) ON DELETE NO ACTION ON UPDATE NO ACTION -- Se deberá borrar la cuenta con un procedimiento
 )
 
 CREATE TABLE Motores

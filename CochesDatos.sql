@@ -37,6 +37,10 @@ BEGIN TRAN
     (4,N'AUDI',N'A1'),
 	(5,N'AUDI',N'A1');
 
+	SELECT * FROM Votaciones
+
+	INSERT INTO Votaciones VALUES (NEWID(), 6, CURRENT_TIMESTAMP, ( SELECT ID FROM Configuraciones WHERE Usuario = 'testuser' ), 'testuser');
+
 --COMMIT
 ROLLBACK
 
