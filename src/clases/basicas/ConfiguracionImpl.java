@@ -48,9 +48,9 @@ public class ConfiguracionImpl
 	private ArrayList<PiezaImpl> piezas;
 	private ArrayList<VotacionImpl> votaciones;
 	
-	//private MotorImpl motor;
-	//private LlantasImpl llantas;
-	//private PinturaImpl pintura;
+	private MotorImpl motor;
+	private LlantasImpl llantas;
+	private PinturaImpl pintura;
 	
 	//TODO El motor, las llantas y la pintura deben ser un atributo de la clase.
 	
@@ -88,56 +88,18 @@ public class ConfiguracionImpl
 	public CuentaImpl obtenerCuenta() { return this.cuenta; }
 	public ArrayList<PiezaImpl> obtenerPiezas() { return this.piezas; }
 	public ArrayList<VotacionImpl> obtenerVotaciones() { return this.votaciones; }
+	public MotorImpl obtenerMotor() { return this.motor; }
+	public LlantasImpl obtenerLlantas() { return this.llantas; }
+	public PinturaImpl obtenerPintura() { return pintura; }
 	
 	public void establecerCoche(CocheImpl coche) { this.coche = coche; }
 	public void establecerCuenta(CuentaImpl cuenta) { this.cuenta = cuenta; }
 	public void establecerPiezas(ArrayList<PiezaImpl> piezas) { this.piezas = piezas; }
 	public void establecerVotaciones(ArrayList<VotacionImpl> votaciones ) { this.votaciones = votaciones; }
+	public void establecerMotor(MotorImpl motor) { this.motor = motor; }
+	public void establecerLlantas(LlantasImpl llantas) { this.llantas = llantas; }
+	public void establecerPintura(PinturaImpl pintura) { this.pintura = pintura; }
 	
-	public MotorImpl obtenerMotor()
-	{
-		MotorImpl motor = null;
-		
-		for(PiezaImpl pieza:this.piezas)
-		{
-			if(pieza instanceof MotorImpl)
-				motor = (MotorImpl)pieza;
-		}
-		
-		return motor;
-		
-		//return this.motor;
-	}
-	
-	public LlantasImpl obtenerLlantas()
-	{
-		LlantasImpl llantas = null;
-		
-		for(PiezaImpl pieza:this.piezas)
-		{
-			if(pieza instanceof LlantasImpl)
-				llantas = (LlantasImpl)pieza;
-		}
-		
-		return llantas;
-		
-		//return this.llantas;
-	}
-	
-	public PinturaImpl obtenerPintura()
-	{
-		PinturaImpl pintura = null;
-		
-		for(PiezaImpl pieza:this.piezas) 
-		{
-			if(pieza instanceof PinturaImpl)
-				pintura = (PinturaImpl)pieza;
-		}
-		
-		return pintura;
-		
-		//return pintura;
-	}
 	
 	public double obtenerPrecioTotal()
 	{

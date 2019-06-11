@@ -711,9 +711,53 @@ public class AObjeto
 		return piezas;
 	}
 	
-	//public MotorImpl obtenerMotorConfiguracion(ConfiguracionImpl configuracion);
-	//public MotorImpl obtenerLlantasConfiguracion(ConfiguracionImpl configuracion);
-	//public MotorImpl obtenerPinturaConfiguracion(ConfiguracionImpl configuracion);
+	/* INTERFAZ
+	 * Comentario: Obtiene la lista de las piezas extra de una configuracion. Busca en la base de datos
+	 * Prototipo: public ArrayList<PiezaImpl> obtenerPiezasExtra(ConfiguracionImpl configuracion)
+	 * Entrada: Una ConfiguracionImpl de la que se desea obtener la lista de sus piezas extra
+	 * Precondiciones: La conexion tiene que estar abierta
+	 * Salida: Un ArrayList de PiezaImpl con la lista de las piezas extra la configuracion dada.
+	 * Postcondiciones: Asociado al nombe devuelve un ArrayList<PiezaImpl>.
+	 * 					- Si la configuracion existe en la base de datos, la lista tendrá las piezas extra de dicha configuracion, es posible que la lista esté vacía.
+	 * 						Significa que la configuración no tiene ninguna pieza extra.
+	 * 					- Si la configuración no existe en la base de datos, el ArrayList<PiezaImpl> será null.
+	 */
+	public ArrayList<PiezaImpl> obtenerPiezasExtra(ConfiguracionImpl configuracion)
+	{
+		ArrayList<PiezaImpl> piezasExtra = null;
+		
+		String consulta = "SELECT pz.ID, Nombre, Descripcion, Precio, Tipo FROM Configuraciones AS conf " 
+						+ "INNER JOIN PiezasConfiguracionCoche AS PzConf ON PzConf.IDConfiguracion = conf.ID "
+						+ "INNER JOIN Piezas AS pz ON pz.ID = PzConf.IDPieza "
+						+ "WHERE conf.ID = '" + configuracion.getID() + "' "
+						+ "AND Tipo NOT IN ('motor', 'llantas', 'pintura') OR Tipo IS NULL";
+		
+		PiezaImpl pieza;
+		
+		try
+		{
+			Statement statement = conexion.createStatement();
+			
+			ResultSet resultado = statement.executeQuery(consulta);
+			
+			piezasExtra = new ArrayList<PiezaImpl>();
+			
+			while(resultado.next())
+			{
+				int ID = resultado.getInt("ID");
+				
+				pieza = obtenerPieza(ID);
+				
+				piezasExtra.add(pieza);
+			}
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+		
+		return piezasExtra;
+	}
 	
 	/* INTERFAZ
 	 * Comentario: Comprueba en la base de datos si una configuracion existe
@@ -885,6 +929,24 @@ public class AObjeto
 	}
 	
 	/* INTERFAZ
+	 * Comentario: Carga las piezas extra de una configuracion en dicha configuracion, buscando en la base de datos.
+	 * Prototipo: public void cargarPiezasExtraEnConfiguracion(ConfiguracionImpl configuracion)
+	 * Entrada: No hay
+	 * Precondiciones: La conexion tiene que estar abierta
+	 * Salida: No hay
+	 * Entrada/Salida: Una ConfiguracionImpl a la que se le desea cargar la lista de piezas extra que tiene asociada, buscando en la base de datos.
+	 * Postcondiciones: El objeto ConfiguracionImpl pasado por parámetro tiene la lista de las piezas extra, esta lista de piezas son las piezas extra
+	 * 					que le corresponden a la configuración en la base de datos.
+	 * 					Si la configuración no existe en la base de datos, la lista de las piezas será null.
+	 */
+	public void cargarPiezasExtraEnConfiguracion(ConfiguracionImpl configuracion)
+	{
+		ArrayList<PiezaImpl> piezasExtra = obtenerPiezasExtra(configuracion);
+		
+		configuracion.establecerPiezas(piezasExtra);
+	}
+	
+	/* INTERFAZ
 	 * Comentario: Carga la lista con las votaciones de una configuración en dicha configuracion, buscando en la base de datos
 	 * Prototipo: public void cargarVotacionesEnConfiguracion(ConfiguracionImpl configuracion)
 	 * Entrada: No hay
@@ -902,6 +964,51 @@ public class AObjeto
 	}
 	
 	/* INTERFAZ
+	 * Comentario: Carga el motor de una configuración en dicha configuracion, buscando en la base de datos
+	 * Prototipo: public void cargarMotorEnConfiguracion(ConfiguracionImpl configuracion)
+	 * Entrada: No hay
+	 * Precondiciones: La conexion tiene que estar abierta
+	 * Salida: No hay
+	 * Entrada/Salida: Una ConfiguracionImpl a la que se le desea cargar el motor que tiene asociado, buscando en la base de datos.
+	 * Postcondiciones: El objeto ConfiguracionImpl pasado por parámetro tiene el motor que le pertenece según la base de datos.
+	 * 					Si la configuración no existe en la base de datos, el motor será null.
+	 */
+	public void cargarMotorEnConfiguracion(ConfiguracionImpl configuracion)
+	{
+		configuracion.establecerMotor(obtenerPiezaMotor(configuracion));
+	}
+	
+	/* INTERFAZ
+	 * Comentario: Carga las llantas de una configuración en dicha configuracion, buscando en la base de datos
+	 * Prototipo: public void cargarLlantasEnConfiguracion(ConfiguracionImpl configuracion)
+	 * Entrada: No hay
+	 * Precondiciones: La conexion tiene que estar abierta
+	 * Salida: No hay
+	 * Entrada/Salida: Una ConfiguracionImpl a la que se le desea cargar las llantas que tiene asociada, buscando en la base de datos.
+	 * Postcondiciones: El objeto ConfiguracionImpl pasado por parámetro tiene las llantas que le pertenece según la base de datos.
+	 * 					Si la configuración no existe en la base de datos, las llantas será null.
+	 */
+	public void cargarLlantasEnConfiguracion(ConfiguracionImpl configuracion)
+	{
+		configuracion.establecerLlantas(obtenerPiezaLlantas(configuracion));
+	}
+	
+	/* INTERFAZ
+	 * Comentario: Carga la pintura de una configuración en dicha configuracion, buscando en la base de datos
+	 * Prototipo: public void cargarPinturaEnConfiguracion(ConfiguracionImpl configuracion)
+	 * Entrada: No hay
+	 * Precondiciones: La conexion tiene que estar abierta
+	 * Salida: No hay
+	 * Entrada/Salida: Una ConfiguracionImpl a la que se le desea cargar la pintura que tiene asociada, buscando en la base de datos.
+	 * Postcondiciones: El objeto ConfiguracionImpl pasado por parámetro tiene la pintura que le pertenece según la base de datos.
+	 * 					Si la configuración no existe en la base de datos, la pintura será null.
+	 */
+	public void cargarPinturaEnConfiguracion(ConfiguracionImpl configuracion)
+	{
+		configuracion.establecerPintura(obtenerPiezaPintura(configuracion));
+	}
+	
+	/* INTERFAZ
 	 * Comentario: Carga todas las relaciones con otros objetos que tiene una configuracion en ella misma, es decir, carga el Coche que le pertenece,
 	 * 				La Cuenta que le pertenece, las piezas y las votaciones.
 	 * Prototipo: public void cargarRelacionesEnConfiguracion(ConfiguracionImpl configuracion)
@@ -914,15 +1021,20 @@ public class AObjeto
 	 * 						- Carga en el objeto ConfiguracionImpl la CuentaImpl que le pertenece según la base de datos.
 	 * 						- Carga en el objeto ConfiguracionImpl el ArrayList<PiezaImpl> que le pertenece según la base de datos.
 	 * 						- Carga en el objeto ConfiguracionImpl el ArrayList<VotacionImpl> que le pertenece según la base de datos.
-	 * 						- Si la configuración no existe en la base de datos, lógicamente no podrá obtener las relaciones de la base de datos, por lo tanto las relaciones
-	 * 						quedarán con valores null.
+	 * 						- Carga en el objeto ConfiguracionImpl el MotorImpl que le pertenece según la base de datos.
+	 * 						- Carga en el objeto ConfiguracionImpl las LlantasImpl que le pertenece según la base de datos.
+	 * 						- Carga en el objeto ConfiguracionImpl la Pintura que le pertenece según la base de datos.
+	 * 						- Si la configuración no existe en la base de datos, las relaciones quedarán con valores null.
 	 */
 	public void cargarRelacionesEnConfiguracion(ConfiguracionImpl configuracion)
 	{
 		cargarCocheEnConfiguracion(configuracion);
 		cargarCuentaEnConfiguracion(configuracion);
-		cargarPiezasEnConfiguracion(configuracion);
+		cargarPiezasExtraEnConfiguracion(configuracion);
 		cargarVotacionesEnConfiguracion(configuracion);
+		cargarMotorEnConfiguracion(configuracion);
+		cargarLlantasEnConfiguracion(configuracion);
+		cargarPinturaEnConfiguracion(configuracion);
 	}
 	
 	/* INTERFAZ

@@ -27,7 +27,9 @@ public class Editor
 		
 		//System.out.println(gestion.existeConfiguracion(new ConfiguracionImpl("5E825DA3-140D-4B16-BD28-31B359EA79AA", new GregorianCalendar())));
 		
-		ConfiguracionImpl configuracion = gestion.obtenerConfiguracion("8722F525-3C36-4A79-B6CA-7DAB14BB23BF");
+		//ConfiguracionImpl configuracion = gestion.obtenerConfiguracion("8722F525-3C36-4A79-B6CA-7DAB14BB23BF");
+		
+		ConfiguracionImpl configuracion = gestion.obtenerConfiguracion("45ABC141-4B82-48B9-A4C5-830A3EC3BE34");
 		
 		//ConfiguracionImpl configuracion = gestion.obtenerConfiguraciones().get(1);
 		
@@ -52,7 +54,12 @@ public class Editor
 		else
 			System.out.println("P) Pintura: Elige una!");
 		
+		ArrayList<PiezaImpl> piezasExtra = configuracion.obtenerPiezas();
 		
+		for(int i = 0 ; i < piezasExtra.size() ; i++ )
+		{
+			System.out.println((i+1) + ") " + piezasExtra.get(i).getNombre());
+		}
 		
 		System.out.println("+) Añade una pieza extra");
 		
@@ -62,7 +69,7 @@ public class Editor
 		
 		System.out.println("---------------------------------");
 		
-		ArrayList<PiezaImpl> piezasExtra = new ArrayList<PiezaImpl>();
+		ArrayList<PiezaImpl> piezasExtraa = new ArrayList<PiezaImpl>();
 		
 		for(PiezaImpl pieza:configuracion.obtenerPiezas())
 		{
@@ -73,9 +80,17 @@ public class Editor
 		}
 		
 		
-		for(PiezaImpl piezaExtra:piezasExtra)
+		for(PiezaImpl pzasExtraa:piezasExtra)
 		{
-			System.out.println(piezaExtra.getNombre());
+			System.out.println(pzasExtraa.getNombre());
+		}
+		
+		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+		
+		for(PiezaImpl piezaa:gestion.obtenerPiezasExtra(configuracion))
+		{
+			System.out.print(piezaa.getNombre() + " - ");
+			System.out.println(piezaa.getPrecio());
 		}
 		
 		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
