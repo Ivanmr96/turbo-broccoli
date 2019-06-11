@@ -3,6 +3,7 @@ package clases.gestion;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
+import java.util.Scanner;
 
 import clases.basicas.CocheImpl;
 import clases.basicas.ConfiguracionImpl;
@@ -14,6 +15,97 @@ import utils.Utils;
 
 public class Editor 
 {
+	public PiezaImpl mostrarPiezasConfiguracionYValidarEleccion(ConfiguracionImpl configuracion)
+	{
+		Scanner teclado = new Scanner(System.in);
+		PiezaImpl pieza = null;
+		String opcion;
+		int opcionNumerica;
+		int cantidadPiezasExtra;
+		boolean correcto;
+		
+		//CocheImpl coche = gestion.obtenerCoche(configuracion);
+		CocheImpl coche = configuracion.obtenerCoche();
+		
+		System.out.println("Editando " + coche.getMarca() + " " + coche.getModelo());
+		
+		if(configuracion.obtenerMotor() != null)
+			System.out.println("M) Motor: " + configuracion.obtenerMotor().getNombre());
+		else
+			System.out.println("M) Motor: Elige uno!");
+		
+		if(configuracion.obtenerLlantas() != null)
+			System.out.println("L) Llantas: " + configuracion.obtenerLlantas().getNombre());
+		else
+			System.out.println("L) Llantas: Elige unas!");
+		
+		if(configuracion.obtenerPintura() != null)
+			System.out.println("P) Pintura: " + configuracion.obtenerPintura().getNombre());
+		else
+			System.out.println("P) Pintura: Elige una!");
+		
+		ArrayList<PiezaImpl> piezasExtra = configuracion.obtenerPiezas();
+		
+		cantidadPiezasExtra = piezasExtra.size();
+		
+		for(int i = 0 ; i < piezasExtra.size() ; i++ )
+		{
+			System.out.println((i+1) + ") " + piezasExtra.get(i).getNombre());
+		}
+		
+		System.out.println("+) Añade una pieza extra");
+		
+		do
+		{
+			System.out.print("Elige una opcion: ");
+			opcion = teclado.next();
+			
+			/*if(opcion.equals("M") || opcion.equals("L") || opcion.equals("P"))
+				opcionNumerica = 1;
+			else
+				opcionNumerica = Integer.parseInt(opcion);*/
+			
+			try
+			{
+				opcionNumerica = Integer.parseInt(opcion);
+				
+				//Es numero
+				if(opcionNumerica < 0 || opcionNumerica > cantidadPiezasExtra)
+					correcto = false;
+				else
+					correcto = true;
+			}
+			catch(NumberFormatException e)
+			{
+				//Es letra
+				if(!opcion.equals("M") && !opcion.equals("L") && !opcion.equals("P"))
+					correcto = false;
+				else
+					correcto = true;
+			}
+				
+		
+		}while(!correcto);
+		
+		if(!opcion.equals("M") && !opcion.equals("L") && !opcion.equals("P"))
+			pieza = piezasExtra.get(opcionNumerica-1);
+		else
+			switch(opcion)
+			{
+				case "M": 
+					pieza = configuracion.obtenerMotor();
+					break;
+				case "L":
+					pieza = configuracion.obtenerLlantas();
+					break;
+				case "P":
+					pieza = configuracion.obtenerPintura();
+					break;
+			}
+		
+		return pieza;
+	}
+	
 	public static void main(String[] args) 
 	{
 		String URLConexion = "jdbc:sqlserver://localhost;"
@@ -35,90 +127,13 @@ public class Editor
 		
 		gestion.cargarRelacionesEnConfiguracion(configuracion);
 		
-		CocheImpl coche = gestion.obtenerCoche(configuracion);
+		Editor ed = new Editor();
 		
-		System.out.println("Editando " + coche.getMarca() + " " + coche.getModelo());
+		PiezaImpl pz = ed.mostrarPiezasConfiguracionYValidarEleccion(configuracion);
 		
-		if(gestion.obtenerPiezaMotor(configuracion) != null)
-			System.out.println("M) Motor: " + gestion.obtenerPiezaMotor(configuracion).getNombre());
-		else
-			System.out.println("M) Motor: Elige uno!");
-		
-		if(gestion.obtenerPiezaLlantas(configuracion) != null)
-			System.out.println("L) Llantas: " + gestion.obtenerPiezaLlantas(configuracion).getNombre());
-		else
-			System.out.println("L) Llantas: Elige unas!");
-		
-		if(gestion.obtenerPiezaPintura(configuracion) != null)
-			System.out.println("P) Pintura: " + gestion.obtenerPiezaPintura(configuracion).getNombre());
-		else
-			System.out.println("P) Pintura: Elige una!");
-		
-		ArrayList<PiezaImpl> piezasExtra = configuracion.obtenerPiezas();
-		
-		for(int i = 0 ; i < piezasExtra.size() ; i++ )
-		{
-			System.out.println((i+1) + ") " + piezasExtra.get(i).getNombre());
-		}
-		
-		System.out.println("+) Añade una pieza extra");
+		System.out.println(pz.getNombre());
 		
 		//TODO Método que devuelva todas las piezas de una configuracion menos el motor, las llantas, y la pintura.
-		
-		//System.out.println(configuracion.obtenerCoche().getMarca());
-		
-		System.out.println("---------------------------------");
-		
-		ArrayList<PiezaImpl> piezasExtraa = new ArrayList<PiezaImpl>();
-		
-		for(PiezaImpl pieza:configuracion.obtenerPiezas())
-		{
-			if(!(pieza instanceof MotorImpl) &&
-			   !(pieza instanceof LlantasImpl) &&
-			   !(pieza instanceof PinturaImpl))
-				piezasExtra.add(pieza);
-		}
-		
-		
-		for(PiezaImpl pzasExtraa:piezasExtra)
-		{
-			System.out.println(pzasExtraa.getNombre());
-		}
-		
-		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-		
-		for(PiezaImpl piezaa:gestion.obtenerPiezasExtra(configuracion))
-		{
-			System.out.print(piezaa.getNombre() + " - ");
-			System.out.println(piezaa.getPrecio());
-		}
-		
-		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-		
-		System.out.println(configuracion.obtenerMotor().getNombre());
-		
-		System.out.println(configuracion.obtenerLlantas().getNombre());
-		
-		System.out.println(configuracion.obtenerPintura().getNombre());
-		
-		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-		
-		for(ConfiguracionImpl confi:gestion.obtenerConfiguraciones("AUDI"))
-		{
-			System.out.println(confi.getID());
-		}
-		
-		System.out.println();
-		
-		GregorianCalendar fechaActual = new GregorianCalendar();
-		
-		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-		
-		System.out.println(sdf.format(fechaActual.getTime()));
-		
-		System.out.println("-------------------------");
-		
-		Utils utils = new Utils();
 		
 	}
 }

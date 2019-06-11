@@ -32,7 +32,8 @@ BEGIN TRAN
 
 	SELECT * FROM Piezas
 
-	INSERT INTO PiezasConfiguracionCoche VALUES (5, '45ABC141-4B82-48B9-A4C5-830A3EC3BE34')
+	INSERT INTO PiezasConfiguracionCoche VALUES (1, '45ABC141-4B82-48B9-A4C5-830A3EC3BE34')
+
 
 	INSERT INTO Votaciones VALUES (NEWID(), 6, CURRENT_TIMESTAMP, ( SELECT ID FROM Configuraciones WHERE Usuario = 'testuser' ), 'testuser');
 
