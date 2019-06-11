@@ -906,6 +906,7 @@ public class AObjeto
 		String modeloCoche = configuracion.obtenerCoche().getModelo();
 		
 		String insert = "INSERT INTO Configuraciones "
+						+ "(ID, Usuario, Fecha, MarcaCoche, ModeloCoche) "
 						+ "VALUES ('" + ID + "', '" + usuario + "', '" + fecha + "', '" + marcaCoche + "', '" + modeloCoche + "');";
 		try 
 		{

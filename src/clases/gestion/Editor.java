@@ -27,7 +27,7 @@ public class Editor
 		
 		//System.out.println(gestion.existeConfiguracion(new ConfiguracionImpl("5E825DA3-140D-4B16-BD28-31B359EA79AA", new GregorianCalendar())));
 		
-		ConfiguracionImpl configuracion = gestion.obtenerConfiguracion("B8187208-D872-4832-B901-40FA672B12E3");
+		ConfiguracionImpl configuracion = gestion.obtenerConfiguracion("8722F525-3C36-4A79-B6CA-7DAB14BB23BF");
 		
 		//ConfiguracionImpl configuracion = gestion.obtenerConfiguraciones().get(1);
 		

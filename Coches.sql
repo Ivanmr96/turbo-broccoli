@@ -63,7 +63,7 @@ CREATE TABLE Llantas
 	Pulgadas tinyint NOT NULL,
 
 	CONSTRAINT PK_Llantas PRIMARY KEY(IDPieza),
-	CONSTRAINT FK_Llantas_IDPieza FOREIGN KEY (IDPieza) REFERENCES Piezas(ID) ON DELETE NO ACTION ON UPDATE CASCADE
+	CONSTRAINT FK_Llantas_IDPieza FOREIGN KEY (IDPieza) REFERENCES Piezas(ID) ON DELETE CASCADE ON UPDATE CASCADE
 )
 
 CREATE TABLE Configuraciones
@@ -73,16 +73,16 @@ CREATE TABLE Configuraciones
 	Fecha datetime NULL, 
 	MarcaCoche varchar(20) NOT NULL,
 	ModeloCoche varchar(25) NOT NULL,
-	IDMotor int NOT NULL,
-	IDLlantas int NOT NULL,
-	IDPintura int NOT NULL,
+	IDMotor int NULL,
+	IDLlantas int NULL,
+	IDPintura int NULL,
 
 	CONSTRAINT PK_Configuraciones PRIMARY KEY (ID),
 	CONSTRAINT FK_Configuraciones_Usuario FOREIGN KEY (Usuario) REFERENCES Cuentas(NombreUsuario) ON DELETE NO ACTION ON UPDATE CASCADE, -- Se deberá borrar la cuenta con un procedimiento
 	CONSTRAINT FK_Configuraciones_Coche FOREIGN KEY (MarcaCoche, ModeloCoche) REFERENCES Coches(Marca, Modelo) ON DELETE CASCADE ON UPDATE CASCADE ,
-	CONSTRAINT FK_Configuraciones_Motor FOREIGN KEY (IDMotor) REFERENCES Motores(IDPieza) ON DELETE NO ACTION ON UPDATE CASCADE,
-	CONSTRAINT FK_Configuraciones_Llantas FOREIGN KEY (IDLlantas) REFERENCES Llantas(IDPieza) ON DELETE NO ACTION ON UPDATE CASCADE,
-	CONSTRAINT FK_Configuraciones_Pintura FOREIGN KEY (IDPintura) REFERENCES Pinturas(IDPieza) ON DELETE NO ACTION ON UPDATE CASCADE
+	CONSTRAINT FK_Configuraciones_Motor FOREIGN KEY (IDMotor) REFERENCES Motores(IDPieza) ON DELETE NO ACTION ON UPDATE NO ACTION,
+	CONSTRAINT FK_Configuraciones_Llantas FOREIGN KEY (IDLlantas) REFERENCES Llantas(IDPieza) ON DELETE NO ACTION ON UPDATE NO ACTION,
+	CONSTRAINT FK_Configuraciones_Pintura FOREIGN KEY (IDPintura) REFERENCES Pinturas(IDPieza) ON DELETE NO ACTION ON UPDATE NO ACTION
 )
 
 CREATE TABLE PiezasConfiguracionCoche
