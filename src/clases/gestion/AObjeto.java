@@ -59,11 +59,11 @@ public class AObjeto
 	}
 	
 	/* INTERFAZ
-	 * Comentario: Cierra la conexión
+	 * Comentario: Cierra la conexión con la base de datos
 	 * Prototipo: public void cerrarConexion()
 	 * Entrada: No hay
 	 * Precondiciones: La conexión debe estar abierta
-	 * Salida: No ay
+	 * Salida: No hay
 	 * Postcondiciones: Se cierra la conexión a la base de datos establecida, con las credenciales dadas y en el servidor determinado.
 	 */
 	public void cerrarConexion()
@@ -115,6 +115,14 @@ public class AObjeto
 		return coche;
 	}
 	
+	/* INTERFAZ
+	 * Comentario: Busca todas las marcas de coches en la base de datos
+	 * Prototipo: public ArrayList<String> obtenerMarcas()
+	 * Entrada: No hay
+	 * Precondiciones: La conexion tiene que estar abierta
+	 * Salida: Un ArrayList<String> con las marcas de coches de la base de datos
+	 * Postcondiciones: Asociado al nombre devuelve un ArrayList<String> con todas las marcas de coches de la base de datos, si no hay ninguna, la lista estará vacía.
+	 */
 	public ArrayList<String> obtenerMarcas()
 	{
 		ArrayList<String> marcas = new ArrayList<String>();
@@ -140,6 +148,14 @@ public class AObjeto
 		return marcas;
 	}
 	
+	/* INTERFAZ
+	 * Comentario: Obtiene una lista de los modelos de coches de una marca dada
+	 * Prototipo: public ArrayList<String> obtenerModelos(String marca)
+	 * Entrada: Un String con la marca de la que se desea obtener sus modelos de coches
+	 * Precondiciones: La conexion debe estar abierta
+	 * Salida: Un ArrayList<String> con los nombres de los modelos de la marca dada.
+	 * Postcondicions: Asociado al nombre devuelve un ArrayList<String> con los nombres de los modelos de la marca dada, si la marca no existe, la lista estará vacía.
+	 */
 	public ArrayList<String> obtenerModelos(String marca)
 	{
 		ArrayList<String> modelos = new ArrayList<String>();
@@ -368,10 +384,6 @@ public class AObjeto
 		return actualizado;
 	}
 	
-	//-------------------------------------------------------
-	
-	//ConfiguracionImpl
-	
 	/* INTERFAZ
 	 * Comentario: Obtiene una configuracion de la base de datos dado su ID
 	 * Prototipo: public ConfiguracionImpl obtenerConfiguracion(String ID)
@@ -416,7 +428,14 @@ public class AObjeto
 		return configuracion;
 	}
 	
-
+	/* INTERFAZ
+	 * Comentario: Obtiene todas las configuraciones de la base de datos
+	 * Prototipo: public ArrayList<ConfiguracionImpl> obtenerConfiguraciones()
+	 * Entrada: No hay
+	 * Precondiciones: La conexion tiene que estar abierta
+	 * Salida: Un ArrayList<ConfiguracionImpl> con todas las configuraciones de la base de datos
+	 * Postcondiciones: Asociado al nombre devuelve un ArrayList<ConfiguracionImpl> con todas las configuraciones de la base de datos.
+	 */
 	public ArrayList<ConfiguracionImpl> obtenerConfiguraciones()
 	{
 		ArrayList<ConfiguracionImpl> configuraciones = new ArrayList<ConfiguracionImpl>();
@@ -451,6 +470,15 @@ public class AObjeto
 		return configuraciones;
 	}
 	
+	/* INTERFAZ
+	 * Comentario: Obtiene las configuraciones de una marca de coche.
+	 * Prototipo: public ArrayList<ConfiguracionImpl> obtenerConfiguraciones(String marca)
+	 * Entrada: Un String con la marca de coche de la que se desea obtener todas las configuraciones realizadas
+	 * Precondiciones: La conexion tiene que estar abierta
+	 * Salida: Un ArrayList<ConfiguracionImpl> con todas las configuraciones de una marca en la base de datos.
+	 * Postcondiciones: Asociado al nombre devuelve un ArrayList<ConfiguracionImpl> con todas las configuraciones de una marca en la base de datos. Si no hay
+	 * 					ninguna configuracion para ningún coche de la marca dada, o la marca no existe, la lista estará vacía.
+	 */
 	public ArrayList<ConfiguracionImpl> obtenerConfiguraciones(String marca)
 	{
 		ArrayList<ConfiguracionImpl> configuraciones = new ArrayList<ConfiguracionImpl>();
@@ -486,6 +514,15 @@ public class AObjeto
 		return configuraciones;
 	}
 	
+	/* INTERFAZ
+	 * Comentario: Obtiene las configuraciones de un coche en la base de datos
+	 * Prototipo: public ArrayList<ConfiguracionImpl> obtenerConfiguraciones(CocheImpl coche)
+	 * Entrada: Un CocheImpl con el coche del que se desea obtener todas las configuraciones realizadas para ese coche.
+	 * Precondiciones: La conexion tiene que estar abierta
+	 * Salida: Un ArrayList<ConfiguracionImpl> con todas las configuraciones de un coche en la base de datos.
+	 * Postcondiciones: Asociado al nombre devuelve un ArrayList<ConfiguracionImpl> con todas las configuraciones de una marca en la base de datos. Si no hay
+	 * 					ninguna configuracion para ningún coche de la marca dada, o la marca no existe, la lista estará vacía.
+	 */
 	public ArrayList<ConfiguracionImpl> obtenerConfiguraciones(CocheImpl coche)
 	{
 		ArrayList<ConfiguracionImpl> configuraciones = new ArrayList<ConfiguracionImpl>();
@@ -529,7 +566,7 @@ public class AObjeto
 	 * Comentario: Obtiene el CocheImpl asociado a la ConfiguracionImpl dada, busca en la base de datos
 	 * Prototipo: public CocheImpl obtenerCoche(ConfiguracionImpl configuracion)
 	 * Entrada: Un objeto ConfiguracionImpl del que se desea obtener su CocheImpl
-	 * Precondiciones: No hay
+	 * Precondiciones: La conexion tiene que estar abierta
 	 * Salida: Un CocheImpl con el coche perteneciente(en la base de datos) a la configuracion dada
 	 * Postcondiciones: Asociado al nombre devuelve un CocheImpl.
 	 * 					- El objeto devuelto tendrá la información correspondiente al Coche que pertenece a la configuración dada si dicha configuración existe en la base de datos
@@ -571,7 +608,7 @@ public class AObjeto
 	 * Comentario: Obtiene la CuentaImpl de una Configuracion. Busca en la base de datos.
 	 * Prototipo: public CuentaImpl obtenerCuenta(ConfiguracionImpl configuracion)
 	 * Entrada: Una ConfiguracionImpl de la que se desea obtener la CuentaImpl que la hizo
-	 * Precodiciones: No hay
+	 * Precodiciones: La conexion tiene que estar abierta
 	 * Salida: La CuentaImpl que pertenece (en la base de datos) a la Configuracion dada
 	 * Postcondiciones: Asociado al nombre devuelve una CuentaImpl
 	 * 					- El objeto tendrá la información con la cuenta correspondiente a la configuracion si dicha configuracion existe en la base de datos.
@@ -611,7 +648,7 @@ public class AObjeto
 	 * Comentario: Obtiene la lista de las piezas de una configuracion. Busca en la base de datos
 	 * Prototipo: public ArrayList<PiezaImpl> obtenerPiezas(ConfiguracionImpl configuracion)
 	 * Entrada: Una ConfiguracionImpl de la que se desea obtener la lista de sus piezas
-	 * Precondiciones: No hay
+	 * Precondiciones: La conexion tiene que estar abierta
 	 * Salida: Un ArrayList de PiezaImpl con la lista de las piezas la configuracion dada.
 	 * Postcondiciones: Asociado al nombe devuelve un ArrayList<PiezaImpl>.
 	 * 					- Si la configuracion existe en la base de datos, la lista tendrá las piezas de dicha configuracion, es posible que la lista esté vacía.
@@ -681,6 +718,10 @@ public class AObjeto
 	/* INTERFAZ
 	 * Comentario: Comprueba en la base de datos si una configuracion existe
 	 * Prototipo: public boolean existeConfiguracion(ConfiguracionImpl configuracion)
+	 * Entrada: Una ConfiguracionImpl de la que se desea comprobar su existencia en la base de datos.
+	 * Precondiciones: La conexion tiene que estar abierta
+	 * Salida: Un boolean indicando si la configuracion existe en la base de datos o no.
+	 * Postcondiciones: Asociado al nombre devuelve true si la configuracion existe en la base de datos o false de lo contrario.
 	 */
 	public boolean existeConfiguracion(ConfiguracionImpl configuracion)
 	{
@@ -707,6 +748,14 @@ public class AObjeto
 		return existe;
 	}
 	
+	/* INTERFAZ
+	 * Comentario: Comprueba en la base de datos si un usuario existe
+	 * Prototipo: public boolean existeUsuario(String usuario)
+	 * Entrada: Un String con el usuario del que se desea comprobar su existencia en la base de datos.
+	 * Precondiciones: La conexion tiene que estar abierta
+	 * Salida: Un boolean indicando si el usuario existe en la base de datos o no.
+	 * Postcondiciones: Asociado al nombre devuelve true si el usuario existe en la base de datos o false de lo contrario.
+	 */
 	public boolean existeUsuario(String usuario)
 	{
 		boolean existe = false;
@@ -735,7 +784,7 @@ public class AObjeto
 	 * Comentario: Obtiene las votaciones de una configuracion. Busca en la base de datos
 	 * Prototipo: public ArrayList<VotacionImpl> obtenerVotaciones(ConfiguracionImpl configuracion)
 	 * Entrada: Una ConfiguracionImpl de la que se desean obtener sus votaciones.
-	 * Precondiciones: No hay
+	 * Precondiciones: La conexion tiene que estar abierta
 	 * Salida: Un ArrayList de VotacionImpl con la lista de votaciones de la configuracion dada.
 	 * Postcondiciones: Asociado al nombre devuelve un ArrayList<VotacionImpl>.
 	 * 					- Si la configuración existe en la base de datos, devuelve una lista con las votaciones realizadas a dicha configuracion.
@@ -786,7 +835,7 @@ public class AObjeto
 	 * Comentario: Carga el coche de una configuración en ella, buscando en la base de datos.
 	 * Prototipo: public void cargarCocheEnConfiguracion(ConfiguracionImpl configuracion)
 	 * Entrada: No hay
-	 * Precondiciones: No hay
+	 * Precondiciones: La conexion tiene que estar abierta
 	 * Salida: No hay
 	 * Entrada/Salida: Una ConfiguracionImpl a la que se le desea cargar el CocheImpl que tiene asociado en la base de datos.
 	 * Postcondiciones: El objeto ConfiguracionImpl pasado por parámetro tiene el objeto CocheImpl cargado dentro de él.
@@ -803,7 +852,7 @@ public class AObjeto
 	 * Comentario: Carga la CuentaImpl en una ConfiguracionImpl, buscando en la base de datos.
 	 * Prototipo: public void cargarCuentaEnConfiguracion(ConfiguracionImpl configuracion)
 	 * Entrada: No hay
-	 * Precondiciones: No hay
+	 * Precondiciones: La conexion tiene que estar abierta
 	 * Salida: No hay
 	 * Entrada/Salida: Una ConfiguracionImpl a la que se le desea cargar la CuentaImpl que tiene asociada en la base de datos.
 	 * Postcondiciones: El Objeto ConfiguracionImpl pasado por parámetro tiene el objeto CuentaImpl cargado, esta cuenta es la cuenta
@@ -821,7 +870,7 @@ public class AObjeto
 	 * Comentario: Carga las piezas de una configuracion en dicha configuracion, buscando en la base de datos.
 	 * Prototipo: public void cargarPiezasEnConfiguracion(ConfiguracionImpl configuracion)
 	 * Entrada: No hay
-	 * Precondiciones: No hay
+	 * Precondiciones: La conexion tiene que estar abierta
 	 * Salida: No hay
 	 * Entrada/Salida: Una ConfiguracionImpl a la que se le desea cargar la lista de piezas que tiene asociada, buscando en la base de datos.
 	 * Postcondiciones: El objeto ConfiguracionImpl pasado por parámetro tiene la lista de las piezas, esta lista de piezas son las piezas
@@ -839,7 +888,7 @@ public class AObjeto
 	 * Comentario: Carga la lista con las votaciones de una configuración en dicha configuracion, buscando en la base de datos
 	 * Prototipo: public void cargarVotacionesEnConfiguracion(ConfiguracionImpl configuracion)
 	 * Entrada: No hay
-	 * Precondiciones: No hay
+	 * Precondiciones: La conexion tiene que estar abierta
 	 * Salida: No hay
 	 * Entrada/Salida: Una ConfiguracionImpl a la que se le desea cargar la lista de votaciones que tiene asociada, buscando en la base de datos.
 	 * Postcondiciones: El objeto ConfiguracionImpl pasado por parámetro tiene la lista de las votaciones que le pertenecen según la base de datos.
@@ -857,7 +906,7 @@ public class AObjeto
 	 * 				La Cuenta que le pertenece, las piezas y las votaciones.
 	 * Prototipo: public void cargarRelacionesEnConfiguracion(ConfiguracionImpl configuracion)
 	 * Entrada: No hay
-	 * Precondiciones: No hay
+	 * Precondiciones: La conexion tiene que estar abierta
 	 * Salida: No hay
 	 * Entrada/Salida: Una ConfiguracionImpl a la que se le desea cargar todas sus relaciones con otros objetos, busca en la base de datos.
 	 * Postcondiciones: El objeto ConfiguracionImpl tiene cargada todas sus relaciones con otros objetos, es decir:
@@ -880,8 +929,9 @@ public class AObjeto
 	 * Comentario: Inserta una nueva configuracion en la base de datos
 	 * Prototipo: public boolean insertarConfiguracion(ConfiguracionImpl configuracion) throws SQLServerException
 	 * Entrada: la ConfiguracionImpl que se desea insertar en la base de datos
-	 * Precondiciones: el objeto ConfiguracionImpl debe tener asignado un CocheImpl y una CuentaImpl, debido a que no se puede insertar
-	 * 					en la base de datos una configuracion que no tiene ninguna cuenta ni ningun coche asociado.
+	 * Precondiciones:  - el objeto ConfiguracionImpl debe tener asignado un CocheImpl y una CuentaImpl, debido a que no se puede insertar
+	 * 					  en la base de datos una configuracion que no tiene ninguna cuenta ni ningun coche asociado.
+	 * 					- La conexion tiene que estar abierta
 	 * Salida: Un boolean indicando si se introdujo la configuracion satisfactoriamente o no.
 	 * Postcondiciones: Asociado al nombre devuelve:
 	 * 					- True. Por lo tanto la configuracion ha sido introducido correctamente en la base de datos
@@ -934,15 +984,11 @@ public class AObjeto
 	
 	public boolean actualizarConfiguracion(ConfiguracionImpl configuracion);
 	
-	//-------------------------------------------------------
-	
-	//CuentaImpl
-	
 	/* INTERFAZ
 	 * Comentario: Obtiene una Cuenta a partir de su nombre de usuario buscando en la base de datos, la contraseña está cifrada con MD5.
 	 * Prototipo: public CuentaImpl obtenerCuenta(String nombreUsuario)
 	 * Entrada: Un String con el nombre de usuario de la cuenta a buscar
-	 * Precondiciones: No hay
+	 * Precondiciones: La conexion tiene que estar abierta
 	 * Salida: Una CuentaImpl con la cuenta perteneciente a ese nombre de usuario.
 	 * Postcondiciones: Asociado al nombre devuelve una CuentaImpl perteneciente al nombre de usuario dado, busca en la base de datos.
 	 * 					Si el nombre de usuario no existe, devuelve una CuentaImpl null.
@@ -974,6 +1020,14 @@ public class AObjeto
 		return cuenta;
 	}
 	
+	/* INTERFAZ
+	 * Comentario: Obtiene todos los coches de la base de datos
+	 * Prototipo: public ArrayList<CocheImpl> obtenerCoches()
+	 * Entrada: No hay
+	 * Precondiciones: La conexion tiene que estar abierta
+	 * Salida: Un ArrayList<CocheImpl> con todos los coches de la base de datos.
+	 * Postcondiciones: Asociado al nombre devuelve un ArrayList<CocheImpl> con todos los coches de la base de datos.
+	 */
 	public ArrayList<CocheImpl> obtenerCoches()
 	{
 		ArrayList<CocheImpl> coches = new ArrayList<CocheImpl>();
@@ -1008,6 +1062,14 @@ public class AObjeto
 		return coches;
 	}
 	
+	/* INTERFAZ
+	 * Comentario: Obtiene todas las configuraciones realizadas por una cuenta.
+	 * Prototipo: public ArrayList<ConfiguracionImpl> obtenerConfiguraciones(CuentaImpl cuenta)
+	 * Entrada: Una CuentaImpl de la que se desea obtener todas sus configuraciones realizadas.
+	 * Precondiciones: La conexion tiene que estar abierta
+	 * Salida: Un ArrayList<ConfiguracionImpl> con todas los configuraciones de la cuenta dada.
+	 * Postcondiciones: Asociado al nombre devuelve un ArrayList<ConfiguracionImpl> con todas las configuraciones de una cuenta buscando en la base de datos.
+	 */
 	public ArrayList<ConfiguracionImpl> obtenerConfiguraciones(CuentaImpl cuenta)
 	{
 		ArrayList<ConfiguracionImpl> configuraciones = null;
@@ -1045,6 +1107,14 @@ public class AObjeto
 		return configuraciones;
 	}
 	
+	/* INTERFAZ
+	 * Comentario: Obtiene todas las votaciones realizadas por una cuenta.
+	 * Prototipo: public ArrayList<VotacionImpl> obtenerVotaciones(CuentaImpl cuenta)
+	 * Entrada: Una CuentaImpl de la que se desea obtener todas sus votaciones realizadas.
+	 * Precondiciones: La conexion tiene que estar abierta
+	 * Salida: Un ArrayList<VotacionImpl> con todas los votaciones realizadas por la cuenta dada.
+	 * Postcondiciones: Asociado al nombre devuelve un ArrayList<VotacionImpl> con todas las votaciones realizadas por la cuenta buscando en la base de datos.
+	 */
 	public ArrayList<VotacionImpl> obtenerVotaciones(CuentaImpl cuenta)
 	{
 		ArrayList<VotacionImpl> votaciones = null;
@@ -1082,7 +1152,17 @@ public class AObjeto
 		
 		return votaciones;
 	}
-	
+
+	/* INTERFAZ
+	 * Comentario: Carga la lista con las configuraciones de una cuenta en dicha cuenta, buscando en la base de datos
+	 * Prototipo: public void cargarConfiguracionesEnCuenta(CuentaImpl cuenta)
+	 * Entrada: Una CuentaImpl en la que se desea cargar sus configuraciones
+	 * Precondiciones: La conexion debe estar abierta
+	 * Salida: No hay
+	 * Entrada/Salida: Una CuentaImpl a la que se le desea cargar la lista de configuraciones que tiene asociada, buscando en la base de datos.
+	 * Postcondiciones: El objeto CuentaImpl pasado por parámetro tiene la lista de las configuraciones que le pertenecen según la base de datos.
+	 * 					Si la cuenta no existe en la base de datos, la lista de las votaciones será null.
+	 */
 	public void cargarConfiguracionesEnCuenta(CuentaImpl cuenta)
 	{
 		ArrayList<ConfiguracionImpl> configuraciones = obtenerConfiguraciones(cuenta);
@@ -1090,6 +1170,16 @@ public class AObjeto
 		cuenta.establecerConfiguraciones(configuraciones);
 	}
 	
+	/* INTERFAZ
+	 * Comentario: Carga la lista con las votacines realizadas por una cuenta en dicha cuenta, buscando en la base de datos
+	 * Prototipo: public void cargarVotacionesEnCuenta(CuentaImpl cuenta)
+	 * Entrada: Una CuentaImpl en la que se desea cargar sus votaciones realizadas.
+	 * Precondiciones: La conexion debe estar abierta
+	 * Salida: No hay
+	 * Entrada/Salida: Una CuentaImpl a la que se le desea cargar la lista de votaciones que ha realizado, buscando en la base de datos.
+	 * Postcondiciones: El objeto CuentaImpl pasado por parámetro tiene la lista de las votaciones que le pertenecen según la base de datos.
+	 * 					Si la cuenta no existe en la base de datos, la lista de las votaciones será null.
+	 */
 	public void cargarVotacionesEnCuenta(CuentaImpl cuenta)
 	{
 		ArrayList<VotacionImpl> votaciones = obtenerVotaciones(cuenta);
@@ -1097,6 +1187,18 @@ public class AObjeto
 		cuenta.establecerVotaciones(votaciones);
 	}
 	
+	/* INTERFAZ
+	 * Comentario: Carga todas las relaciones con otros objetos que tiene una cuenta en ella misma, es decir, carga las configuraciones que le pertenece y las votaciones.
+	 * Prototipo: public void cargarRelacionesEnCuenta(CuentaImpl cuenta)
+	 * Entrada: No hay
+	 * Precondiciones: La conexion tiene que estar abierta
+	 * Salida: No hay
+	 * Entrada/Salida: Una CuentaImpl a la que se le desea cargar todas sus relaciones con otros objetos, busca en la base de datos.
+	 * Postcondiciones: El objeto CuentaImpl tiene cargada todas sus relaciones con otros objetos, es decir:
+	 * 						- Carga en el objeto CuentaImpl el ArrayList<ConfiguracionImpl> que le pertenece según la base de datos.
+	 * 						- Carga en el objeto CuentaImpl el ArrayList<VotacionImpl> que le pertenece según la base de datos.
+	 * 						- Si la configuración no existe en la base de datos, las relaciones quedarán con valores null.
+	 */
 	public void cargarRelacionesEnCuenta(CuentaImpl cuenta)
 	{
 		cargarConfiguracionesEnCuenta(cuenta);
@@ -1107,7 +1209,7 @@ public class AObjeto
 	 * Comentario: Inserta una nueva cuenta en la base de datos
 	 * Prototipo: public boolean insertarCuenta(CuentaImpl cuenta) throws SQLServerException
 	 * Entrada: la CuentaImpl que se desea insertar en la base de datos
-	 * Precondiciones: No hay
+	 * Precondiciones: La conexion tiene que estar abierta
 	 * Salida: Un boolean indicando si se introdujo la cuenta satisfactoriamente o no.
 	 * Postcondiciones: Asociado al nombre devuelve:
 	 * 					- True. Por lo tanto la cuenta ha sido introducido correctamente en la base de datos
@@ -1156,7 +1258,7 @@ public class AObjeto
 	 * Comentario: Obtiene una pieza dado su ID, busca en la base de datos
 	 * Prototipo: public PiezaImpl obtenerPieza(int ID)
 	 * Entrada: Un int con la ID de la pieza a buscar
-	 * Precondiciones: No hay
+	 * Precondiciones: La conexion tiene que estar abierta
 	 * Salida: la PiezaImpl con el ID dado, busca en la base de datos.
 	 * Postcondiciones: Asociado al nombre devuelve una PiezaImpl perteneciente a la pieza con el ID dado buscando en la base de datos.
 	 * 					- Este método no debe utilizarse para obtener piezas especializadas, es decir, motores, llantas o pinturas. 
@@ -1194,6 +1296,14 @@ public class AObjeto
 		return pieza;
 	}
 	
+	/* INTERFAZ
+	 * Comentario: Obtiene una lista de los coches validos para una pieza dada
+	 * Prototipo: public ArrayList<CocheImpl> obtenerCochesValidos(PiezaImpl pieza)
+	 * Entrada: Una PiezaImpl de la que se desea conocer los coches validos para esa pieza.
+	 * Precondiciones: La conexion tiene que estar abierta.
+	 * Salida: Un ArrayList<CocheImpl> con los coches válidos para la pieza determinada.
+	 * Postcondiciones: Asociado al nombre devuelve un ArrayList<CocheImpl> con los coche válidos para la pieza determinada.
+	 */
 	public ArrayList<CocheImpl> obtenerCochesValidos(PiezaImpl pieza)
 	{
 		ArrayList<CocheImpl> cochesValidos = null;
@@ -1230,6 +1340,15 @@ public class AObjeto
 		return cochesValidos;
 	}
 	
+	/* INTERFAZ
+	 * Comentario: Carga en un objeto PiezaImpl la lista de coches validos.
+	 * Prototipo: public void cargarCochesValidosEnPieza(PiezaImpl pieza)
+	 * Entrada: No hay
+	 * Precondiciones: La conexion tiene que estar abierta.
+	 * Entrada/Salida: Una PiezaImpl a la que se le desea cargar la lista de coches validos buscando en la base de datos.
+	 * Salida: No hay
+	 * Postcondiciones: El Objeto PiezaImpl de la lista de parámetros tiene cargada la lista de coches validos según la base de datos.
+	 */
 	public void cargarCochesValidosEnPieza(PiezaImpl pieza)
 	{
 		ArrayList<CocheImpl> cochesValidos = obtenerCochesValidos(pieza);
@@ -1241,7 +1360,7 @@ public class AObjeto
 	 * Comentario: Inserta una nueva pieza en la base de datos
 	 * Prototipo: public boolean insertarPieza(PiezaImpl pieza) throws SQLServerException
 	 * Entrada: la PiezaImpl que se desea insertar en la base de datos
-	 * Precondiciones: No hay
+	 * Precondiciones: La conexion tiene que estar abierta.
 	 * Salida: Un boolean indicando si se introdujo la cuenta satisfactoriamente o no.
 	 * Postcondiciones: Asociado al nombre devuelve:
 	 * 					- True. Por lo tanto la pieza ha sido introducida correctamente en la base de datos
@@ -1286,7 +1405,7 @@ public class AObjeto
 	 * Comentario: Inserta un nuevo motor en la base de datos
 	 * Prototipo: public boolean insertarPiezaMotor(MotorImpl motor) throws SQLServerException
 	 * Entrada: el MotorImpl que se desea insertar en la base de datos
-	 * Precondiciones: No hay
+	 * Precondiciones: La conexion tiene que estar abierta.
 	 * Salida: Un boolean indicando si se introdujo la cuenta satisfactoriamente o no.
 	 * Postcondiciones: Asociado al nombre devuelve:
 	 * 					- True. Por lo tanto el motor ha sido introducido correctamente en la base de datos
@@ -1373,7 +1492,7 @@ public class AObjeto
 	 * Comentario: Obtiene la pieza de tipo pintura según un ID dado. Busca en la base de datos
 	 * Prototipo: public PinturaImpl obtenerPiezaPintura(int ID)
 	 * Entrada: Un int con la ID de la pieza tipo pintura que se desea obtener de la base de datos.
-	 * Precondiciones: No hay
+	 * Precondiciones: La conexion tiene que estar abierta.
 	 * Salida: Una PinturaImpl que pertenece a la pintura con la ID dada en la base de datos.
 	 * Postcondiciones: Asociado al nombre devuelve devuelve una PinturaImpl.
 	 * 					- Si la ID dada pertenece a una pintura existente en la base de datos, devuelve el objeto con la información.
@@ -1416,7 +1535,7 @@ public class AObjeto
 	 * Comentario: Obtiene la pieza de tipo llantas según un ID dado. Busca en la base de datos
 	 * Prototipo: public LlantasImpl obtenerPiezaLlantas(int ID)
 	 * Entrada: Un int con la ID de la pieza tipo llantas que se desea obtener de la base de datos.
-	 * Precondiciones: No hay
+	 * Precondiciones: La conexion tiene que estar abierta.
 	 * Salida: Una LlantasImpl que pertenece a las llantas con la ID dada en la base de datos.
 	 * Postcondiciones: Asociado al nombre devuelve devuelve un objeto LlantasImpl.
 	 * 					- Si la ID dada pertenece a unas llantas existentes en la base de datos, devuelve el objeto con la información.
@@ -1458,7 +1577,7 @@ public class AObjeto
 	 * Comentario: Obtiene la pieza de tipo motor según un ID dado. Busca en la base de datos
 	 * Prototipo: public MotorImpl obtenerPiezaMotor(int ID)
 	 * Entrada: Un int con la ID de la pieza tipo motor que se desea obtener de la base de datos.
-	 * Precondiciones: No hay
+	 * Precondiciones: La conexion tiene que estar abierta.
 	 * Salida: Una MotorImpl que pertenece al motor con la ID dada en la base de datos.
 	 * Postcondiciones: Asociado al nombre devuelve devuelve un objeto MotorImpl.
 	 * 					- Si la ID dada pertenece a un motor existente en la base de datos, devuelve el objeto con la información.
@@ -1500,6 +1619,14 @@ public class AObjeto
 		return motor;
 	}
 	
+	/* INTERFAZ
+	 * Comentario: Obtiene el motor de una configuracion dada. Busca en la base de datos
+	 * Prototipo: public MotorImpl obtenerPiezaMotor(ConfiguracionImpl configuracion)
+	 * Entrada: Una ConfiguracioImpl con la configuracion de la que se desea obtener su motor.
+	 * Precondiciones: La conexion tiene que estar abierta.
+	 * Salida: Una MotorImpl que pertenece, en la base de datos, a la configuracion determinada.
+	 * Postcondiciones: Asociado al nombre devuelve el MotorImpl de la configuracion dada, busca en la base de datos.
+	 */
 	public MotorImpl obtenerPiezaMotor(ConfiguracionImpl configuracion)
 	{
 		MotorImpl motor = null;
@@ -1539,6 +1666,14 @@ public class AObjeto
 		return motor;
 	}
 	
+	/* INTERFAZ
+	 * Comentario: Obtiene las llantas de una configuracion dada. Busca en la base de datos
+	 * Prototipo: public LlantasImpl obtenerPiezaLlantas(ConfiguracionImpl configuracion)
+	 * Entrada: Una ConfiguracioImpl con la configuracion de la que se desea obtener sus llantas.
+	 * Precondiciones: La conexion tiene que estar abierta.
+	 * Salida: Unas LlantasImpl que pertenece, en la base de datos, a la configuracion determinada.
+	 * Postcondiciones: Asociado al nombre devuelve las LlantasImpl de la configuracion dada, busca en la base de datos.
+	 */
 	public LlantasImpl obtenerPiezaLlantas(ConfiguracionImpl configuracion)
 	{
 		LlantasImpl llantas = null;
@@ -1573,6 +1708,14 @@ public class AObjeto
 		return llantas;
 	}
 	
+	/* INTERFAZ
+	 * Comentario: Obtiene la pintura de una configuracion dada. Busca en la base de datos
+	 * Prototipo: public PinturaImpl obtenerPiezaPintura(ConfiguracionImpl configuracion)
+	 * Entrada: Una ConfiguracioImpl con la configuracion de la que se desea obtener su pintura.
+	 * Precondiciones: La conexion tiene que estar abierta.
+	 * Salida: Unas PinturaImpl que pertenece, en la base de datos, a la configuracion determinada.
+	 * Postcondiciones: Asociado al nombre devuelve la PinturaImpl de la configuracion dada, busca en la base de datos.
+	 */
 	public PinturaImpl obtenerPiezaPintura(ConfiguracionImpl configuracion)
 	{
 		PinturaImpl pintura = null;
