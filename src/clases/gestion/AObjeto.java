@@ -451,7 +451,40 @@ public class AObjeto
 		return configuraciones;
 	}
 	
-	public ArrayList<ConfiguracionImpl> obtenerConfiguraciones(String marca);
+	public ArrayList<ConfiguracionImpl> obtenerConfiguraciones(String marca)
+	{
+		ArrayList<ConfiguracionImpl> configuraciones = new ArrayList<ConfiguracionImpl>();
+		Utils utils = new Utils();
+		ConfiguracionImpl configuracion;
+		String ID;
+		GregorianCalendar fecha;
+		
+		String consulta = "SELECT ID, Fecha FROM Configuraciones "
+						+ "WHERE MarcaCoche = '" + marca + "'";
+		
+		try
+		{
+			Statement statement = conexion.createStatement();
+			
+			ResultSet resultado = statement.executeQuery(consulta);
+			
+			while(resultado.next())
+			{
+				ID = resultado.getString("ID");
+				fecha = utils.dateTimeToGregorianCalendar(resultado.getString("Fecha"));
+				configuracion = new ConfiguracionImpl(ID, fecha);
+				
+				configuraciones.add(configuracion);
+			}
+			
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+		
+		return configuraciones;
+	}
 	
 	public ArrayList<ConfiguracionImpl> obtenerConfiguraciones(CocheImpl coche)
 	{
@@ -488,7 +521,8 @@ public class AObjeto
 		return configuraciones;
 	}
 	
-	public ArrayList<ConfiguracionImpl> obtenerConfiguraciones(double precioMinimo, double precioMaximo);
+	public ArrayList<ConfiguracionImpl> obtenerConfiguraciones(double precioMinimo, double precioMaximo); //TODO funcionalidad para calcular el precio de una configuracion
+	
 	public ArrayList<ConfiguracionImpl> obtenerConfiguraciones(GregorianCalendar fecha);
 	
 	/* INTERFAZ
@@ -639,6 +673,10 @@ public class AObjeto
 		
 		return piezas;
 	}
+	
+	//public MotorImpl obtenerMotorConfiguracion(ConfiguracionImpl configuracion);
+	//public MotorImpl obtenerLlantasConfiguracion(ConfiguracionImpl configuracion);
+	//public MotorImpl obtenerPinturaConfiguracion(ConfiguracionImpl configuracion);
 	
 	/* INTERFAZ
 	 * Comentario: Comprueba en la base de datos si una configuracion existe

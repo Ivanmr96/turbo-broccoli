@@ -3,6 +3,7 @@ package utils;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
 
 public class Utils 
@@ -87,9 +88,18 @@ public class Utils
 		return md5;
 	}
 	
+	public String formatearFecha(GregorianCalendar fecha)
+	{
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+		
+		return sdf.format(fecha.getTime());
+	}
+	
 	public static void main(String[] args)
 	{
 		Utils utils = new Utils();
 		System.out.println(utils.obtenerMD5("123"));
+		
+		System.out.println(utils.formatearFecha(new GregorianCalendar()));
 	}
 }

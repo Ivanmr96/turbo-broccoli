@@ -4,7 +4,7 @@ BEGIN
 END
 
 GO
-ALTER FUNCTION ExisteConfiguracion (@IDConfiguracion uniqueidentifier)
+CREATE FUNCTION ExisteConfiguracion (@IDConfiguracion uniqueidentifier)
 	RETURNS bit AS
 BEGIN
 	DECLARE @Existe AS bit
@@ -19,4 +19,4 @@ BEGIN
 END
 GO
 
-SELECT dbo.ExisteConfiguracion('C59F23B1-BB9A-4C0B-B8C0-0854D291157F')
+SELECT dbo.ExisteConfiguracion('5E825DA3-140D-4B16-BD28-31B359EA79AA')

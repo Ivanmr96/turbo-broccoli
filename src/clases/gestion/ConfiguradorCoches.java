@@ -172,6 +172,7 @@ public class ConfiguradorCoches
 										while(opcionConfiguracionPropia != null)
 										{
 											//Mostrar estadisticas
+											System.out.println(opcionConfiguracionPropia.getFecha().getTime());
 											
 											//Mostrar submenuConfiguracionElegida y validar opcion elegida
 											opcionSubMenuConfiguracionElegida = validacion.mostrarSubMenuConfiguracionElegidaYValidarOpcion();
@@ -206,7 +207,7 @@ public class ConfiguradorCoches
 													
 												case 2:
 													//Buscar por marca
-													marca = validacion.mostrarListaMarcasYValidarMarcaElegida();
+													marca = validacion.mostrarObjetosYValidarObjetoElegido(gestion.obtenerMarcas());
 													
 													configuraciones = gestion.obtenerConfiguraciones(marca);
 													

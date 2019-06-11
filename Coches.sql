@@ -4,15 +4,6 @@ DATABASE Coches
 
 USE Coches
 
-IF EXISTS (SELECT * FROM Votaciones)
-BEGIN
-	print 'si'
-END
-ELSE
-BEGIN
-	print 'no'
-END
-
 CREATE TABLE Cuentas
 (
 	NombreUsuario varchar(25) NOT NULL,
@@ -30,19 +21,6 @@ CREATE TABLE Coches
 	CONSTRAINT PK_Coches PRIMARY KEY (Marca, Modelo)
 )
 
-CREATE TABLE Configuraciones
-(
-	ID uniqueidentifier DEFAULT NEWID() NOT NULL,
-	Usuario varchar(25) NOT NULL,
-	Fecha datetime NULL, 
-	MarcaCoche varchar(20) NOT NULL,
-	ModeloCoche varchar(25) NOT NULL,
-
-	CONSTRAINT PK_Configuraciones PRIMARY KEY (ID),
-	CONSTRAINT FK_Configuraciones_Usuario FOREIGN KEY (Usuario) REFERENCES Cuentas(NombreUsuario) ON DELETE NO ACTION ON UPDATE CASCADE, -- Se deberá borrar la cuenta con un procedimiento
-	CONSTRAINT FK_Configuraciones_Coche FOREIGN KEY (MarcaCoche, ModeloCoche) REFERENCES Coches(Marca, Modelo) ON DELETE CASCADE ON UPDATE CASCADE 
-)
-
 CREATE TABLE Piezas
 (
 	ID int,
@@ -52,32 +30,6 @@ CREATE TABLE Piezas
 	Tipo varchar(10),
 
 	CONSTRAINT PK_Piezas PRIMARY KEY (ID)
-)
-
-CREATE TABLE PiezasConfiguracionCoche
-(
-	--MarcaCoche varchar(20) NOT NULL,
-	--ModeloCoche varchar(25) NOT NULL,
-	IDPieza int NOT NULL,
-	IDConfiguracion uniqueidentifier NOT NULL,
-
-	CONSTRAINT PK_PiezasConfiguracionCoche PRIMARY KEY (IDPieza, IDConfiguracion),
-	--CONSTRAINT FK_PiezasConfiguracionCoche_MarcaCoche FOREIGN KEY (MarcaCoche, ModeloCoche) REFERENCES Coches(Marca, Modelo) ON DELETE NO ACTION ON UPDATE CASCADE,
-	CONSTRAINT FK_PiezasConfiguracionCoche_IDPieza FOREIGN KEY (IDPieza) REFERENCES Piezas(ID) ON DELETE CASCADE ON UPDATE CASCADE, 
-	CONSTRAINT FK_PiezasConfiguracionCoche_IDConfiguracion FOREIGN KEY (IDConfiguracion) REFERENCES Configuraciones(ID) ON DELETE CASCADE ON UPDATE CASCADE 
-)
-
-CREATE TABLE Votaciones
-(
-	ID uniqueidentifier DEFAULT NEWID() NOT NULL,
-	Calificacion tinyint NOT NULL,
-	Fecha datetime NOT NULL,
-	IDConfiguracion uniqueidentifier NOT NULL,
-	Usuario varchar(25) NOT NULL,
-
-	CONSTRAINT PK_Votaciones PRIMARY KEY (ID),
-	CONSTRAINT FK_Votaciones_IDConfiguracion FOREIGN KEY (IDConfiguracion) REFERENCES Configuraciones(ID) ON DELETE NO ACTION ON UPDATE CASCADE,
-	CONSTRAINT FK_Votaciones_Usuario FOREIGN KEY (Usuario) REFERENCES Cuentas(NombreUsuario) ON DELETE NO ACTION ON UPDATE NO ACTION -- Se deberá borrar la cuenta con un procedimiento
 )
 
 CREATE TABLE Motores
@@ -111,7 +63,52 @@ CREATE TABLE Llantas
 	Pulgadas tinyint NOT NULL,
 
 	CONSTRAINT PK_Llantas PRIMARY KEY(IDPieza),
-	CONSTRAINT FK_Llantas_IDPieza FOREIGN KEY (IDPieza) REFERENCES Piezas(ID) ON DELETE CASCADE ON UPDATE CASCADE
+	CONSTRAINT FK_Llantas_IDPieza FOREIGN KEY (IDPieza) REFERENCES Piezas(ID) ON DELETE NO ACTION ON UPDATE CASCADE
+)
+
+CREATE TABLE Configuraciones
+(
+	ID uniqueidentifier DEFAULT NEWID() NOT NULL,
+	Usuario varchar(25) NOT NULL,
+	Fecha datetime NULL, 
+	MarcaCoche varchar(20) NOT NULL,
+	ModeloCoche varchar(25) NOT NULL,
+	IDMotor int NOT NULL,
+	IDLlantas int NOT NULL,
+	IDPintura int NOT NULL,
+
+	CONSTRAINT PK_Configuraciones PRIMARY KEY (ID),
+	CONSTRAINT FK_Configuraciones_Usuario FOREIGN KEY (Usuario) REFERENCES Cuentas(NombreUsuario) ON DELETE NO ACTION ON UPDATE CASCADE, -- Se deberá borrar la cuenta con un procedimiento
+	CONSTRAINT FK_Configuraciones_Coche FOREIGN KEY (MarcaCoche, ModeloCoche) REFERENCES Coches(Marca, Modelo) ON DELETE CASCADE ON UPDATE CASCADE ,
+	CONSTRAINT FK_Configuraciones_Motor FOREIGN KEY (IDMotor) REFERENCES Motores(IDPieza) ON DELETE NO ACTION ON UPDATE CASCADE,
+	CONSTRAINT FK_Configuraciones_Llantas FOREIGN KEY (IDLlantas) REFERENCES Llantas(IDPieza) ON DELETE NO ACTION ON UPDATE CASCADE,
+	CONSTRAINT FK_Configuraciones_Pintura FOREIGN KEY (IDPintura) REFERENCES Pinturas(IDPieza) ON DELETE NO ACTION ON UPDATE CASCADE
+)
+
+CREATE TABLE PiezasConfiguracionCoche
+(
+	--MarcaCoche varchar(20) NOT NULL,
+	--ModeloCoche varchar(25) NOT NULL,
+	IDPieza int NOT NULL,
+	IDConfiguracion uniqueidentifier NOT NULL,
+
+	CONSTRAINT PK_PiezasConfiguracionCoche PRIMARY KEY (IDPieza, IDConfiguracion),
+	--CONSTRAINT FK_PiezasConfiguracionCoche_MarcaCoche FOREIGN KEY (MarcaCoche, ModeloCoche) REFERENCES Coches(Marca, Modelo) ON DELETE NO ACTION ON UPDATE CASCADE,
+	CONSTRAINT FK_PiezasConfiguracionCoche_IDPieza FOREIGN KEY (IDPieza) REFERENCES Piezas(ID) ON DELETE CASCADE ON UPDATE CASCADE, 
+	CONSTRAINT FK_PiezasConfiguracionCoche_IDConfiguracion FOREIGN KEY (IDConfiguracion) REFERENCES Configuraciones(ID) ON DELETE CASCADE ON UPDATE CASCADE 
+)
+
+CREATE TABLE Votaciones
+(
+	ID uniqueidentifier DEFAULT NEWID() NOT NULL,
+	Calificacion tinyint NOT NULL,
+	Fecha datetime NOT NULL,
+	IDConfiguracion uniqueidentifier NOT NULL,
+	Usuario varchar(25) NOT NULL,
+
+	CONSTRAINT PK_Votaciones PRIMARY KEY (ID),
+	CONSTRAINT FK_Votaciones_IDConfiguracion FOREIGN KEY (IDConfiguracion) REFERENCES Configuraciones(ID) ON DELETE NO ACTION ON UPDATE CASCADE,
+	CONSTRAINT FK_Votaciones_Usuario FOREIGN KEY (Usuario) REFERENCES Cuentas(NombreUsuario) ON DELETE NO ACTION ON UPDATE NO ACTION -- Se deberá borrar la cuenta con un procedimiento
 )
 
 CREATE TABLE PiezasCoches

@@ -1,6 +1,6 @@
 GO
 --Trigger para que solo puedan utilizarse piezas validas para el modelo de coche (definido en la tabla PiezasCoche)
-ALTER TRIGGER PiezasValidas ON PiezasConfiguracionCoche
+CREATE TRIGGER PiezasValidas ON PiezasConfiguracionCoche
 AFTER INSERT, UPDATE
 AS
 BEGIN

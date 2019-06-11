@@ -155,7 +155,7 @@ public class Validaciones
 		{
 			System.out.print("Elige una opcion: ");
 			opcion = teclado.nextInt();
-		}while(opcion < 0 || opcion > (lista.size()+1));
+		}while(opcion < 0 || opcion > (lista.size()));
 		
 		if(opcion > 0)
 			objeto = lista.get(opcion-1);

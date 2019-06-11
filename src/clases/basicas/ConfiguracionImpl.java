@@ -3,6 +3,8 @@ package clases.basicas;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
+import utils.Utils;
+
 /* ESTUDIO DE INTERFAZ
  * 
  * Propiedades básicas:
@@ -46,6 +48,12 @@ public class ConfiguracionImpl
 	private ArrayList<PiezaImpl> piezas;
 	private ArrayList<VotacionImpl> votaciones;
 	
+	//private MotorImpl motor;
+	//private LlantasImpl llantas;
+	//private PinturaImpl pintura;
+	
+	//TODO El motor, las llantas y la pintura deben ser un atributo de la clase.
+	
 	public ConfiguracionImpl()
 	{
 		this.ID = null;
@@ -86,14 +94,73 @@ public class ConfiguracionImpl
 	public void establecerPiezas(ArrayList<PiezaImpl> piezas) { this.piezas = piezas; }
 	public void establecerVotaciones(ArrayList<VotacionImpl> votaciones ) { this.votaciones = votaciones; }
 	
+	public MotorImpl obtenerMotor()
+	{
+		MotorImpl motor = null;
+		
+		for(PiezaImpl pieza:this.piezas)
+		{
+			if(pieza instanceof MotorImpl)
+				motor = (MotorImpl)pieza;
+		}
+		
+		return motor;
+		
+		//return this.motor;
+	}
+	
+	public LlantasImpl obtenerLlantas()
+	{
+		LlantasImpl llantas = null;
+		
+		for(PiezaImpl pieza:this.piezas)
+		{
+			if(pieza instanceof LlantasImpl)
+				llantas = (LlantasImpl)pieza;
+		}
+		
+		return llantas;
+		
+		//return this.llantas;
+	}
+	
+	public PinturaImpl obtenerPintura()
+	{
+		PinturaImpl pintura = null;
+		
+		for(PiezaImpl pieza:this.piezas) 
+		{
+			if(pieza instanceof PinturaImpl)
+				pintura = (PinturaImpl)pieza;
+		}
+		
+		return pintura;
+		
+		//return pintura;
+	}
+	
+	public double obtenerPrecioTotal()
+	{
+		double precioTotal = obtenerCoche().getPrecioBase();
+		
+		for(PiezaImpl pieza:obtenerPiezas())
+		{
+			precioTotal += pieza.getPrecio();
+		}
+		
+		return precioTotal;
+	}
+	
 	@Override
 	public String toString()
 	{
-		return this.ID + ", " + 
-			   this.fecha.getTime() + ", " + 
+		Utils utils = new Utils();
+		
+		return utils.formatearFecha(fecha) + " - " + 
 			   coche.getMarca() + " " + 
-			   coche.getModelo() + ", " + 
-			   cuenta.getNombreUsuario();
+			   coche.getModelo() + " - " + 
+			   cuenta.getNombreUsuario() + " - " +
+			   this.obtenerPrecioTotal() + " €";
 	}
 	
 	//TODO Alguna funcion que pueda ser útil, como calcularPrecioTotal(), o calcularCalificacionMedia()
