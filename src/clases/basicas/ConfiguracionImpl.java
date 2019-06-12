@@ -104,7 +104,8 @@ public class ConfiguracionImpl
 	public double obtenerPrecioTotal()
 	{
 		double precioTotal = obtenerCoche().getPrecioBase();
-		//precioTotal += this.motor;
+
+		precioTotal += this.motor.getPrecio() + this.llantas.getPrecio() + this.pintura.getPrecio();
 		
 		for(PiezaImpl pieza:obtenerPiezas())
 		{

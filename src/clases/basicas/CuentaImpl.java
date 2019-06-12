@@ -75,4 +75,10 @@ public class CuentaImpl implements Cuenta
 	
 	public void establecerConfiguraciones(ArrayList<ConfiguracionImpl> configuraciones) { this.configuraciones = configuraciones; }
 	public void establecerVotaciones(ArrayList<VotacionImpl> votaciones) { this.votaciones = votaciones; }
+	
+	@Override
+	public String toString()
+	{
+		return this.nombreUsuario;
+	}
 }

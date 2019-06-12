@@ -79,4 +79,10 @@ public class PiezaImpl implements Pieza
 	public ArrayList<CocheImpl> obtenerCochesValidos() { return this.cochesValidos; }
 	
 	public void establecerCochesValidos(ArrayList<CocheImpl> cochesValidos) { this.cochesValidos = cochesValidos; }
+	
+	@Override
+	public String toString()
+	{
+		return this.ID + " - " + this.nombre + " - " + this.precio + " €";
+	}
 }

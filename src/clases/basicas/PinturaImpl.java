@@ -51,4 +51,10 @@ public class PinturaImpl extends PiezaImpl
 	
 	public void setColor(String color) { this.color = color; }
 	public void setAcabado(String acabado) { this.acabado = acabado; }
+	
+	@Override
+	public String toString()
+	{
+		return this.getID() + " - " + this.getNombre() + " - " + this.getColor() + " " + this.getAcabado() + " - " + this.getPrecio() + " €";
+	}
 }

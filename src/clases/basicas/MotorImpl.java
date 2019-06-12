@@ -71,4 +71,10 @@ public class MotorImpl extends PiezaImpl
 	public void setAutonomia(int autonomia) { this.autonomia = autonomia; }
 	public void setPotencia(int potencia) {  this.potencia = potencia; }
 	public void setTipo(String tipo) { this.tipo = tipo; }
+	
+	@Override
+	public String toString()
+	{		
+		return this.getID() + " - " + this.getNombre() + " - "  + this.potencia + " cv - " + this.getPrecio() + " €";
+	}
 }

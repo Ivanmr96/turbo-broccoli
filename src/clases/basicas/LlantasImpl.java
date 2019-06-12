@@ -42,4 +42,10 @@ public class LlantasImpl extends PiezaImpl
 	public int getPulgadas() { return this.pulgadas; }
 	
 	public void setPulgadas(int pulgadas) { this.pulgadas = pulgadas; }
+	
+	@Override
+	public String toString()
+	{
+		return this.getID() + " - " + this.getNombre() + " - " + this.pulgadas + "\"" + " - " + this.getPrecio() + " €";
+	}
 }

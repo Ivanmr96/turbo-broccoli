@@ -1094,7 +1094,202 @@ public class AObjeto
 	
 	public boolean eliminarConfiguracion(ConfiguracionImpl configuracion);
 	
-	public boolean actualizarConfiguracion(ConfiguracionImpl configuracion);
+	public boolean eliminarPiezasExtraDeConfiguracion(ConfiguracionImpl configuracion)
+	{
+		boolean eliminado = false;
+		
+		String borrarPiezasExtra = "DELETE FROM PiezasConfiguracionCoche "
+				 + "WHERE IDConfiguracion = '" + configuracion.getID() + "'";
+		
+		try 
+		{
+			Statement statement = conexion.createStatement();
+			
+			statement.executeUpdate(borrarPiezasExtra);
+			eliminado = true;
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+		
+		return eliminado;
+	}
+	
+	/* INTERFAZ
+	 * Comentario: Actualiza en la base de datos el motor que pertenece a la configuracion
+	 * 			   Mira en el objeto ConfiguracionImpl su MotorImpl para guardar en la base de datos cuál es su motor.
+	 * Prototipo: public boolean actualizarMotorDeConfiguracion(ConfiguracionImpl configuracion)
+	 * Entrada: Una ConfiguracionImpl a la que se le desea cambiar su motor en la base de datos
+	 * Precondiciones: La conexion tiene que estar abierta
+	 * Salida: Un boolean indicando si se actualizo correctamente la configuracion o no
+	 * Postcondiciones: Asociado al nombre devuelve:
+	 * 					- True en caso de que el motor de la configuracion se haya cambiado en la base de datos.
+	 * 					- False si no se ha podido actualizar la configuracion.
+	 */
+	public boolean actualizarMotorDeConfiguracion(ConfiguracionImpl configuracion)
+	{
+		boolean actualizado = false;
+		int filasAfectadas;
+		
+		String IDMotor;
+		
+		if(configuracion.obtenerMotor() != null)
+			IDMotor = String.valueOf(configuracion.obtenerMotor().getID());
+		else
+			IDMotor = "NULL";
+		
+		String updateConfiguracion = "UPDATE Configuraciones "
+								   + "SET IDMotor = " + IDMotor;
+		
+		try
+		{
+			Statement statement = conexion.createStatement();
+			
+			filasAfectadas = statement.executeUpdate(updateConfiguracion);
+			
+			if(filasAfectadas > 0)
+				actualizado = true;
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+		
+		return actualizado;
+	}
+	
+	/* INTERFAZ
+	 * Comentario: Actualiza en la base de datos las llantas que pertenecen a la configuracion
+	 * 			   Mira en el objeto ConfiguracionImpl su LlantasImpl para guardar en la base de datos cuáles son sus llantas.
+	 * Prototipo: public boolean actualizarLlantasDeConfiguracion(ConfiguracionImpl configuracion)
+	 * Entrada: Una ConfiguracionImpl a la que se le desea cambiar sus llantas en la base de datos
+	 * Precondiciones: La conexion tiene que estar abierta
+	 * Salida: Un boolean indicando si se actualizo correctamente la configuracion o no
+	 * Postcondiciones: Asociado al nombre devuelve:
+	 * 					- True en caso de que las llantas de la configuracion se haya cambiado en la base de datos.
+	 * 					- False si no se ha podido actualizar la configuracion.
+	 */
+	public boolean actualizarLlantasDeConfiguracion(ConfiguracionImpl configuracion)
+	{
+		boolean actualizado = false;
+		int filasAfectadas;
+		
+		String updateConfiguracion = "UPDATE Configuraciones "
+								   + "SET IDLlantas = " + configuracion.obtenerLlantas().getID();
+		
+		try
+		{
+			Statement statement = conexion.createStatement();
+			
+			filasAfectadas = statement.executeUpdate(updateConfiguracion);
+			
+			if(filasAfectadas > 0)
+				actualizado = true;
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+		
+		return actualizado;
+	}
+	
+	/* INTERFAZ
+	 * Comentario: Actualiza en la base de datos la pintura que pertenece a la configuracion
+	 * 			   Mira en el objeto ConfiguracionImpl su PinturaImp, para guardar en la base de datos cuál es su pintura.
+	 * Prototipo: public boolean actualizarPinturaDeConfiguracion(ConfiguracionImpl configuracion)
+	 * Entrada: Una ConfiguracionImpl a la que se le desea cambiar su pintura en la base de datos
+	 * Precondiciones: La conexion tiene que estar abierta
+	 * Salida: Un boolean indicando si se actualizo correctamente la configuracion o no
+	 * Postcondiciones: Asociado al nombre devuelve:
+	 * 					- True en caso de que la pintura de la configuracion se haya cambiado en la base de datos.
+	 * 					- False si no se ha podido actualizar la configuracion.
+	 */
+	public boolean actualizarPinturaDeConfiguracion(ConfiguracionImpl configuracion)
+	{
+		boolean actualizado = false;
+		int filasAfectadas;
+		
+		String updateConfiguracion = "UPDATE Configuraciones "
+								   + "SET IDPintura = " + configuracion.obtenerPintura().getID();
+		
+		try
+		{
+			Statement statement = conexion.createStatement();
+			
+			filasAfectadas = statement.executeUpdate(updateConfiguracion);
+			
+			if(filasAfectadas > 0)
+				actualizado = true;
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+		
+		return actualizado;
+	}
+	
+	/* INTERFAZ
+	 * Comentario: Actualiza en la base de datos una configuracion.
+	 * 			   obtiene las relaciones que tiene el objeto ConfiguracionImpl y las guarda en la base de datos.
+	 * 			   Actualiza:
+	 * 					-> El motor
+	 * 					-> Las llantas
+	 * 					-> La pinutra
+	 * 					-> las piezas extra
+	 * Prototipo: public boolean actualizarConfiguracion(ConfiguracionImpl configuracion)
+	 * Entrada: Un objeto ConfiguracionImpl que se desea actualizar en la base de datos.
+	 * Precondiciones: La conexion tiene que estar abierta.
+	 * Salida: Un booleano indicando si se actualizo acorde al objeto ConfiguracionImpl determinado o no.
+	 * Postcondiciones: Asociado al nombre devuelve:
+	 * 					- True si se actualizo correctamente la configuracion en la base de datos según el objeto ConfiguracionImpl del paráemtro.
+	 * 					- False si no se actualizo.
+	 */
+	public boolean actualizarConfiguracion(ConfiguracionImpl configuracion)
+	{
+		boolean actualizado = false;
+		
+
+		//Update a los ID de motor, llantas y pintura
+		try
+		{
+			Statement statement = conexion.createStatement();
+			
+			statement.execute("BEGIN TRAN");
+			
+			actualizarMotorDeConfiguracion(configuracion);
+			actualizarPinturaDeConfiguracion(configuracion);
+			actualizarLlantasDeConfiguracion(configuracion);
+			
+			eliminarPiezasExtraDeConfiguracion(configuracion);
+			
+			insertarPiezasEnConfiguracion(configuracion.obtenerPiezas(), configuracion);
+			
+			statement.execute("COMMIT");
+			actualizado = true;
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+			
+			Statement statement;
+			try 
+			{
+				statement = conexion.createStatement();
+				statement.execute("ROLLBACK");
+				actualizado = false;
+			} 
+			catch (SQLException e1) 
+			{
+				e1.printStackTrace();
+			}
+			
+		}
+		
+		return actualizado;
+	}
 	
 	/* INTERFAZ
 	 * Comentario: Obtiene una Cuenta a partir de su nombre de usuario buscando en la base de datos, la contraseña está cifrada con MD5.
@@ -1360,6 +1555,7 @@ public class AObjeto
 	}
 	
 	public boolean eliminarCuenta(CuentaImpl cuenta);
+	
 	public boolean actualizarCuenta(CuentaImpl cuenta);
 	
 	//-------------------------------------------------------
@@ -1491,6 +1687,77 @@ public class AObjeto
 		String insert = "INSERT INTO Piezas "
 						+ "(ID, Nombre, Descripcion, Precio) "
 						+ "VALUES (" + ID + ", '" + nombre + "', '" + descripcion + "', " + precio + ");";
+		try 
+		{
+			Statement statement = conexion.createStatement();
+			
+			int filasAfectadas = statement.executeUpdate(insert);
+			
+			if(filasAfectadas > 0)
+				insertado = true;
+		} 
+		catch (SQLServerException e)
+		{
+			throw e;
+		}
+		catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
+		
+		
+		return insertado;
+	}
+	
+	public boolean insertarPiezaEnConfiguracion(PiezaImpl pieza, ConfiguracionImpl configuracion) throws SQLServerException
+	{
+		boolean insertado = false;
+		
+		String insert = "INSERT INTO PiezasConfiguracionCoche "
+					  + "VALUES (" + pieza.getID() + ", '" + configuracion.getID() + "');";
+		try 
+		{
+			Statement statement = conexion.createStatement();
+			
+			int filasAfectadas = statement.executeUpdate(insert);
+			
+			if(filasAfectadas > 0)
+				insertado = true;
+		} 
+		catch (SQLServerException e)
+		{
+			throw e;
+		}
+		catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
+		
+		
+		return insertado;
+	}
+	
+	public boolean insertarPiezasEnConfiguracion(ArrayList<PiezaImpl> piezas, ConfiguracionImpl configuracion) throws SQLServerException
+	{
+		boolean insertado = false;
+		
+		String configuracionID = configuracion.getID();
+		
+		String insert = "INSERT INTO PiezasConfiguracionCoche ";
+		
+		if(!piezas.isEmpty())
+			insert += "\n VALUES ";
+		
+		for(int i = 0 ; i < piezas.size()-1 ; i++)
+		{
+			insert += "\n (" + piezas.get(i).getID() + ", '" + configuracionID + "'),";
+		}
+		
+		if(!piezas.isEmpty())
+		{
+			insert += "\n (" + piezas.get(piezas.size()-1).getID() + ", '" + configuracionID + "')";
+		}
+		
 		try 
 		{
 			Statement statement = conexion.createStatement();
@@ -1743,11 +2010,10 @@ public class AObjeto
 	{
 		MotorImpl motor = null;
 		
-		String consulta = "SELECT pz.ID, Nombre, Descripcion, Precio, Traccion, NumeroVelocidades, Autonomia, Potencia, mot.Tipo FROM Configuraciones AS conf "
-						+ "INNER JOIN PiezasConfiguracionCoche AS pzConf ON pzConf.IDConfiguracion = conf.ID "
-						+ "INNER JOIN Piezas AS pz ON pz.ID = pzConf.IDPieza "
+		String consulta = "SELECT pz.ID, Nombre, Descripcion, Precio, Traccion, NumeroVelocidades, Autonomia, Potencia, mot.Tipo FROM Configuraciones AS confi "
+						+ "INNER JOIN Piezas AS pz ON pz.ID = confi.IDMotor "
 						+ "INNER JOIN Motores AS mot ON mot.IDPieza = pz.ID "
-						+ "WHERE conf.ID = '" + configuracion.getID() + "' AND pz.Tipo = 'motor'";
+						+ "WHERE confi.ID = '" + configuracion.getID() + "'";
 		
 		try
 		{
@@ -1790,10 +2056,10 @@ public class AObjeto
 	{
 		LlantasImpl llantas = null;
 		
-		String consulta = "SELECT ID, Nombre, Descripcion, Precio, Pulgadas FROM PiezasConfiguracionCoche AS pzasConfi "
-						+ "INNER JOIN Piezas AS pzas ON pzas.ID = pzasConfi.IDPieza "
-						+ "INNER JOIN Llantas AS ll ON ll.IDPieza = pzas.ID "
-						+ "WHERE pzasConfi.IDConfiguracion = '" + configuracion.getID() + "'";
+		String consulta = "SELECT pz.ID, Nombre, Descripcion, Precio, Pulgadas FROM Configuraciones AS confi "
+						+ "INNER JOIN Piezas AS pz ON pz.ID = confi.IDLlantas "
+						+ "INNER JOIN Llantas AS pnt ON pnt.IDPieza = pz.ID "
+						+ "WHERE confi.ID = '" + configuracion.getID() + "'";
 		
 		try
 		{
@@ -1832,10 +2098,10 @@ public class AObjeto
 	{
 		PinturaImpl pintura = null;
 		
-		String consulta = "SELECT ID, Nombre, Descripcion, Precio, Color, Acabado FROM PiezasConfiguracionCoche AS pzasConfi " 
-						+ "INNER JOIN Piezas AS pzas ON pzas.ID = pzasConfi.IDPieza " 
-						+ "INNER JOIN Pinturas AS pint ON pint.IDPieza = pzas.ID "
-						+ "WHERE pzasConfi.IDConfiguracion = '" + configuracion.getID() + "'";
+		String consulta = "SELECT pz.ID, Nombre, Descripcion, Precio, Color, Acabado FROM Configuraciones AS confi " 
+						+ "INNER JOIN Piezas AS pz ON pz.ID = confi.IDPintura " 
+						+ "INNER JOIN Pinturas AS pnt ON pnt.IDPieza = pz.ID "
+						+ "WHERE confi.ID = '" + configuracion.getID() + "'";
 		
 		try
 		{
