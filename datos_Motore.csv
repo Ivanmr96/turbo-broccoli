@@ -1,0 +1,9 @@
+IDPieza,Carburante,Traccion,NumeroVelocidades,Consumo,Autonomia,Potencia,Tipo
+3,Gasolina,D,6,"4,8",250,116,G
+10,Diesel,T,6,,300,160,D
+11,,D,0,"4,1",230,122,H
+25,Gasolina,D,6,"6,1",600,136,G
+26,Diesel,D,6,"4,7",700,116,D
+27,Gasolina,4,7,"7,3",550,224,G
+38,Gasolina,D,5,"4,6",700,95,G
+39,Gasolina,D,7,"5,7",700,150,G

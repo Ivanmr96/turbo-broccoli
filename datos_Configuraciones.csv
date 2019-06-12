@@ -1,0 +1,4 @@
+ID,Usuario,Fecha,MarcaCoche,ModeloCoche,IDMotor,IDLlantas,IDPintura
+{137D8ABC-FA8C-458D-891A-25B76CDD96BD},testuser,08/07/2019,Toyota,Prius,,,
+{5E825DA3-140D-4B16-BD28-31B359EA79AA},testuser,09/06/2019,Mercedes,Clase A,,,
+{480C17B8-EEF1-4449-B5D7-E21F90F9752D},testuser,10/06/2019,Toyota,Prius,,,

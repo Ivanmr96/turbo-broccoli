@@ -239,7 +239,7 @@ public class Editor
 		
 		//ConfiguracionImpl configuracion = gestion.obtenerConfiguracion("8722F525-3C36-4A79-B6CA-7DAB14BB23BF");
 		
-		ConfiguracionImpl configuracion = gestion.obtenerConfiguracion("45ABC141-4B82-48B9-A4C5-830A3EC3BE34");
+		ConfiguracionImpl configuracion = gestion.obtenerConfiguracion("5E825DA3-140D-4B16-BD28-31B359EA79AA");
 		
 		//ConfiguracionImpl configuracion = gestion.obtenerConfiguraciones().get(1);
 		
