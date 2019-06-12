@@ -1092,7 +1092,26 @@ public class AObjeto
 		return insertado;
 	}
 	
-	public boolean eliminarConfiguracion(ConfiguracionImpl configuracion);
+	public boolean eliminarConfiguracion(ConfiguracionImpl configuracion)
+	{
+		boolean eliminada = false;
+		
+		String procedimiento = "EXECUTE BorrarConfiguracion @IDConfiguracion = '" + configuracion.getID() +"'";
+		
+		try 
+		{
+			Statement statement = conexion.createStatement();
+			
+			statement.execute(procedimiento);
+			eliminada = true;
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+		
+		return eliminada;
+	}
 	
 	public boolean eliminarPiezasExtraDeConfiguracion(ConfiguracionImpl configuracion)
 	{

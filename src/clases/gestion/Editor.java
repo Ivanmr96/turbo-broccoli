@@ -12,11 +12,42 @@ import clases.basicas.MotorImpl;
 import clases.basicas.PiezaImpl;
 import clases.basicas.PinturaImpl;
 import utils.Utils;
+import utils.Validaciones;
 
 public class Editor 
 {
+	public boolean esNumero(String caracteres)
+	{
+		boolean esNumero;
+		
+		try
+		{
+			Integer.parseInt(caracteres);
+			
+			esNumero = true;
+		}
+		catch(NumberFormatException e)
+		{
+			esNumero = false;
+		}
+		
+		return esNumero;
+	}
+	
 	public PiezaImpl mostrarPiezasConfiguracionYValidarEleccion(ConfiguracionImpl configuracion)
 	{
+		Editor e = new Editor();
+		Validaciones v = new Validaciones("jdbc:sqlserver://localhost;"
+				  + "database=Coches;"
+				  + "user=usuarioCoches;"
+				  + "password=123;");
+		v.abrirConexion();
+		AObjeto gestion = new AObjeto("jdbc:sqlserver://localhost;"
+						  + "database=Coches;"
+						  + "user=usuarioCoches;"
+						  + "password=123;");
+		gestion.abrirConexion();
+		
 		Scanner teclado = new Scanner(System.in);
 		PiezaImpl pieza = null;
 		String opcion;
@@ -59,33 +90,44 @@ public class Editor
 		{
 			System.out.print("Elige una opcion: ");
 			opcion = teclado.next();
+			opcionNumerica = 0;
 			
-			/*if(opcion.equals("M") || opcion.equals("L") || opcion.equals("P"))
-				opcionNumerica = 1;
-			else
-				opcionNumerica = Integer.parseInt(opcion);*/
-			
-			try
+			if(e.esNumero(opcion))
 			{
 				opcionNumerica = Integer.parseInt(opcion);
 				
-				//Es numero
 				if(opcionNumerica < 0 || opcionNumerica > cantidadPiezasExtra)
+				{
 					correcto = false;
+				}
 				else
+				{
 					correcto = true;
+				}
 			}
-			catch(NumberFormatException e)
+			else
 			{
-				//Es letra
 				if(!opcion.equals("M") && !opcion.equals("L") && !opcion.equals("P"))
+				{
 					correcto = false;
+				}
 				else
+				{
 					correcto = true;
+				}
 			}
-				
-		
+			
 		}while(!correcto);
+		
+		ArrayList<PiezaImpl> piezasValidas = gestion.obtenerPiezasValidas(configuracion.obtenerCoche());
+		
+		ArrayList<MotorImpl> motoresValidos = new ArrayList<MotorImpl>();
+		
+		for(PiezaImpl piezaValida:piezasValidas)
+		{
+			if(piezaValida instanceof MotorImpl)
+				motoresValidos.add((MotorImpl)piezaValida);
+		}
 		
 		if(!opcion.equals("M") && !opcion.equals("L") && !opcion.equals("P"))
 			pieza = piezasExtra.get(opcionNumerica-1);
@@ -93,7 +135,11 @@ public class Editor
 			switch(opcion)
 			{
 				case "M": 
-					pieza = configuracion.obtenerMotor();
+					//pieza = configuracion.obtenerMotor();
+					if(configuracion.obtenerMotor() == null)
+						pieza = v.mostrarObjetosYValidarObjetoElegido(motoresValidos);
+					else
+						pieza = configuracion.obtenerMotor();
 					break;
 				case "L":
 					pieza = configuracion.obtenerLlantas();
@@ -121,7 +167,7 @@ public class Editor
 		
 		//ConfiguracionImpl configuracion = gestion.obtenerConfiguracion("8722F525-3C36-4A79-B6CA-7DAB14BB23BF");
 		
-		ConfiguracionImpl configuracion = gestion.obtenerConfiguracion("45ABC141-4B82-48B9-A4C5-830A3EC3BE34");
+		ConfiguracionImpl configuracion = gestion.obtenerConfiguracion("7D5B2482-4411-4A96-AB1B-0BC2E6D5E87C");
 		
 		//ConfiguracionImpl configuracion = gestion.obtenerConfiguraciones().get(1);
 		

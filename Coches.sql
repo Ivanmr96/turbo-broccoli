@@ -121,3 +121,20 @@ CREATE TABLE PiezasCoches
 	CONSTRAINT FK_PiezasCoches_IDPieza FOREIGN KEY (IDPieza) REFERENCES Piezas(ID) ON DELETE CASCADE ON UPDATE CASCADE,
 	CONSTRAINT FK_PiezasCochces_MarcaModeloCoche FOREIGN KEY (MarcaCoche, ModeloCoche) REFERENCES Coches(Marca, Modelo) ON DELETE CASCADE ON UPDATE CASCADE
 )
+
+-- Borra una configuracion en cascada, es decir borra tambien sus votaciones y en la tabla PiezasConfiguracionCoche borra las filas asociadas a dicha configuracion
+GO
+CREATE PROCEDURE BorrarConfiguracion
+	@IDConfiguracion AS uniqueidentifier
+AS
+BEGIN
+	DELETE FROM Votaciones
+	WHERE IDConfiguracion = @IDConfiguracion
+
+	DELETE FROM PiezasConfiguracionCoche
+	WHERE IDConfiguracion = @IDConfiguracion
+
+	DELETE FROM Configuraciones
+	WHERE ID = @IDConfiguracion
+END
+GO

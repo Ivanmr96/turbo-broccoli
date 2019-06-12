@@ -100,15 +100,7 @@ public class GestionTest {
 		
 		//System.out.println(gestion.eliminarPiezasExtraDeConfiguracion(configuracion));
 		
-		ArrayList<PiezaImpl> nuevoPiezasExtra = new ArrayList<PiezaImpl>();
-		
-		nuevoPiezasExtra.add(gestion.obtenerPieza(5));
-		nuevoPiezasExtra.add(gestion.obtenerPieza(7));
-		
-		configuracion.establecerPiezas(nuevoPiezasExtra);
-		
-		System.out.println(gestion.actualizarConfiguracion(configuracion));
-		
+		System.out.println(gestion.eliminarConfiguracion(configuracion));
 	}
 
 }
