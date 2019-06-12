@@ -34,8 +34,10 @@ public class Editor
 		return esNumero;
 	}
 	
-	public PiezaImpl mostrarPiezasConfiguracionYValidarEleccion(ConfiguracionImpl configuracion)
+	public String MostrarMenuEdicionConfiguracionYValidarOpcion(ConfiguracionImpl configuracion)
 	{
+		String opcion;
+		
 		Editor e = new Editor();
 		Validaciones v = new Validaciones("jdbc:sqlserver://localhost;"
 				  + "database=Coches;"
@@ -50,7 +52,6 @@ public class Editor
 		
 		Scanner teclado = new Scanner(System.in);
 		PiezaImpl pieza = null;
-		String opcion;
 		int opcionNumerica;
 		int cantidadPiezasExtra;
 		boolean correcto;
@@ -90,6 +91,7 @@ public class Editor
 		{
 			System.out.print("Elige una opcion: ");
 			opcion = teclado.next();
+			System.out.println();
 			opcionNumerica = 0;
 			
 			if(e.esNumero(opcion))
@@ -107,7 +109,7 @@ public class Editor
 			}
 			else
 			{
-				if(!opcion.equals("M") && !opcion.equals("L") && !opcion.equals("P"))
+				if(!opcion.equals("M") && !opcion.equals("L") && !opcion.equals("P") && !opcion.equals("+"))
 				{
 					correcto = false;
 				}
@@ -119,33 +121,103 @@ public class Editor
 			
 		}while(!correcto);
 		
+		return opcion;
+		
+	}
+	
+	public PiezaImpl mostrarPiezasConfiguracionYValidarEleccion(ConfiguracionImpl configuracion)
+	{
+		Editor e = new Editor();
+		Validaciones v = new Validaciones("jdbc:sqlserver://localhost;"
+				  + "database=Coches;"
+				  + "user=usuarioCoches;"
+				  + "password=123;");
+		v.abrirConexion();
+		AObjeto gestion = new AObjeto("jdbc:sqlserver://localhost;"
+						  + "database=Coches;"
+						  + "user=usuarioCoches;"
+						  + "password=123;");
+		gestion.abrirConexion();
+		
+		Scanner teclado = new Scanner(System.in);
+		PiezaImpl pieza = null;
+		String opcion;
+		
+		opcion = MostrarMenuEdicionConfiguracionYValidarOpcion(configuracion);
+		
 		ArrayList<PiezaImpl> piezasValidas = gestion.obtenerPiezasValidas(configuracion.obtenerCoche());
 		
 		ArrayList<MotorImpl> motoresValidos = new ArrayList<MotorImpl>();
+		ArrayList<LlantasImpl> llantasValidas = new ArrayList<LlantasImpl>();
+		ArrayList<PinturaImpl> pinturasValidas = new ArrayList<PinturaImpl>();
+		ArrayList<PiezaImpl> piezasExtrasValidas = new ArrayList<PiezaImpl>();
 		
 		for(PiezaImpl piezaValida:piezasValidas)
 		{
 			if(piezaValida instanceof MotorImpl)
 				motoresValidos.add((MotorImpl)piezaValida);
+			else if(piezaValida instanceof LlantasImpl)
+				llantasValidas.add((LlantasImpl)piezaValida);
+			else if(piezaValida instanceof PinturaImpl)
+				pinturasValidas.add((PinturaImpl)piezaValida);
+			else
+				piezasExtrasValidas.add(piezaValida);
 		}
 		
-		if(!opcion.equals("M") && !opcion.equals("L") && !opcion.equals("P"))
-			pieza = piezasExtra.get(opcionNumerica-1);
+		ArrayList<PiezaImpl> piezasExtra = configuracion.obtenerPiezas();
+		
+		int cantidadPiezasExtra = piezasExtra.size();
+		
+		if(!opcion.equals("M") && !opcion.equals("L") && !opcion.equals("P") && !opcion.equals("+"))
+		{
+			pieza = piezasExtra.get(Integer.parseInt(opcion)-1);
+			configuracion.eliminarPiezaExtra(pieza);
+		}
 		else
 			switch(opcion)
 			{
 				case "M": 
 					//pieza = configuracion.obtenerMotor();
 					if(configuracion.obtenerMotor() == null)
+					{
+						System.out.println("MOTORES DISPONIBLES");
 						pieza = v.mostrarObjetosYValidarObjetoElegido(motoresValidos);
+						System.out.println();
+						configuracion.establecerMotor((MotorImpl)pieza);
+					}
 					else
 						pieza = configuracion.obtenerMotor();
 					break;
 				case "L":
-					pieza = configuracion.obtenerLlantas();
+					if(configuracion.obtenerLlantas() == null)
+					{
+						System.out.println("LLANTAS DISPONIBLES");
+						pieza = v.mostrarObjetosYValidarObjetoElegido(llantasValidas);
+						System.out.println();
+						configuracion.establecerLlantas((LlantasImpl)pieza);
+					}
+					else
+						pieza = configuracion.obtenerLlantas();
 					break;
 				case "P":
-					pieza = configuracion.obtenerPintura();
+					if(configuracion.obtenerPintura() == null)
+					{
+						System.out.println("PINTURAS DISPONIBLES");
+						pieza = v.mostrarObjetosYValidarObjetoElegido(pinturasValidas);
+						System.out.println();
+						configuracion.establecerPintura((PinturaImpl)pieza);
+					}
+					else
+						pieza = configuracion.obtenerPintura();
+					break;
+				case "+":
+					System.out.println("PIEZAS EXTRA DISPONIBLES");
+					gestion.cargarPiezasValidasEnCoche(configuracion.obtenerCoche());
+					pieza = v.mostrarObjetosYValidarObjetoElegido(piezasExtrasValidas);
+					if(pieza != null)
+						configuracion.anhadirPiezaExtra(pieza);
+					System.out.println();
+					
 					break;
 			}
 		
@@ -167,15 +239,18 @@ public class Editor
 		
 		//ConfiguracionImpl configuracion = gestion.obtenerConfiguracion("8722F525-3C36-4A79-B6CA-7DAB14BB23BF");
 		
-		ConfiguracionImpl configuracion = gestion.obtenerConfiguracion("7D5B2482-4411-4A96-AB1B-0BC2E6D5E87C");
+		ConfiguracionImpl configuracion = gestion.obtenerConfiguracion("45ABC141-4B82-48B9-A4C5-830A3EC3BE34");
 		
 		//ConfiguracionImpl configuracion = gestion.obtenerConfiguraciones().get(1);
 		
 		gestion.cargarRelacionesEnConfiguracion(configuracion);
 		
 		Editor ed = new Editor();
-		
-		PiezaImpl pz = ed.mostrarPiezasConfiguracionYValidarEleccion(configuracion);
+		PiezaImpl pz = null;
+		do
+		{
+			pz = ed.mostrarPiezasConfiguracionYValidarEleccion(configuracion);
+		}while(pz != null);
 		
 		System.out.println(pz.getNombre());
 		

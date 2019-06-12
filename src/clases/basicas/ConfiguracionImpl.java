@@ -100,6 +100,38 @@ public class ConfiguracionImpl
 	public void establecerLlantas(LlantasImpl llantas) { this.llantas = llantas; }
 	public void establecerPintura(PinturaImpl pintura) { this.pintura = pintura; }
 	
+	public void anhadirPiezaExtra(PiezaImpl pieza)
+	{
+		int IDPieza = pieza.getID();
+		boolean repetida = false;
+		
+		for(int i = 0 ; i < piezas.size() && repetida == false; i++)
+		{
+			if(piezas.get(i).getID() == IDPieza)
+				repetida = true;
+		}
+		
+		if(!repetida)
+			this.piezas.add(pieza);
+	}
+	
+	public void eliminarPiezaExtra(PiezaImpl pieza)
+	{
+		int IDPieza = pieza.getID();
+		
+		int index = -1;
+		
+		
+		for(int i = 0 ; i < piezas.size() && index == -1 ; i++)
+		{
+			if(piezas.get(i).getID() == IDPieza)
+				index = i;
+		}
+		
+		if(index > -1)
+			this.piezas.remove(index);
+	}
+	
 	
 	public double obtenerPrecioTotal()
 	{
