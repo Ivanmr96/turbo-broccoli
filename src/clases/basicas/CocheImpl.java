@@ -76,6 +76,65 @@ public class CocheImpl implements Coche
 	
 	public ArrayList<PiezaImpl> obtenerPiezasValidas() { return this.piezasValidas; }
 	
+	public ArrayList<PiezaImpl> obtenerPiezasExtraValidas() 
+	{
+		ArrayList<PiezaImpl> piezasExtraValidas = new ArrayList<PiezaImpl>();
+		
+		for(PiezaImpl pieza:piezasValidas)
+		{
+			if(!(pieza instanceof MotorImpl) && 
+			   !(pieza instanceof LlantasImpl) && 
+			   !(pieza instanceof PinturaImpl))
+			{	
+				piezasExtraValidas.add(pieza);
+			}
+		}
+		
+		return piezasExtraValidas;
+	}
+	
+	public ArrayList<MotorImpl> obtenerMotoresValidos()
+	{
+		ArrayList<MotorImpl> motoresValidos = new ArrayList<MotorImpl>();
+		
+		for(PiezaImpl pieza:piezasValidas) 
+		{
+			if(pieza instanceof MotorImpl) 
+				motoresValidos.add((MotorImpl)pieza);
+		}
+
+		
+		return motoresValidos;
+	}
+	
+	public ArrayList<LlantasImpl> obtenerLlantasValidas()
+	{
+		ArrayList<LlantasImpl> llantasValidas = new ArrayList<LlantasImpl>();
+		
+		for(PiezaImpl pieza:piezasValidas) 
+		{
+			if(pieza instanceof LlantasImpl) 
+				llantasValidas.add((LlantasImpl)pieza);
+		}
+
+		
+		return llantasValidas;
+	}
+	
+	public ArrayList<PinturaImpl> obtenerPinturasValidas()
+	{
+		ArrayList<PinturaImpl> pinturasValidas = new ArrayList<PinturaImpl>();
+		
+		for(PiezaImpl pieza:piezasValidas) 
+		{
+			if(pieza instanceof PinturaImpl) 
+				pinturasValidas.add((PinturaImpl)pieza);
+		}
+
+		
+		return pinturasValidas;
+	}
+	
 	public void establecerPiezasValidas(ArrayList<PiezaImpl> piezasValidas) { this.piezasValidas = piezasValidas; }
 	
 	@Override

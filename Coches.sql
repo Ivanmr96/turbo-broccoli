@@ -24,7 +24,7 @@ CREATE TABLE Coches
 CREATE TABLE Piezas
 (
 	ID int,
-	Nombre varchar(30),
+	Nombre varchar(max),
 	Descripcion varchar(max),
 	Precio smallmoney,
 	Tipo varchar(10),
@@ -122,8 +122,8 @@ CREATE TABLE PiezasCoches
 	CONSTRAINT FK_PiezasCochces_MarcaModeloCoche FOREIGN KEY (MarcaCoche, ModeloCoche) REFERENCES Coches(Marca, Modelo) ON DELETE CASCADE ON UPDATE CASCADE
 )
 
--- Borra una configuracion en cascada, es decir borra tambien sus votaciones y en la tabla PiezasConfiguracionCoche borra las filas asociadas a dicha configuracion
 GO
+-- Borra una configuracion en cascada, es decir borra tambien sus votaciones y en la tabla PiezasConfiguracionCoche borra las filas asociadas a dicha configuracion
 CREATE PROCEDURE BorrarConfiguracion
 	@IDConfiguracion AS uniqueidentifier
 AS

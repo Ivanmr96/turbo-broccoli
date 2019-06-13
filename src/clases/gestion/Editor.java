@@ -127,6 +127,9 @@ public class Editor
 	
 	public PiezaImpl mostrarPiezasConfiguracionYValidarEleccion(ConfiguracionImpl configuracion)
 	{
+		//ArrayList<PiezaImpl> piezasValidas = configuracion.obtenerCoche().obtenerPiezasValidas();
+		CocheImpl coche = configuracion.obtenerCoche();
+		
 		Editor e = new Editor();
 		Validaciones v = new Validaciones("jdbc:sqlserver://localhost;"
 				  + "database=Coches;"
@@ -146,11 +149,19 @@ public class Editor
 		opcion = MostrarMenuEdicionConfiguracionYValidarOpcion(configuracion);
 		
 		ArrayList<PiezaImpl> piezasValidas = gestion.obtenerPiezasValidas(configuracion.obtenerCoche());
+		//ArrayList<PiezaImpl> piezasValidas = coche.obtenerPiezasValidas();
 		
 		ArrayList<MotorImpl> motoresValidos = new ArrayList<MotorImpl>();
+		//ArrayList<MotorImpl> motoresValidos = coche.obtenerMotoresValidos();
+		
 		ArrayList<LlantasImpl> llantasValidas = new ArrayList<LlantasImpl>();
+		//ArrayList<LlantasImpl> llantasValidas = coche.obtenerLlantasValidas();
+		
 		ArrayList<PinturaImpl> pinturasValidas = new ArrayList<PinturaImpl>();
+		//ArrayList<PinturaImpl> pinturasValidas = coche.obtenerPinturasValidas();
+		
 		ArrayList<PiezaImpl> piezasExtrasValidas = new ArrayList<PiezaImpl>();
+		//ArrayList<PiezaImpl> piezasExtrasValidas = coche.obtenerPiezasExtraValidas();
 		
 		for(PiezaImpl piezaValida:piezasValidas)
 		{
@@ -233,13 +244,11 @@ public class Editor
 		AObjeto gestion = new AObjeto(URLConexion);
 		gestion.abrirConexion();
 		
-		
-		
 		//System.out.println(gestion.existeConfiguracion(new ConfiguracionImpl("5E825DA3-140D-4B16-BD28-31B359EA79AA", new GregorianCalendar())));
 		
 		//ConfiguracionImpl configuracion = gestion.obtenerConfiguracion("8722F525-3C36-4A79-B6CA-7DAB14BB23BF");
 		
-		ConfiguracionImpl configuracion = gestion.obtenerConfiguracion("5E825DA3-140D-4B16-BD28-31B359EA79AA");
+		ConfiguracionImpl configuracion = gestion.obtenerConfiguracion("098D14F3-4354-4E65-9DA2-2246AABFA9AF");
 		
 		//ConfiguracionImpl configuracion = gestion.obtenerConfiguraciones().get(1);
 		
