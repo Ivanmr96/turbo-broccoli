@@ -97,7 +97,7 @@ public class ConfiguradorCoches
 		int opcionMenuPrincipal, opcionSesion, opcionSubMenuConfiguracionElegida, opcionMenuConfiguracionesComunidad, opcionMenuConfiguracionComunidadElegida;
 		CocheImpl opcionCoche, coche;
 		CuentaImpl cuentaSesion, cuentaBuscar;
-		char confirmado;
+		char confirmado, confirmadoEliminarConfiguracion;
 		String usuario, contrasena, marca, modelo;
 		ConfiguracionImpl configuracionNueva, opcionConfiguracionPropia, configuracionComunidadElegida;
 		VotacionImpl calificacion;
@@ -173,17 +173,46 @@ public class ConfiguradorCoches
 										{
 											//Mostrar estadisticas
 											System.out.println(opcionConfiguracionPropia.getFecha().getTime());
+											confirmadoEliminarConfiguracion = 'N';
 											
 											//Mostrar submenuConfiguracionElegida y validar opcion elegida
 											opcionSubMenuConfiguracionElegida = validacion.mostrarSubMenuConfiguracionElegidaYValidarOpcion();
 											
 											while(opcionSubMenuConfiguracionElegida != 0)
 											{
-												//Modulo editar configuracion
+												switch(opcionSubMenuConfiguracionElegida)
+												{
+													case 1:
+														//Editar configuracion
+														break;
+													case 2:
+														//Borrar configuracion
+														do
+														{
+															System.out.println("Estas seguro que quieres borrar la configuracion?(S/N): ");
+															confirmadoEliminarConfiguracion = Character.toUpperCase(teclado.next().charAt(0));
+														}while(confirmadoEliminarConfiguracion != 'S' && confirmadoEliminarConfiguracion != 'N');
+														
+														if(confirmadoEliminarConfiguracion == 'S')
+														{
+															gestion.eliminarConfiguracion(opcionConfiguracionPropia);
+															System.out.println("configuracion borrada con exito");
+														}
+														
+														break;
+												}
 												
-												opcionSubMenuConfiguracionElegida = validacion.mostrarSubMenuConfiguracionElegidaYValidarOpcion();
+												if(confirmadoEliminarConfiguracion == 'N')
+													opcionSubMenuConfiguracionElegida = validacion.mostrarSubMenuConfiguracionElegidaYValidarOpcion();
+												else
+													opcionSubMenuConfiguracionElegida = 0;
 											}
 											
+											configuraciones = gestion.obtenerConfiguraciones(cuentaSesion);
+											for(ConfiguracionImpl configuracion:configuraciones)
+											{
+												gestion.cargarRelacionesEnConfiguracion(configuracion);
+											}
 											opcionConfiguracionPropia = validacion.mostrarObjetosYValidarObjetoElegido(configuraciones);
 										}
 										

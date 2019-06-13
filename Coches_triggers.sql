@@ -38,19 +38,22 @@ SELECT IDPieza FROM PiezasConfiguracionCoche AS INS
 
 ROLLBACK
 
-
+GO
 --Trigger para que un usuario no pueda votar una configuracion realizada por él mismo
 CREATE TRIGGER VotacionUsuarioDiferente ON Votaciones
 AFTER INSERT, UPDATE
 AS
 BEGIN
 
-	
+	IF EXISTS( (SELECT ins.ID FROM inserted AS ins
+	INNER JOIN Configuraciones AS Conf ON Conf.ID = ins.IDConfiguracion
+	WHERE ins.Usuario = Conf.Usuario) )
+	BEGIN
+
+		RAISERROR('Un usuario no puede votar una configuracion propia', 16, 1)
+		ROLLBACK
+
+	END --IF
 
 END --TRIGGER
-
---Trigger para que una configuracion solo pueda tener un motor
-
---Trigger para que una configuracion solo pueda tener unas llantas
-
---Trigger para que una configuracion solo pueda tener una pintura
+GO

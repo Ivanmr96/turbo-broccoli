@@ -61,6 +61,8 @@ public class Editor
 		
 		System.out.println("Editando " + coche.getMarca() + " " + coche.getModelo());
 		
+		System.out.println("0) Volver atras");
+		
 		if(configuracion.obtenerMotor() != null)
 			System.out.println("M) Motor: " + configuracion.obtenerMotor().getNombre());
 		else
@@ -130,6 +132,7 @@ public class Editor
 		//ArrayList<PiezaImpl> piezasValidas = configuracion.obtenerCoche().obtenerPiezasValidas();
 		CocheImpl coche = configuracion.obtenerCoche();
 		
+		
 		Editor e = new Editor();
 		Validaciones v = new Validaciones("jdbc:sqlserver://localhost;"
 				  + "database=Coches;"
@@ -142,57 +145,34 @@ public class Editor
 						  + "password=123;");
 		gestion.abrirConexion();
 		
+		gestion.cargarPiezasValidasEnCoche(coche);
+		
 		Scanner teclado = new Scanner(System.in);
 		PiezaImpl pieza = null;
 		String opcion;
 		
 		opcion = MostrarMenuEdicionConfiguracionYValidarOpcion(configuracion);
-		
-		ArrayList<PiezaImpl> piezasValidas = gestion.obtenerPiezasValidas(configuracion.obtenerCoche());
-		//ArrayList<PiezaImpl> piezasValidas = coche.obtenerPiezasValidas();
-		
-		ArrayList<MotorImpl> motoresValidos = new ArrayList<MotorImpl>();
-		//ArrayList<MotorImpl> motoresValidos = coche.obtenerMotoresValidos();
-		
-		ArrayList<LlantasImpl> llantasValidas = new ArrayList<LlantasImpl>();
-		//ArrayList<LlantasImpl> llantasValidas = coche.obtenerLlantasValidas();
-		
-		ArrayList<PinturaImpl> pinturasValidas = new ArrayList<PinturaImpl>();
-		//ArrayList<PinturaImpl> pinturasValidas = coche.obtenerPinturasValidas();
-		
-		ArrayList<PiezaImpl> piezasExtrasValidas = new ArrayList<PiezaImpl>();
-		//ArrayList<PiezaImpl> piezasExtrasValidas = coche.obtenerPiezasExtraValidas();
-		
-		for(PiezaImpl piezaValida:piezasValidas)
-		{
-			if(piezaValida instanceof MotorImpl)
-				motoresValidos.add((MotorImpl)piezaValida);
-			else if(piezaValida instanceof LlantasImpl)
-				llantasValidas.add((LlantasImpl)piezaValida);
-			else if(piezaValida instanceof PinturaImpl)
-				pinturasValidas.add((PinturaImpl)piezaValida);
-			else
-				piezasExtrasValidas.add(piezaValida);
-		}
-		
+
 		ArrayList<PiezaImpl> piezasExtra = configuracion.obtenerPiezas();
-		
-		int cantidadPiezasExtra = piezasExtra.size();
 		
 		if(!opcion.equals("M") && !opcion.equals("L") && !opcion.equals("P") && !opcion.equals("+"))
 		{
-			pieza = piezasExtra.get(Integer.parseInt(opcion)-1);
-			configuracion.eliminarPiezaExtra(pieza);
+			if(Integer.parseInt(opcion) > 0) 
+			{
+				pieza = piezasExtra.get(Integer.parseInt(opcion)-1);
+				configuracion.eliminarPiezaExtra(pieza);
+			}
+			else
+				pieza = null;
 		}
 		else
 			switch(opcion)
 			{
 				case "M": 
-					//pieza = configuracion.obtenerMotor();
 					if(configuracion.obtenerMotor() == null)
 					{
 						System.out.println("MOTORES DISPONIBLES");
-						pieza = v.mostrarObjetosYValidarObjetoElegido(motoresValidos);
+						pieza = v.mostrarObjetosYValidarObjetoElegido(coche.obtenerMotoresValidos());
 						System.out.println();
 						configuracion.establecerMotor((MotorImpl)pieza);
 					}
@@ -203,7 +183,7 @@ public class Editor
 					if(configuracion.obtenerLlantas() == null)
 					{
 						System.out.println("LLANTAS DISPONIBLES");
-						pieza = v.mostrarObjetosYValidarObjetoElegido(llantasValidas);
+						pieza = v.mostrarObjetosYValidarObjetoElegido(coche.obtenerLlantasValidas());
 						System.out.println();
 						configuracion.establecerLlantas((LlantasImpl)pieza);
 					}
@@ -214,7 +194,7 @@ public class Editor
 					if(configuracion.obtenerPintura() == null)
 					{
 						System.out.println("PINTURAS DISPONIBLES");
-						pieza = v.mostrarObjetosYValidarObjetoElegido(pinturasValidas);
+						pieza = v.mostrarObjetosYValidarObjetoElegido(coche.obtenerPinturasValidas());
 						System.out.println();
 						configuracion.establecerPintura((PinturaImpl)pieza);
 					}
@@ -224,7 +204,7 @@ public class Editor
 				case "+":
 					System.out.println("PIEZAS EXTRA DISPONIBLES");
 					gestion.cargarPiezasValidasEnCoche(configuracion.obtenerCoche());
-					pieza = v.mostrarObjetosYValidarObjetoElegido(piezasExtrasValidas);
+					pieza = v.mostrarObjetosYValidarObjetoElegido(coche.obtenerPiezasExtraValidas());
 					if(pieza != null)
 						configuracion.anhadirPiezaExtra(pieza);
 					System.out.println();
@@ -244,13 +224,8 @@ public class Editor
 		AObjeto gestion = new AObjeto(URLConexion);
 		gestion.abrirConexion();
 		
-		//System.out.println(gestion.existeConfiguracion(new ConfiguracionImpl("5E825DA3-140D-4B16-BD28-31B359EA79AA", new GregorianCalendar())));
+		ConfiguracionImpl configuracion = gestion.obtenerConfiguracion("7D5B2482-4411-4A96-AB1B-0BC2E6D5E87C");
 		
-		//ConfiguracionImpl configuracion = gestion.obtenerConfiguracion("8722F525-3C36-4A79-B6CA-7DAB14BB23BF");
-		
-		ConfiguracionImpl configuracion = gestion.obtenerConfiguracion("098D14F3-4354-4E65-9DA2-2246AABFA9AF");
-		
-		//ConfiguracionImpl configuracion = gestion.obtenerConfiguraciones().get(1);
 		
 		gestion.cargarRelacionesEnConfiguracion(configuracion);
 		

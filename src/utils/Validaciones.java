@@ -166,8 +166,17 @@ public class Validaciones
 	public int mostrarSubMenuConfiguracionElegidaYValidarOpcion()
 	{
 		int opcion;
+		Scanner teclado = new Scanner(System.in);
 		
-		opcion = 0;
+		System.out.println("0) Volver atras");
+		System.out.println("1) Editar configurcion");
+		System.out.println("2) Borrar configuracion");
+		
+		do
+		{
+			System.out.println("Elige una opcion: ");
+			opcion = teclado.nextInt();
+		}while(opcion < 0 || opcion > 2);
 		
 		return opcion;
 	}
