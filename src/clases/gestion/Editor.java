@@ -38,18 +38,6 @@ public class Editor
 	{
 		String opcion;
 		
-		Editor e = new Editor();
-		Validaciones v = new Validaciones("jdbc:sqlserver://localhost;"
-				  + "database=Coches;"
-				  + "user=usuarioCoches;"
-				  + "password=123;");
-		v.abrirConexion();
-		AObjeto gestion = new AObjeto("jdbc:sqlserver://localhost;"
-						  + "database=Coches;"
-						  + "user=usuarioCoches;"
-						  + "password=123;");
-		gestion.abrirConexion();
-		
 		Scanner teclado = new Scanner(System.in);
 		PiezaImpl pieza = null;
 		int opcionNumerica;
@@ -96,7 +84,7 @@ public class Editor
 			System.out.println();
 			opcionNumerica = 0;
 			
-			if(e.esNumero(opcion))
+			if(esNumero(opcion))
 			{
 				opcionNumerica = Integer.parseInt(opcion);
 				
@@ -224,7 +212,7 @@ public class Editor
 		AObjeto gestion = new AObjeto(URLConexion);
 		gestion.abrirConexion();
 		
-		ConfiguracionImpl configuracion = gestion.obtenerConfiguracion("7D5B2482-4411-4A96-AB1B-0BC2E6D5E87C");
+		ConfiguracionImpl configuracion = gestion.obtenerConfiguracion("97D86E81-491B-46FE-9BBD-BC6D54520FFA");
 		
 		
 		gestion.cargarRelacionesEnConfiguracion(configuracion);

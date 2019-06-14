@@ -1193,9 +1193,15 @@ public class AObjeto
 	{
 		boolean actualizado = false;
 		int filasAfectadas;
+		String IDLlantas;
+		
+		if(configuracion.obtenerLlantas() != null)
+			IDLlantas = String.valueOf(configuracion.obtenerLlantas().getID());
+		else
+			IDLlantas= "NULL";
 		
 		String updateConfiguracion = "UPDATE Configuraciones "
-								   + "SET IDLlantas = " + configuracion.obtenerLlantas().getID();
+								   + "SET IDLlantas = " + IDLlantas;
 		
 		try
 		{
@@ -1210,7 +1216,7 @@ public class AObjeto
 		{
 			e.printStackTrace();
 		}
-		
+
 		return actualizado;
 	}
 	
@@ -1229,9 +1235,15 @@ public class AObjeto
 	{
 		boolean actualizado = false;
 		int filasAfectadas;
+		String IDPintura;
+		
+		if(configuracion.obtenerPintura() != null)
+			IDPintura = String.valueOf(configuracion.obtenerPintura().getID());
+		else
+			IDPintura= "NULL";
 		
 		String updateConfiguracion = "UPDATE Configuraciones "
-								   + "SET IDPintura = " + configuracion.obtenerPintura().getID();
+								   + "SET IDPintura = " + IDPintura;
 		
 		try
 		{
@@ -1762,39 +1774,41 @@ public class AObjeto
 		
 		String configuracionID = configuracion.getID();
 		
-		String insert = "INSERT INTO PiezasConfiguracionCoche ";
-		
-		if(!piezas.isEmpty())
-			insert += "\n VALUES ";
-		
-		for(int i = 0 ; i < piezas.size()-1 ; i++)
+		if(piezas.size() > 0)
 		{
-			insert += "\n (" + piezas.get(i).getID() + ", '" + configuracionID + "'),";
-		}
-		
-		if(!piezas.isEmpty())
-		{
-			insert += "\n (" + piezas.get(piezas.size()-1).getID() + ", '" + configuracionID + "')";
-		}
-		
-		try 
-		{
-			Statement statement = conexion.createStatement();
+			String insert = "INSERT INTO PiezasConfiguracionCoche ";
 			
-			int filasAfectadas = statement.executeUpdate(insert);
+			if(!piezas.isEmpty())
+				insert += "\n VALUES ";
 			
-			if(filasAfectadas > 0)
-				insertado = true;
-		} 
-		catch (SQLServerException e)
-		{
-			throw e;
+			for(int i = 0 ; i < piezas.size()-1 ; i++)
+			{
+				insert += "\n (" + piezas.get(i).getID() + ", '" + configuracionID + "'),";
+			}
+			
+			if(!piezas.isEmpty())
+			{
+				insert += "\n (" + piezas.get(piezas.size()-1).getID() + ", '" + configuracionID + "')";
+			}
+			
+			try 
+			{
+				Statement statement = conexion.createStatement();
+				
+				int filasAfectadas = statement.executeUpdate(insert);
+				
+				if(filasAfectadas > 0)
+					insertado = true;
+			} 
+			catch (SQLServerException e)
+			{
+				throw e;
+			}
+			catch (SQLException e) 
+			{
+				e.printStackTrace();
+			}
 		}
-		catch (SQLException e) 
-		{
-			e.printStackTrace();
-		}
-		
 		
 		return insertado;
 	}

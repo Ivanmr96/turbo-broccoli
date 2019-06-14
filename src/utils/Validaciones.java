@@ -7,6 +7,10 @@ import java.util.Scanner;
 import clases.basicas.CocheImpl;
 import clases.basicas.ConfiguracionImpl;
 import clases.basicas.CuentaImpl;
+import clases.basicas.LlantasImpl;
+import clases.basicas.MotorImpl;
+import clases.basicas.PiezaImpl;
+import clases.basicas.PinturaImpl;
 import clases.basicas.VotacionImpl;
 import clases.gestion.AObjeto;
 
@@ -271,6 +275,167 @@ public class Validaciones
 		GregorianCalendar fecha = null;
 		
 		return fecha;
+	}
+	
+	public String MostrarMenuEdicionConfiguracionYValidarOpcion(ConfiguracionImpl configuracion)
+	{
+		String opcion;
+		Utils utils = new Utils();
+		Scanner teclado = new Scanner(System.in);
+		PiezaImpl pieza = null;
+		int opcionNumerica;
+		int cantidadPiezasExtra;
+		boolean correcto;
+		
+		//CocheImpl coche = gestion.obtenerCoche(configuracion);
+		CocheImpl coche = configuracion.obtenerCoche();
+		
+		System.out.println("Editando " + coche.getMarca() + " " + coche.getModelo());
+		
+		System.out.println("0) Volver atras");
+		
+		if(configuracion.obtenerMotor() != null)
+			System.out.println("M) Motor: " + configuracion.obtenerMotor().getNombre());
+		else
+			System.out.println("M) Motor: Elige uno!");
+		
+		if(configuracion.obtenerLlantas() != null)
+			System.out.println("L) Llantas: " + configuracion.obtenerLlantas().getNombre());
+		else
+			System.out.println("L) Llantas: Elige unas!");
+		
+		if(configuracion.obtenerPintura() != null)
+			System.out.println("P) Pintura: " + configuracion.obtenerPintura().getNombre());
+		else
+			System.out.println("P) Pintura: Elige una!");
+		
+		ArrayList<PiezaImpl> piezasExtra = configuracion.obtenerPiezas();
+		
+		cantidadPiezasExtra = piezasExtra.size();
+		
+		for(int i = 0 ; i < piezasExtra.size() ; i++ )
+		{
+			System.out.println((i+1) + ") Eliminar " + piezasExtra.get(i).getNombre());
+		}
+		
+		System.out.println("+) Añade una pieza extra");
+		
+		do
+		{
+			System.out.print("Elige una opcion: ");
+			opcion = teclado.next();
+			System.out.println();
+			opcionNumerica = 0;
+			
+			if(utils.esNumero(opcion))
+			{
+				opcionNumerica = Integer.parseInt(opcion);
+				
+				if(opcionNumerica < 0 || opcionNumerica > cantidadPiezasExtra)
+				{
+					correcto = false;
+				}
+				else
+				{
+					correcto = true;
+				}
+			}
+			else
+			{
+				if(!opcion.equals("M") && !opcion.equals("L") && !opcion.equals("P") && !opcion.equals("+"))
+				{
+					correcto = false;
+				}
+				else
+				{
+					correcto = true;
+				}
+			}
+			
+		}while(!correcto);
+		
+		return opcion;
+	}
+	
+	public PiezaImpl mostrarMotoresDisponiblesYEstablecerMotorEnConfiguracion(ConfiguracionImpl configuracion)
+	{
+		PiezaImpl piezaElegida;
+		if(configuracion.obtenerMotor() == null)
+		{
+			System.out.println("MOTORES DISPONIBLES");
+			//piezaElegida = mostrarObjetosYValidarObjetoElegido(cocheEdicionConfiguracion.obtenerMotoresValidos());
+			piezaElegida = mostrarObjetosYValidarObjetoElegido(configuracion.obtenerCoche().obtenerMotoresValidos());
+			System.out.println();
+			configuracion.establecerMotor((MotorImpl)piezaElegida);
+		}
+		else
+			piezaElegida = configuracion.obtenerMotor();
+		
+		return piezaElegida;
+	}
+	
+	public PiezaImpl mostrarLlantasDisponiblesYEstablecerLlantasEnConfiguracion(ConfiguracionImpl configuracion)
+	{
+		PiezaImpl piezaElegida;
+		
+		if(configuracion.obtenerLlantas() == null)
+		{
+			System.out.println("LLANTAS DISPONIBLES");
+			piezaElegida = mostrarObjetosYValidarObjetoElegido(configuracion.obtenerCoche().obtenerLlantasValidas());
+			System.out.println();
+			configuracion.establecerLlantas((LlantasImpl)piezaElegida);
+		}
+		else
+			piezaElegida = configuracion.obtenerLlantas();
+		
+		return piezaElegida;
+	}
+	
+	public PiezaImpl mostrarPinturasDisponiblesYEstablecerPinturasEnConfiguracion(ConfiguracionImpl configuracion)
+	{
+		PiezaImpl piezaElegida;
+		
+		if(configuracion.obtenerPintura() == null)
+		{
+			System.out.println("PINTURAS DISPONIBLES");
+			piezaElegida = mostrarObjetosYValidarObjetoElegido(configuracion.obtenerCoche().obtenerPinturasValidas());
+			System.out.println();
+			configuracion.establecerPintura((PinturaImpl)piezaElegida);
+		}
+		else
+			piezaElegida = configuracion.obtenerPintura();
+		
+		return piezaElegida;
+	}
+	
+	public PiezaImpl mostrarPiezasExtraDisponiblesYObtenerEleccion(ConfiguracionImpl configuracion)
+	{
+		PiezaImpl piezaElegida;
+		
+		System.out.println("PIEZAS EXTRA DISPONIBLES");
+		gestion.cargarPiezasValidasEnCoche(configuracion.obtenerCoche());
+		piezaElegida = mostrarObjetosYValidarObjetoElegido(configuracion.obtenerCoche().obtenerPiezasExtraValidas());
+		
+		if(piezaElegida != null)
+			configuracion.anhadirPiezaExtra(piezaElegida);
+		System.out.println();
+		
+		return piezaElegida;
+	}
+	
+	public char confirmarGuardarConfiguracion()
+	{
+		char confirmarGuardarConfiguracion;
+		Scanner teclado = new Scanner(System.in);
+		
+		do
+		{
+			System.out.println("Quieres guardar la configuracion?(S/N)");
+			confirmarGuardarConfiguracion = Character.toUpperCase(teclado.next().charAt(0));
+			
+		}while(confirmarGuardarConfiguracion != 'S' && confirmarGuardarConfiguracion != 'N');
+		
+		return confirmarGuardarConfiguracion;
 	}
 	
 	public static void main(String[] args)

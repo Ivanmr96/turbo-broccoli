@@ -88,6 +88,24 @@ public class Utils
 		return md5;
 	}
 	
+	public boolean esNumero(String caracteres)
+	{
+		boolean esNumero;
+		
+		try
+		{
+			Integer.parseInt(caracteres);
+			
+			esNumero = true;
+		}
+		catch(NumberFormatException e)
+		{
+			esNumero = false;
+		}
+		
+		return esNumero;
+	}
+	
 	public String formatearFecha(GregorianCalendar fecha)
 	{
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
