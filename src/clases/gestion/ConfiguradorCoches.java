@@ -197,7 +197,9 @@ public class ConfiguradorCoches
 															cocheEdicionConfiguracion = opcionConfiguracionPropia.obtenerCoche();
 															gestion.cargarPiezasValidasEnCoche(cocheEdicionConfiguracion);
 															
-															if(!opcionMenuConfiguracion.equals("M") && !opcionMenuConfiguracion.equals("L") && !opcionMenuConfiguracion.equals("P") && !opcionMenuConfiguracion.equals("+"))
+															//TODO Ver si esto ese puede meter en el switch de abajo
+															if(utils.esNumero(opcionMenuConfiguracion))
+															//if(!opcionMenuConfiguracion.equals("M") && !opcionMenuConfiguracion.equals("L") && !opcionMenuConfiguracion.equals("P") && !opcionMenuConfiguracion.equals("+"))
 															{
 																if(Integer.parseInt(opcionMenuConfiguracion) > 0)
 																{
@@ -211,16 +213,20 @@ public class ConfiguradorCoches
 																switch(opcionMenuConfiguracion)
 																{
 																	case "M": 
-																		piezaElegidaEdicion = validacion.mostrarMotoresDisponiblesYEstablecerMotorEnConfiguracion(opcionConfiguracionPropia);
+																		piezaElegidaEdicion = validacion.mostrarMotoresDisponiblesYElegirMotor(opcionConfiguracionPropia);
+																		opcionConfiguracionPropia.establecerMotor((MotorImpl)piezaElegidaEdicion);
 																		break;
 																	case "L":
-																		piezaElegidaEdicion = validacion.mostrarLlantasDisponiblesYEstablecerLlantasEnConfiguracion(opcionConfiguracionPropia);
+																		piezaElegidaEdicion = validacion.mostrarLlantasDisponiblesYElegirLlantas(opcionConfiguracionPropia);
+																		opcionConfiguracionPropia.establecerLlantas((LlantasImpl)piezaElegidaEdicion);
 																		break;
 																	case "P":
-																		piezaElegidaEdicion = validacion.mostrarPinturasDisponiblesYEstablecerPinturasEnConfiguracion(opcionConfiguracionPropia);
+																		piezaElegidaEdicion = validacion.mostrarPinturasDisponiblesYElegirPintura(opcionConfiguracionPropia);
+																		opcionConfiguracionPropia.establecerPintura((PinturaImpl)piezaElegidaEdicion);
 																		break;
 																	case "+":
-																		piezaElegidaEdicion = validacion.mostrarPiezasExtraDisponiblesYObtenerEleccion(opcionConfiguracionPropia);
+																		piezaElegidaEdicion = validacion.mostrarPiezasExtraDisponiblesYElegirPiezaExtra(opcionConfiguracionPropia);
+																		opcionConfiguracionPropia.anhadirPiezaExtra(piezaElegidaEdicion);
 																		break;
 																}
 															

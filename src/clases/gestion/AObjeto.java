@@ -730,7 +730,7 @@ public class AObjeto
 						+ "INNER JOIN PiezasConfiguracionCoche AS PzConf ON PzConf.IDConfiguracion = conf.ID "
 						+ "INNER JOIN Piezas AS pz ON pz.ID = PzConf.IDPieza "
 						+ "WHERE conf.ID = '" + configuracion.getID() + "' "
-						+ "AND Tipo NOT IN ('motor', 'llantas', 'pintura') OR Tipo IS NULL";
+						+ "AND Tipo NOT IN ('motor', 'llantas', 'pintura')"; //OR Tipo IS NULL";
 		
 		PiezaImpl pieza;
 		

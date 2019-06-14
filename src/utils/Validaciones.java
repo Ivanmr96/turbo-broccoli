@@ -290,22 +290,22 @@ public class Validaciones
 		//CocheImpl coche = gestion.obtenerCoche(configuracion);
 		CocheImpl coche = configuracion.obtenerCoche();
 		
-		System.out.println("Editando " + coche.getMarca() + " " + coche.getModelo());
+		System.out.println("Editando " + coche.getMarca() + " " + coche.getModelo() + " - Total: " + configuracion.obtenerPrecioTotal() + " €");
 		
 		System.out.println("0) Volver atras");
 		
 		if(configuracion.obtenerMotor() != null)
-			System.out.println("M) Motor: " + configuracion.obtenerMotor().getNombre());
+			System.out.println("M) Motor: " + configuracion.obtenerMotor().getNombre() + " - " + configuracion.obtenerMotor().getPrecio() + " €");
 		else
 			System.out.println("M) Motor: Elige uno!");
 		
 		if(configuracion.obtenerLlantas() != null)
-			System.out.println("L) Llantas: " + configuracion.obtenerLlantas().getNombre());
+			System.out.println("L) Llantas: " + configuracion.obtenerLlantas().getNombre() + " - " + configuracion.obtenerLlantas().getPrecio() + " €");
 		else
 			System.out.println("L) Llantas: Elige unas!");
 		
 		if(configuracion.obtenerPintura() != null)
-			System.out.println("P) Pintura: " + configuracion.obtenerPintura().getNombre());
+			System.out.println("P) Pintura: " + configuracion.obtenerPintura().getNombre() + " - " + configuracion.obtenerPintura().getPrecio() + " €");
 		else
 			System.out.println("P) Pintura: Elige una!");
 		
@@ -315,7 +315,7 @@ public class Validaciones
 		
 		for(int i = 0 ; i < piezasExtra.size() ; i++ )
 		{
-			System.out.println((i+1) + ") Eliminar " + piezasExtra.get(i).getNombre());
+			System.out.println((i+1) + ") Eliminar " + piezasExtra.get(i).getNombre() + " - " + piezasExtra.get(i).getPrecio() + " €");
 		}
 		
 		System.out.println("+) Añade una pieza extra");
@@ -357,58 +357,48 @@ public class Validaciones
 		return opcion;
 	}
 	
-	public PiezaImpl mostrarMotoresDisponiblesYEstablecerMotorEnConfiguracion(ConfiguracionImpl configuracion)
+	public PiezaImpl mostrarMotoresDisponiblesYElegirMotor(ConfiguracionImpl configuracion)
 	{
 		PiezaImpl piezaElegida;
-		if(configuracion.obtenerMotor() == null)
-		{
+		//if(configuracion.obtenerMotor() == null)
+		//{
 			System.out.println("MOTORES DISPONIBLES");
 			//piezaElegida = mostrarObjetosYValidarObjetoElegido(cocheEdicionConfiguracion.obtenerMotoresValidos());
 			piezaElegida = mostrarObjetosYValidarObjetoElegido(configuracion.obtenerCoche().obtenerMotoresValidos());
 			System.out.println();
-			configuracion.establecerMotor((MotorImpl)piezaElegida);
-		}
-		else
-			piezaElegida = configuracion.obtenerMotor();
+			//configuracion.establecerMotor((MotorImpl)piezaElegida);
+			//}
+		//else
+		//piezaElegida = configuracion.obtenerMotor();
 		
 		return piezaElegida;
 	}
 	
-	public PiezaImpl mostrarLlantasDisponiblesYEstablecerLlantasEnConfiguracion(ConfiguracionImpl configuracion)
+	public PiezaImpl mostrarLlantasDisponiblesYElegirLlantas(ConfiguracionImpl configuracion)
 	{
 		PiezaImpl piezaElegida;
 		
-		if(configuracion.obtenerLlantas() == null)
-		{
 			System.out.println("LLANTAS DISPONIBLES");
 			piezaElegida = mostrarObjetosYValidarObjetoElegido(configuracion.obtenerCoche().obtenerLlantasValidas());
 			System.out.println();
 			configuracion.establecerLlantas((LlantasImpl)piezaElegida);
-		}
-		else
-			piezaElegida = configuracion.obtenerLlantas();
-		
+			
 		return piezaElegida;
 	}
 	
-	public PiezaImpl mostrarPinturasDisponiblesYEstablecerPinturasEnConfiguracion(ConfiguracionImpl configuracion)
+	public PiezaImpl mostrarPinturasDisponiblesYElegirPintura(ConfiguracionImpl configuracion)
 	{
 		PiezaImpl piezaElegida;
 		
-		if(configuracion.obtenerPintura() == null)
-		{
 			System.out.println("PINTURAS DISPONIBLES");
 			piezaElegida = mostrarObjetosYValidarObjetoElegido(configuracion.obtenerCoche().obtenerPinturasValidas());
 			System.out.println();
 			configuracion.establecerPintura((PinturaImpl)piezaElegida);
-		}
-		else
-			piezaElegida = configuracion.obtenerPintura();
 		
 		return piezaElegida;
 	}
 	
-	public PiezaImpl mostrarPiezasExtraDisponiblesYObtenerEleccion(ConfiguracionImpl configuracion)
+	public PiezaImpl mostrarPiezasExtraDisponiblesYElegirPiezaExtra(ConfiguracionImpl configuracion)
 	{
 		PiezaImpl piezaElegida;
 		
