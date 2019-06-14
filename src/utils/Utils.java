@@ -6,6 +6,14 @@ import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
 
+import clases.basicas.CocheImpl;
+import clases.basicas.ConfiguracionImpl;
+import clases.basicas.LlantasImpl;
+import clases.basicas.MotorImpl;
+import clases.basicas.PiezaImpl;
+import clases.basicas.PinturaImpl;
+import clases.gestion.AObjeto;
+
 public class Utils 
 {
 	/* INTERFAZ
@@ -113,11 +121,48 @@ public class Utils
 		return sdf.format(fecha.getTime());
 	}
 	
+	public void mostrarConfiguracion(ConfiguracionImpl configuracion)
+	{
+		CocheImpl coche = configuracion.obtenerCoche();
+		MotorImpl motor = configuracion.obtenerMotor();
+		LlantasImpl llantas = configuracion.obtenerLlantas();
+		PinturaImpl pintura = configuracion.obtenerPintura();
+		double calificacionMedia = configuracion.calificacionMedia();
+		System.out.println();
+		
+		System.out.println("ID: " + configuracion.getID());
+		System.out.println("Fecha: " + formatearFecha(configuracion.getFecha()));
+		System.out.println();
+		System.out.println("Modelo: " + coche.getMarca() + " " + coche.getModelo());
+		System.out.println();
+		System.out.println("Motor: " + motor.getNombre() + " - " + motor.getPotencia() + "cv - " + motor.getPrecio() + "€");
+		System.out.println("Llantas: " + llantas.getNombre() + " - "  + llantas.getPulgadas() + "\" " + llantas.getPrecio() + "€");
+		System.out.println("Pintura: " + pintura.getNombre() + " - " + pintura.getAcabado() + " - " + motor.getPrecio() + "€");
+		System.out.println();
+		for(PiezaImpl piezaExtra:configuracion.obtenerPiezas())
+		{
+			System.out.println(piezaExtra.getNombre() + " - " + piezaExtra.getPrecio() + "€");
+		}
+		System.out.println();
+		if(calificacionMedia >= 0)
+			System.out.println("Calificacion media: " + configuracion.calificacionMedia() + " puntos");
+		else
+			System.out.println("Calificacion media: Aun no hay ninguna votacion!");
+	}
+	
 	public static void main(String[] args)
 	{
-		Utils utils = new Utils();
-		System.out.println(utils.obtenerMD5("123"));
+		AObjeto gestion = new AObjeto("jdbc:sqlserver://localhost;" + 
+						"database=Coches;" + 
+						"user=usuarioCoches;" + 
+						"password=123;");
 		
-		System.out.println(utils.formatearFecha(new GregorianCalendar()));
+		gestion.abrirConexion();
+		
+		ConfiguracionImpl conf = gestion.obtenerConfiguracion("60CF95F8-E474-48EC-89C7-AD4316D84AD2");
+		
+		gestion.cargarRelacionesEnConfiguracion(conf);
+		
+		System.out.println(conf.calificacionMedia());
 	}
 }

@@ -3,6 +3,7 @@ package utils;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.Scanner;
+import java.util.UUID;
 
 import clases.basicas.CocheImpl;
 import clases.basicas.ConfiguracionImpl;
@@ -211,8 +212,17 @@ public class Validaciones
 	public int mostarMenuConfiguracionComunidadElegida()
 	{
 		int opcion;
+		Scanner teclado = new Scanner(System.in);
 		
-		opcion = 0;
+		System.out.println("0) Volver atras");
+		System.out.println("1) Votar esta configuracion");
+		
+		do
+		{
+			System.out.print("Elige una opcion: ");
+			opcion = teclado.nextInt();
+			
+		}while(opcion < 0 || opcion > 1);
 		
 		return opcion;
 	}
@@ -220,6 +230,16 @@ public class Validaciones
 	public VotacionImpl validarCalificacion()
 	{
 		VotacionImpl votacion = null;
+		int valoracion;
+		Scanner teclado = new Scanner(System.in);
+		
+		do
+		{
+			System.out.print("Ingresa tu valoracion (0 - 10): ");
+			valoracion = teclado.nextInt();
+		}while(valoracion < 0 || valoracion > 10);
+		
+		votacion = new VotacionImpl(UUID.randomUUID().toString(), new GregorianCalendar(), valoracion);
 		
 		return votacion;
 	}

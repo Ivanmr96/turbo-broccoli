@@ -347,26 +347,38 @@ public class ConfiguradorCoches
 											
 											while(configuracionComunidadElegida != null)
 											{
-												//Mostrar estadisticas
-												gestion.cargarPiezasEnConfiguracion(configuracionComunidadElegida);
-												
-												for(PiezaImpl pz:configuracionComunidadElegida.obtenerPiezas())
-												{
-													System.out.println(pz.getNombre());
-												}
-												
-												if(configuracionComunidadElegida.obtenerPiezas().size() < 1) System.out.println("No hay piezas");
+												utils.mostrarConfiguracion(configuracionComunidadElegida);
 												
 												//Mostrar menu de configuracion de la comunidad elegida
 												opcionMenuConfiguracionComunidadElegida = validacion.mostarMenuConfiguracionComunidadElegida();
 												
-												if(opcionMenuConfiguracionComunidadElegida != 0)
+												while(opcionMenuConfiguracionComunidadElegida != 0)
 												{
 													//Puntuar la configuracion
 													calificacion = validacion.validarCalificacion();
+													calificacion.establecerConfiguracion(configuracionComunidadElegida);
+													calificacion.establecerCuenta(cuentaSesion);
 													
-													//Insertar configuracion
-													gestion.insertarVotacion(calificacion);
+													//Insertar calificacion
+													try 
+													{
+														gestion.insertarVotacion(calificacion);
+														System.out.println("Votacion realizada con exito.");
+														gestion.cargarRelacionesEnConfiguracion(configuracionComunidadElegida);
+													} 
+													catch (SQLServerException e) 
+													{
+														if(e.getErrorCode() == 2726)
+														{
+															System.out.println("Esta votacion ya existe, no realizara.");
+														}
+														e.printStackTrace();
+													}
+													
+													utils.mostrarConfiguracion(configuracionComunidadElegida);
+													
+													//Mostrar menu de configuracion de la comunidad elegida
+													opcionMenuConfiguracionComunidadElegida = validacion.mostarMenuConfiguracionComunidadElegida();
 												}
 												
 												configuracionComunidadElegida = validacion.mostrarObjetosYValidarObjetoElegido(configuraciones);

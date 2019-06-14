@@ -2162,7 +2162,40 @@ public class AObjeto
 		return pintura;
 	}
 	
-	public boolean insertarVotacion(VotacionImpl votacion);
+	public boolean insertarVotacion(VotacionImpl votacion) throws SQLServerException
+	{
+		boolean insertada = false;
+		Utils utils = new Utils();
+		
+		String ID = votacion.getID();
+		int calificacion = votacion.getCalificacion();
+		String fecha = utils.GregorianCalendarToDateTime(votacion.getFecha());
+		String IDConfiguracion = votacion.obtenerConfiguracion().getID();
+		String usuario = votacion.obtenerCuenta().getNombreUsuario();
+		
+		String insert = "INSERT INTO Votaciones "
+						+ "VALUES ('" + ID + "', " + calificacion + ", '" + fecha + "', '" + IDConfiguracion + "', '" + usuario + "');";
+		try 
+		{
+			Statement statement = conexion.createStatement();
+			
+			int filasAfectadas = statement.executeUpdate(insert);
+			
+			if(filasAfectadas > 0)
+				insertada = true;
+		} 
+		catch (SQLServerException e)
+		{
+			throw e;
+		}
+		catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
+		
+		
+		return insertada;
+	}
 	
 	//public boolean insertarPiezaPintura(PinturaImpl pieza);
 	//public boolean insertarPiezaLlantas(LlantasImpl pieza);

@@ -92,6 +92,21 @@ public class ConfiguracionImpl
 	public LlantasImpl obtenerLlantas() { return this.llantas; }
 	public PinturaImpl obtenerPintura() { return pintura; }
 	
+	public double calificacionMedia()
+	{
+		double totalCalificaciones = 0;
+		double calificacionMedia = 0;
+		
+		for(VotacionImpl votacion:votaciones)
+		{
+			totalCalificaciones += votacion.getCalificacion();
+		}
+		
+		calificacionMedia = (votaciones.size() > 0) ? totalCalificaciones / votaciones.size() : -1;
+		
+		return calificacionMedia;
+	}
+	
 	public void establecerCoche(CocheImpl coche) { this.coche = coche; }
 	public void establecerCuenta(CuentaImpl cuenta) { this.cuenta = cuenta; }
 	public void establecerPiezas(ArrayList<PiezaImpl> piezas) { this.piezas = piezas; }
