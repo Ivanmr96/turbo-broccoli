@@ -423,6 +423,20 @@ public class Validaciones
 		return piezaElegida;
 	}
 	
+	public char confirmarBorrarConfiguracion()
+	{
+		char confirmadoEliminarConfiguracion;
+		Scanner teclado = new Scanner(System.in);
+		
+		do
+		{
+			System.out.println("Estas seguro que quieres borrar la configuracion?(S/N): ");
+			confirmadoEliminarConfiguracion = Character.toUpperCase(teclado.next().charAt(0));
+		}while(confirmadoEliminarConfiguracion != 'S' && confirmadoEliminarConfiguracion != 'N');
+		
+		return confirmadoEliminarConfiguracion;
+	}
+	
 	public char confirmarGuardarConfiguracion()
 	{
 		char confirmarGuardarConfiguracion;
