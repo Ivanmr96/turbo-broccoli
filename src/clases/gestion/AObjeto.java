@@ -84,10 +84,18 @@ public class AObjeto
 	 * Comentario: Busca un coche según su marca y modelo en la base de datos
 	 * Prototipo: public CocheImpl obtenerCoche(String marca, String modelo)
 	 * Entrada: Un String con la marca del coche y otro String con el modelo.
-	 * Precondiciones: No hay
-	 * Salida: Un CocheImpl con el coche encontrado en la bbdd
+	 * Precondiciones: La conexion con la base de datos tiene que estar abierta
+	 * Salida: Un CocheImpl con el coche encontrado en la base de datos
 	 * Postcondiciones: Asociado al nombre devuelve un objeto CocheImpl, si el coche con la marca y modelo determinados existe en la base de datos, devuelve un CocheImpl
 	 * 					con el coche determinado, si no existe en la base de datos, devuelve null.
+	 */
+	/**
+	 * Busca un coche según su marca y modelo en la base de datos.<br>
+	 * <b>Precondiciones:</b> La conexion con la base de datos tiene que estar abierta
+	 * 
+	 * @param marca La marca del coche a buscar.
+	 * @param modelo El modelo del coche a buscar.
+	 * @return El coche encontrado en la base de datos, será null si el modelo no existe.
 	 */
 	public CocheImpl obtenerCoche(String marca, String modelo)
 	{
@@ -119,9 +127,15 @@ public class AObjeto
 	 * Comentario: Busca todas las marcas de coches en la base de datos
 	 * Prototipo: public ArrayList<String> obtenerMarcas()
 	 * Entrada: No hay
-	 * Precondiciones: La conexion tiene que estar abierta
+	 * Precondiciones: La conexion con la base de datos tiene que estar abierta
 	 * Salida: Un ArrayList<String> con las marcas de coches de la base de datos
 	 * Postcondiciones: Asociado al nombre devuelve un ArrayList<String> con todas las marcas de coches de la base de datos, si no hay ninguna, la lista estará vacía.
+	 */
+	/**
+	 * Busca todas las marcas de coches en la base de datos. <br>
+	 * <b>Precondiciones:</b> La conexion con la base de datos tiene que estar abierta
+	 * 
+	 * @return Todas las marcas del coches de la base de datos, si no hay ninguna, la lista estará vacía.
 	 */
 	public ArrayList<String> obtenerMarcas()
 	{
@@ -152,9 +166,16 @@ public class AObjeto
 	 * Comentario: Obtiene una lista de los modelos de coches de una marca dada
 	 * Prototipo: public ArrayList<String> obtenerModelos(String marca)
 	 * Entrada: Un String con la marca de la que se desea obtener sus modelos de coches
-	 * Precondiciones: La conexion debe estar abierta
+	 * Precondiciones: La conexion con la base de datos debe estar abierta.
 	 * Salida: Un ArrayList<String> con los nombres de los modelos de la marca dada.
-	 * Postcondicions: Asociado al nombre devuelve un ArrayList<String> con los nombres de los modelos de la marca dada, si la marca no existe, la lista estará vacía.
+	 * Postcondicions: Asociado al nombre devuelve un ArrayList<String> con los nombres de los modelos de la marca dada, si la marca no existe o no tiene modelos, la lista estará vacía.
+	 */
+	/**
+	 * Obtiene una lista de los modelos de coches de una marca dada<br>
+	 * <b>Precondiciones:</b> La conexion con la base de datos debe estar abierta.
+	 * 
+	 * @param marca La marca de los modelos a buscar en la base de datos.
+	 * @return Los modelos de la marca determinada, si la marca no existe o no tiene modelos, la lista estará vacía.
 	 */
 	public ArrayList<String> obtenerModelos(String marca)
 	{
@@ -185,12 +206,21 @@ public class AObjeto
 	 * Comentario: Busca las piezas validas de un coche en la base de datos
 	 * Prototipo: public ArrayList<PiezaImpl> obtenerPiezasValidas(CocheImpl coche
 	 * Entrada: Un objeto CocheImpl con el coche del que se desean obtener sus piezas validas
-	 * Precondiciones: No hay
+	 * Precondiciones: La conexion con la base de datos debe estar abierta.
 	 * Salida: Un ArrayList de PiezaImpl con las piezas validas del coche
 	 * Postcondciones: Asociado al nombre devuelve un ArrayList de PiezaImpl con las piezas validas del coche.
 	 * 					- Si, aunque el coche exista en la base de datos, este no tiene ninguna pieza valida, la lista estará vacía.
 	 * 					- Si el coche no existe en la base de datos, devuelve null
 	 * 					- Si el coche existe y tiene piezas validas, devuelve una lista con las piezas validas.
+	 */
+	/**
+	 * Busca las piezas validas de un coche en la base de datos. <br>
+	 * <b>Precondiciones: </b>La conexion con la base de datos debe estar abierta.
+	 * @param coche El coche del que se desean obtener sus piezas válidas.
+	 * @return Las piezas válidas del coche. <br>
+	 * - Si, aunque el coche exista en la base de datos, este no tienen ninguna pieza válida, la lista estará vacía. <br>
+	 * - Si el coche no existe en la base de datos, devuelve null. <br>
+	 * - Si el coche existe y tiene piezas válidas, devuelve una lista con las piezas válidas.
 	 */
 	public ArrayList<PiezaImpl> obtenerPiezasValidas(CocheImpl coche)
 	{
@@ -251,13 +281,18 @@ public class AObjeto
 	 * Comentario: Carga las piezas validas en un objeto CocheImpl
 	 * Prototipo: public void cargarPiezasValidasEnCoche(CocheImpl coche)
 	 * Entrada: No hay
-	 * Precondiciones: No hay
+	 * Precondiciones: La conexion con la base de datos debe estar abierta.
 	 * Salida: No hay
-	 * Entrada/salida: Un CocheImpl al que se le desea carga su lista de piezas validas
+	 * Entrada/salida: Un CocheImpl al que se le desea cargar su lista de piezas validas.
 	 * Postcondiciones: El CocheImpl pasado por parámetro tendrá su lista de piezas validas cargadas si este coche (es decir, su marca y modelo) existe en la base de datos.
 	 * 					- Si el coche existe pero no tiene ninguna pieza valida, la lista estará vacía
 	 * 					- Si el coche no existe en la base de datos, no se cambiará el estado del coche pasado por parámetro.
 	 * 					- Si el coche existe y tiene piezas validas, este tendrá su lista de piezas validas cargadas en él.
+	 */
+	/**
+	 * Carga las piezas válidas en un objeto {@link CocheImpl CocheImpl}.<br>
+	 * <b>Precondiciones:</b> La conexion con la base de datos debe estar abierta.
+	 * @param coche Coche al que se le desea cargar su lsita de piezas válidas.
 	 */
 	public void cargarPiezasValidasEnCoche(CocheImpl coche)
 	{
@@ -275,7 +310,13 @@ public class AObjeto
 	 * Postcondiciones: Asociado al nombre devuelve:
 	 * 					- True. Por lo tanto el coche ha sido introducido correctamente en la base de datos
 	 * 					- False. El coche no se ha introducido correctamente en la base de datos.
-	 * 					- Lanza SQLServerException si se intenta introducir un coche(modelo y marca) que ya existen en la base de datos.
+	 * 					- Lanza SQLServerException si se intenta introducir un coche(modelo y marca) que ya existe en la base de datos.
+	 */
+	/**
+	 * Inserta un nuevo coche en la base de datos.
+	 * @param coche Coche que se insertará en la base de datos.
+	 * @return Devuelve true si el coche ha sido introducido correctamente en la base de datos, false de lo contrario.
+	 * @throws SQLServerException Si se intenta introducir un coche con modelo y marca que ya existe en la base de datos.
 	 */
 	public boolean insertarCoche(CocheImpl coche) throws SQLServerException
 	{
@@ -319,6 +360,12 @@ public class AObjeto
 	 * 					- True. El coche ha sido borrado satisfactoriamente de la base de datos. Las configuraciones y las votaciones asociadas al cocha también se borran.
 	 * 					- False. El coche no se ha podido borrar de la base de datos (Puede que el coche(marca y modelo) no exista en la base de datos)
 	 */
+	/**
+	 * Elimina un coche de la base de datos, asi como las configuraciones(y sus votaciones) asociadas a él.
+	 * @param coche El coche que se desea eliminar de la base de datos.
+	 * @return True si el coche ha sido borrado correctamente de la base de datos, las configuraciones y las votaciones asociadas al coche se borran también.<br>
+	 * 		   False si el coche no se ha podido borrar de la base de datos.
+	 */
 	public boolean eliminarCoche(CocheImpl coche)
 	{
 		boolean borrado = false;
@@ -350,11 +397,19 @@ public class AObjeto
 	 * Comentario: Actualiza la información sobre un coche en la base de datos
 	 * Prototipo: public boolean actualizarCoche(CocheImpl coche)
 	 * Entrada: El CocheImpl que se desea modificar
-	 * Precondiciones: No hay
+	 * Precondiciones: La conexion con la base de datos debe estar abierta.
 	 * Salida: Un boolean indicando si la actualización se realizo bien o no.
 	 * Postcondiciones: Asociado al nombre devuelve:
 	 * 					- True. La información del coche se ha actualizado con exito en la base de datos.
 	 * 					- False. No se ha podido actualizar el coche en la base de datos, quizás no exista un coche de esa marca y modelo en la base de datos
+	 */
+	/**
+	 * Actualiza la información sobre un coche en la base de datos.<br>
+	 * Toma la información del {@link CocheImpl CocheImpl} de la entrada (es decir, su precio base) para actualizarlo en la base de datos.<br>
+	 * <b>Precondiciones:</b> La conexion con la base de datos debe estar abierta.
+	 * @param coche El coche que se desea modificar.
+	 * @return True si la información del coche se ha actualizado con éxtio en la base de datos.<br>
+	 * 		   False si no se ha podido actualizar el coche en la base de datos, quizás no exista un coche con esa marca y modelo en la base de datos.
 	 */
 	public boolean actualizarCoche(CocheImpl coche)
 	{
@@ -395,6 +450,19 @@ public class AObjeto
 	 * 					- Si el ID es de una configuración existente en la base de datos, el objeto tendrá la información correspondiente a la configuración con su ID en la base de datos.
 	 * 					- Si el ID no existe en la base de datos, será null.
 	 */
+	/**
+	 * Obtiene una configuracion de la base de datos dado su ID.<br>
+	 * <b>Precondiciones:</b> La conexión con la base de datos debe estar abierta.<br>
+	 * El ID debe ser un string con formato UUID, es decir:<br>
+	 * - 32 dígitos hexadecimales divididos en cinco grupos separados por guiones divididos de la forma 8-4-4-4-12. <br>
+	 * Por ejemplo: 550e8400-e29b-41d4-a716-446655440000
+	 * 
+	 * @param ID El ID de la configuración.
+	 * @return La configuración obtenida de la base de datos.<br>
+	 * - Si el ID es de una configuración existente en la base de datos, el objeto tendrá la información correspondiente a la configuración con su ID en la base de datos.<br>
+	 * - SI el ID no existe en la base de datos, será null.
+	 * @see java.util.UUID
+	 */
 	public ConfiguracionImpl obtenerConfiguracion(String ID)
 	{
 		ConfiguracionImpl configuracion = null;
@@ -432,9 +500,15 @@ public class AObjeto
 	 * Comentario: Obtiene todas las configuraciones de la base de datos
 	 * Prototipo: public ArrayList<ConfiguracionImpl> obtenerConfiguraciones()
 	 * Entrada: No hay
-	 * Precondiciones: La conexion tiene que estar abierta
+	 * Precondiciones: La conexión con la base de datos debe que estar abierta
 	 * Salida: Un ArrayList<ConfiguracionImpl> con todas las configuraciones de la base de datos
 	 * Postcondiciones: Asociado al nombre devuelve un ArrayList<ConfiguracionImpl> con todas las configuraciones de la base de datos.
+	 */
+	/**
+	 * Obtiene todas las configuraciones de la base de datos.<br>
+	 * <b>Precondiciones:</b> La conexión con la base de datos debe estar abierta.
+	 * 
+	 * @return La lista con todas las configuraciones de la base de datos.
 	 */
 	public ArrayList<ConfiguracionImpl> obtenerConfiguraciones()
 	{
@@ -474,10 +548,17 @@ public class AObjeto
 	 * Comentario: Obtiene las configuraciones de una marca de coche.
 	 * Prototipo: public ArrayList<ConfiguracionImpl> obtenerConfiguraciones(String marca)
 	 * Entrada: Un String con la marca de coche de la que se desea obtener todas las configuraciones realizadas
-	 * Precondiciones: La conexion tiene que estar abierta
+	 * Precondiciones: La conexion con la base de datos debe estar abierta.
 	 * Salida: Un ArrayList<ConfiguracionImpl> con todas las configuraciones de una marca en la base de datos.
 	 * Postcondiciones: Asociado al nombre devuelve un ArrayList<ConfiguracionImpl> con todas las configuraciones de una marca en la base de datos. Si no hay
 	 * 					ninguna configuracion para ningún coche de la marca dada, o la marca no existe, la lista estará vacía.
+	 */
+	/**
+	 * Obtiene las configuraciones de una marca de coche.<br>
+	 * <b>Precondicione:</b> La conexion con la base de datos debe estar abierta.
+	 * @param marca La marca de coche de la que se desea obtener todas las configuraciones realizadas.
+	 * @return Una lista con todas las configuraciones de una marca en la base de datos.<br>
+	 * Si no hay ningun configuracion para ningñun coche de la marca dada, o bien la marca no existe, la lista estará vacía.
 	 */
 	public ArrayList<ConfiguracionImpl> obtenerConfiguraciones(String marca)
 	{
@@ -1092,6 +1173,16 @@ public class AObjeto
 		return insertado;
 	}
 	
+	/* INTERFAZ
+	 * Comentario: Elimina una configuración de la base de datos, asi como las votaciones asociadas a ella.
+	 * Prototipo: public boolean eliminarConfiguracion(ConfiguracionImpl configuracion)
+	 * Entrada: La ConfiguracionImpl que se desea eliminar de la base de datos.
+	 * Precondiciones: La conexión con la base de dato debe estar abierta.
+	 * Salida: Un boolean indicando si la eliminacion tuvo exito
+	 * Postcondiciones: Asociado al nombre devuelve:
+	 * 					- True. La configuración ha sido borrado satisfactoriamente de la base de datos. las votaciones asociadas a la configuración también se borran.
+	 * 					- False. La configuración no se ha podido borrar de la base de datos (Puede que la configuración(su ID), no exista en la base de datos).
+	 */
 	public boolean eliminarConfiguracion(ConfiguracionImpl configuracion)
 	{
 		boolean eliminada = false;
@@ -1113,6 +1204,16 @@ public class AObjeto
 		return eliminada;
 	}
 	
+	/* INTERFAZ
+	 * Comentario: Elimina las piezas extra de una configuración en la base de datos.
+	 * Prototipo: public boolean eliminarPiezasExtraDeConfiguracion(ConfiguracionImpl configuracion)
+	 * Entrada: La ConfiguracionImpl de la cual se desea borrar sus piezas extra.
+	 * Precondiciones: La conexión con la base de dato debe estar abierta.
+	 * Salida: Un boolean indicando si la eliminacion tuvo exito
+	 * Postcondiciones: Asociado al nombre devuelve:
+	 * 					- True. Las piezas extra de la configuración han sido borradas satisfactoriamente de la base de datos.
+	 * 					- False. Las piezas no se han podido borrar de la base de datos. (Puede que la configuración no exista en la base de datos).
+	 */
 	public boolean eliminarPiezasExtraDeConfiguracion(ConfiguracionImpl configuracion)
 	{
 		boolean eliminado = false;
@@ -1740,6 +1841,17 @@ public class AObjeto
 		return insertado;
 	}
 	
+	/* INTERFAZ
+	 * Comentario: Inserta una pieza en una configuración en la base de datos.
+	 * Prototipo: public boolean insertarPiezaEnConfiguracion(PiezaImpl pieza, ConfiguracionImpl configuracion) throws SQLServerException
+	 * Entrada: la PiezaImpl que se desea insertar en la configuración dentro de la base de datos.
+	 * Precondiciones: La conexion tiene que estar abierta.
+	 * Salida: Un boolean indicando si se introdujo la pieza satisfactoriamente o no.
+	 * Postcondiciones: Asociado al nombre devuelve:
+	 * 					- True. Por lo tanto la pieza ha sido asociada correctamente a la configuración en la base de datos
+	 * 					- False. La pieza no se ha asociado correctamente a la configuración en la base de datos.
+	 * 					- Lanza SQLServerException si se intenta introducir una pieza que ya está asociada a la configuración en la base de datos.
+	 */
 	public boolean insertarPiezaEnConfiguracion(PiezaImpl pieza, ConfiguracionImpl configuracion) throws SQLServerException
 	{
 		boolean insertado = false;
@@ -1768,6 +1880,17 @@ public class AObjeto
 		return insertado;
 	}
 	
+	/* INTERFAZ
+	 * Comentario: Inserta una lista de piezas en una configuración en la base de datos.
+	 * Prototipo: public boolean insertarPiezasEnConfiguracion(ArrayList<PiezaImpl> piezas, ConfiguracionImpl configuracion) throws SQLServerException
+	 * Entrada: La lista de PiezaImpl que se desean insertar en la configuración dentro de la base de datos.
+	 * Precondiciones: La conexion tiene que estar abierta.
+	 * Salida: Un boolean indicando si se introdujeron las piezas satisfactoriamente o no.
+	 * Postcondiciones: Asociado al nombre devuelve:
+	 * 					- True. Por lo tanto las piezas han sido asociadas correctamente a la configuración en la base de datos
+	 * 					- False. Las piezas no se han asociado correctamente a la configuración en la base de datos.
+	 * 					- Lanza SQLServerException si se intenta introducir una pieza que ya está asociada a la configuración en la base de datos.
+	 */
 	public boolean insertarPiezasEnConfiguracion(ArrayList<PiezaImpl> piezas, ConfiguracionImpl configuracion) throws SQLServerException
 	{
 		boolean insertado = false;
@@ -2162,6 +2285,18 @@ public class AObjeto
 		return pintura;
 	}
 	
+	/* INTERFAZ
+	 * Comentario: Inserta una nueva votación en la base de datos,
+	 * Prototipo: public boolean insertarVotacion(VotacionImpl votacion) throws SQLServerException
+	 * Entrada: La VotacionImpl que se desea insertar en la base de datos.
+	 * Precondiciones: La conexion tiene que estar abierta.
+	 * Salida: Un boolean indicando si se introdujo la votación satisfactoriamente o no.
+	 * Postcondiciones: Asociado al nombre devuelve:
+	 * 					- True. Por lo tanto la votacion ha sido introducido correctamente en la base de datos
+	 * 					- False. La votación no se ha introducido correctamente en la base de datos.
+	 * 					- Lanza SQLServerException si se intenta introducir una votación(ID) que ya existe en la base de datos.
+	 * 					- Lanza SQLServerException si se intenta introducir una votacion cuyo usuario es el mismo que el usuario de la configuración a la que se realiza la votación.
+	 */
 	public boolean insertarVotacion(VotacionImpl votacion) throws SQLServerException
 	{
 		boolean insertada = false;

@@ -401,7 +401,7 @@ public class Validaciones
 			System.out.println("LLANTAS DISPONIBLES");
 			piezaElegida = mostrarObjetosYValidarObjetoElegido(configuracion.obtenerCoche().obtenerLlantasValidas());
 			System.out.println();
-			configuracion.establecerLlantas((LlantasImpl)piezaElegida);
+			//configuracion.establecerLlantas((LlantasImpl)piezaElegida);
 			
 		return piezaElegida;
 	}
@@ -413,7 +413,7 @@ public class Validaciones
 			System.out.println("PINTURAS DISPONIBLES");
 			piezaElegida = mostrarObjetosYValidarObjetoElegido(configuracion.obtenerCoche().obtenerPinturasValidas());
 			System.out.println();
-			configuracion.establecerPintura((PinturaImpl)piezaElegida);
+			//configuracion.establecerPintura((PinturaImpl)piezaElegida);
 		
 		return piezaElegida;
 	}

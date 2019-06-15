@@ -122,6 +122,47 @@ CREATE TABLE PiezasCoches
 	CONSTRAINT FK_PiezasCochces_MarcaModeloCoche FOREIGN KEY (MarcaCoche, ModeloCoche) REFERENCES Coches(Marca, Modelo) ON DELETE CASCADE ON UPDATE CASCADE
 )
 
+--PROCEDIMIENTOS, TRIGGERS Y FUNCIONES
+
+GO
+--Trigger para que solo puedan utilizarse piezas validas para el modelo de coche (definido en la tabla PiezasCoche)
+CREATE TRIGGER PiezasValidas ON PiezasConfiguracionCoche
+AFTER INSERT, UPDATE
+AS
+BEGIN
+
+	IF EXISTS ( (SELECT IDPieza FROM inserted AS INS
+			INNER JOIN Configuraciones AS confi ON confi.ID = INS.IDConfiguracion
+			WHERE IDPieza NOT IN ( SELECT IDPieza FROM PiezasCoches WHERE MarcaCoche = confi.MarcaCoche AND ModeloCoche = confi.ModeloCoche )) )
+	BEGIN
+
+		RAISERROR('Pieza no valida para el coche', 16, 1)
+		ROLLBACK
+
+	END --IF
+
+END --TRIGGER
+
+GO
+--Trigger para que un usuario no pueda votar una configuracion realizada por él mismo
+CREATE TRIGGER VotacionUsuarioDiferente ON Votaciones
+AFTER INSERT, UPDATE
+AS
+BEGIN
+
+	IF EXISTS( (SELECT ins.ID FROM inserted AS ins
+	INNER JOIN Configuraciones AS Conf ON Conf.ID = ins.IDConfiguracion
+	WHERE ins.Usuario = Conf.Usuario) )
+	BEGIN
+
+		RAISERROR('Un usuario no puede votar una configuracion propia', 16, 1)
+		ROLLBACK
+
+	END --IF
+
+END --TRIGGER
+GO
+
 GO
 -- Borra una configuracion en cascada, es decir borra tambien sus votaciones y en la tabla PiezasConfiguracionCoche borra las filas asociadas a dicha configuracion
 CREATE PROCEDURE BorrarConfiguracion
@@ -136,5 +177,5 @@ BEGIN
 
 	DELETE FROM Configuraciones
 	WHERE ID = @IDConfiguracion
-END
+END --PROCEDURE
 GO

@@ -34,6 +34,11 @@ import interfaces.Coche;
  * 
  */
 
+/**
+ * 
+ * @author moren
+ *
+ */
 public class CocheImpl implements Coche
 {
 	private String marca;

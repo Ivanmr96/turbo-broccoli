@@ -370,7 +370,7 @@ public class ConfiguradorCoches
 													{
 														if(e.getErrorCode() == 2726)
 														{
-															System.out.println("Esta votacion ya existe, no realizara.");
+															System.out.println("Esta votacion ya existe, no se realizara.");
 														}
 														e.printStackTrace();
 													}
