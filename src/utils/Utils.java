@@ -4,6 +4,7 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
 import clases.basicas.CocheImpl;
@@ -128,26 +129,60 @@ public class Utils
 		LlantasImpl llantas = configuracion.obtenerLlantas();
 		PinturaImpl pintura = configuracion.obtenerPintura();
 		double calificacionMedia = configuracion.calificacionMedia();
-		System.out.println();
+		ArrayList<PiezaImpl> piezasExtra = configuracion.obtenerPiezas();
+		
+		System.out.println("--------------------------------------------------------------");
 		
 		System.out.println("ID: " + configuracion.getID());
+		
 		System.out.println("Fecha: " + formatearFecha(configuracion.getFecha()));
+		
 		System.out.println();
+		
 		System.out.println("Modelo: " + coche.getMarca() + " " + coche.getModelo());
+		
 		System.out.println();
-		System.out.println("Motor: " + motor.getNombre() + " - " + motor.getPotencia() + "cv - " + motor.getPrecio() + "€");
-		System.out.println("Llantas: " + llantas.getNombre() + " - "  + llantas.getPulgadas() + "\" " + llantas.getPrecio() + "€");
-		System.out.println("Pintura: " + pintura.getNombre() + " - " + pintura.getAcabado() + " - " + motor.getPrecio() + "€");
+		
+		System.out.println("Precio total: " + configuracion.obtenerPrecioTotal());
+		
 		System.out.println();
-		for(PiezaImpl piezaExtra:configuracion.obtenerPiezas())
+		
+		if(motor != null)
+			System.out.println("Motor: " + motor.getNombre() + " - " + motor.getPotencia() + "cv - " + motor.getPrecio() + "€");
+		else
+			System.out.println("Motor: Aun no tiene!");
+		
+		if(llantas != null)
+			System.out.println("Llantas: " + llantas.getNombre() + " - "  + llantas.getPulgadas() + "\" " + llantas.getPrecio() + "€");
+		else
+			System.out.println("Llantas: Aun no tiene!");
+		
+		if(pintura != null)
+			System.out.println("Pintura: " + pintura.getNombre() + " - " + pintura.getAcabado() + " - " + motor.getPrecio() + "€");
+		else
+			System.out.println("Pintura: Aun no tiene!");
+		
+		System.out.println();
+		
+		if(piezasExtra.size() > 0)
 		{
-			System.out.println(piezaExtra.getNombre() + " - " + piezaExtra.getPrecio() + "€");
+			System.out.println("Piezas extra:");
+			for(PiezaImpl piezaExtra:piezasExtra)
+			{
+				System.out.println(" -> " + piezaExtra.getNombre() + " - " + piezaExtra.getPrecio() + "€");
+			}
 		}
+		else
+			System.out.println("Piezas extra: No tiene ninguna pieza extra!");
+		
 		System.out.println();
+		
 		if(calificacionMedia >= 0)
 			System.out.println("Calificacion media: " + configuracion.calificacionMedia() + " puntos");
 		else
 			System.out.println("Calificacion media: Aun no hay ninguna votacion!");
+		
+		System.out.println("--------------------------------------------------------------");
 	}
 	
 	public static void main(String[] args)

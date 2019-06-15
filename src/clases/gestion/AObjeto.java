@@ -3,9 +3,11 @@ package clases.gestion;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.Scanner;
@@ -100,13 +102,15 @@ public class AObjeto
 	public CocheImpl obtenerCoche(String marca, String modelo)
 	{
 		CocheImpl coche = null;
+		
 		String consulta = "SELECT PrecioBase FROM Coches "
-						+ "WHERE Marca = '" + marca + "' AND Modelo = '" + modelo + "'";
+						+ "WHERE Marca = ? AND Modelo = ?";
 		try 
 		{
-			Statement statement = conexion.createStatement();
-			
-			ResultSet resultado = statement.executeQuery(consulta);
+			PreparedStatement statement = conexion.prepareStatement(consulta);
+			statement.setString(1, marca);
+			statement.setString(2, modelo);
+			ResultSet resultado = statement.executeQuery();
 			
 			if(resultado.next())		//Salta a la primera y unica fila
 			{
@@ -181,13 +185,15 @@ public class AObjeto
 	{
 		ArrayList<String> modelos = new ArrayList<String>();
 		
-		String consulta = "SELECT Modelo FROM Coches WHERE Marca = '" + marca + "'";
+		String consulta = "SELECT Modelo FROM Coches WHERE Marca = ?";
 		
 		try
 		{
-			Statement statement = conexion.createStatement();
+			PreparedStatement statement = conexion.prepareStatement(consulta);
 			
-			ResultSet resultado = statement.executeQuery(consulta);
+			statement.setString(1, marca);
+			
+			ResultSet resultado = statement.executeQuery();
 			
 			while(resultado.next())
 			{
@@ -228,15 +234,18 @@ public class AObjeto
 		
 		String consulta = "SELECT ID, Nombre, Descripcion, Precio, Tipo FROM Piezas AS pz " 
 				+ "INNER JOIN PiezasCoches AS pzco ON pzco.IDPieza = pz.ID "
-				+ "WHERE pzco.MarcaCoche = '" + coche.getMarca() + "' AND pzco.ModeloCoche = '" + coche.getModelo() + "'";
+				+ "WHERE pzco.MarcaCoche = ? AND pzco.ModeloCoche = ?";
 		
 		PiezaImpl pieza;
 		
 		try
 		{
-			Statement statement = conexion.createStatement();
+			PreparedStatement statement = conexion.prepareStatement(consulta);
 			
-			ResultSet resultado = statement.executeQuery(consulta);
+			statement.setString(1, coche.getMarca());
+			statement.setString(2, coche.getModelo());
+			
+			ResultSet resultado = statement.executeQuery();
 			
 			piezasValidas = new ArrayList<PiezaImpl>();
 			
@@ -322,17 +331,17 @@ public class AObjeto
 	{
 		boolean insertado = false;
 		
-		String marca = coche.getMarca();
-		String modelo = coche.getModelo();
-		double precioBase = coche.getPrecioBase();
-		
 		String insert = "INSERT INTO Coches "
-						+ "VALUES ('" + marca + "', '" + modelo + "', " + precioBase + ");";
+						+ "VALUES (?, ?, ?);";
 		try 
 		{
-			Statement statement = conexion.createStatement();
+			PreparedStatement statement = conexion.prepareStatement(insert);
 			
-			int filasAfectadas = statement.executeUpdate(insert);
+			statement.setString(1, coche.getMarca());
+			statement.setString(2, coche.getModelo());
+			statement.setDouble(3, coche.getPrecioBase());
+			
+			int filasAfectadas = statement.executeUpdate();
 			
 			if(filasAfectadas > 0)
 				insertado = true;
@@ -370,17 +379,17 @@ public class AObjeto
 	{
 		boolean borrado = false;
 		
-		String marca = coche.getMarca();
-		String modelo = coche.getModelo();
-		
 		String delete = "DELETE FROM Coches "
-					  + "WHERE Marca = '" + marca + "' AND Modelo = '" + modelo + "'";
+					  + "WHERE Marca = ? AND Modelo = ?";
 		
 		try
 		{
-			Statement statement = conexion.createStatement();
+			PreparedStatement statement = conexion.prepareStatement(delete);
 			
-			int filasAfectadas = statement.executeUpdate(delete);
+			statement.setString(1, coche.getMarca());
+			statement.setString(2, coche.getModelo());
+			
+			int filasAfectadas = statement.executeUpdate();
 			
 			if (filasAfectadas > 0)
 				borrado = true;
@@ -415,18 +424,18 @@ public class AObjeto
 	{
 		boolean actualizado = false;
 		
-		String marca = coche.getMarca();
-		String modelo = coche.getModelo();
-		double precioBase = coche.getPrecioBase();
-		
 		String insert = "UPDATE Coches "
-						+ "SET PrecioBase = " + precioBase + " "
-						+ "WHERE Marca = '" + marca + "' AND Modelo = '" + modelo + "'";
+						+ "SET PrecioBase = ? "
+						+ "WHERE Marca = ? AND Modelo = ?";
 		try 
 		{
-			Statement statement = conexion.createStatement();
+			PreparedStatement statement = conexion.prepareStatement(insert);
 			
-			int filasAfectadas = statement.executeUpdate(insert);
+			statement.setDouble(1, coche.getPrecioBase());
+			statement.setString(2, coche.getMarca());
+			statement.setString(3, coche.getModelo());
+			
+			int filasAfectadas = statement.executeUpdate();
 			
 			if(filasAfectadas > 0)
 				actualizado = true;
@@ -470,12 +479,14 @@ public class AObjeto
 		Utils utils = new Utils();
 		
 		String consulta = "SELECT Fecha FROM Configuraciones "
-						+ "WHERE ID = '" + ID + "'";
+						+ "WHERE ID = ?";
 		try 
 		{
-			Statement statement = conexion.createStatement();
+			PreparedStatement statement = conexion.prepareStatement(consulta);
 			
-			ResultSet resultado = statement.executeQuery(consulta);
+			statement.setString(1, ID);
+			
+			ResultSet resultado = statement.executeQuery();
 			
 			if(resultado.next())	//Salta a la primera y unica fila si la ID existe
 			{
@@ -569,13 +580,15 @@ public class AObjeto
 		GregorianCalendar fecha;
 		
 		String consulta = "SELECT ID, Fecha FROM Configuraciones "
-						+ "WHERE MarcaCoche = '" + marca + "'";
+						+ "WHERE MarcaCoche = ?";
 		
 		try
 		{
-			Statement statement = conexion.createStatement();
+			PreparedStatement statement = conexion.prepareStatement(consulta);
 			
-			ResultSet resultado = statement.executeQuery(consulta);
+			statement.setString(1, marca);
+			
+			ResultSet resultado = statement.executeQuery();
 			
 			while(resultado.next())
 			{
@@ -613,13 +626,16 @@ public class AObjeto
 		GregorianCalendar fecha;
 		
 		String consulta = "SELECT ID, Fecha FROM Configuraciones "
-						+ "WHERE MarcaCoche = '" + coche.getMarca() + "' AND ModeloCoche = '" + coche.getModelo() + "'";
+						+ "WHERE MarcaCoche = ? AND ModeloCoche = ?";
 		
 		try
 		{
-			Statement statement = conexion.createStatement();
+			PreparedStatement statement = conexion.prepareStatement(consulta);
 			
-			ResultSet resultado = statement.executeQuery(consulta);
+			statement.setString(1, coche.getMarca());
+			statement.setString(2, coche.getModelo());
+			
+			ResultSet resultado = statement.executeQuery();
 			
 			while(resultado.next())
 			{
@@ -639,9 +655,33 @@ public class AObjeto
 		return configuraciones;
 	}
 	
-	public ArrayList<ConfiguracionImpl> obtenerConfiguraciones(double precioMinimo, double precioMaximo); //TODO funcionalidad para calcular el precio de una configuracion
+	public ArrayList<ConfiguracionImpl> obtenerConfiguraciones(double precioMinimo, double precioMaximo) //TODO funcionalidad para calcular el precio de una configuracion
+	{
+		ArrayList<ConfiguracionImpl> configuraciones = new ArrayList<ConfiguracionImpl>();
+		
+		double precioTotal;
+
+		for(ConfiguracionImpl configuracion:obtenerConfiguraciones())
+		{
+			cargarRelacionesEnConfiguracion(configuracion);
+			precioTotal = configuracion.obtenerPrecioTotal();
+			
+			if(precioTotal >= precioMinimo && precioTotal <= precioMaximo)
+			{
+				configuraciones.add(configuracion);
+			}
+		}
+		
+		return configuraciones;
+	}
 	
-	public ArrayList<ConfiguracionImpl> obtenerConfiguraciones(GregorianCalendar fecha);
+	public ArrayList<ConfiguracionImpl> obtenerConfiguraciones(GregorianCalendar fecha)
+	{
+		ArrayList<ConfiguracionImpl> configuraciones = new ArrayList<ConfiguracionImpl>();
+		
+		
+		return configuraciones;
+	}
 	
 	/* INTERFAZ
 	 * Comentario: Obtiene el CocheImpl asociado a la ConfiguracionImpl dada, busca en la base de datos
@@ -659,12 +699,14 @@ public class AObjeto
 		
 		String consulta = "SELECT MarcaCoche, ModeloCoche, PrecioBase FROM Configuraciones AS conf "
 						+ "INNER JOIN Coches AS co ON co.Marca = conf.MarcaCoche AND co.Modelo = conf.ModeloCoche "
-						+ "WHERE conf.ID = '" + configuracion.getID() + "'";
+						+ "WHERE conf.ID = ?";
 		try 
 		{
-			Statement statement = conexion.createStatement();
+			PreparedStatement statement = conexion.prepareStatement(consulta);
 			
-			ResultSet resultado = statement.executeQuery(consulta);
+			statement.setString(1, configuracion.getID());
+			
+			ResultSet resultado = statement.executeQuery();
 			
 			if(resultado.next())		//Salta a la primera y unica fila si la configuracion existe
 			{
@@ -701,12 +743,14 @@ public class AObjeto
 		
 		String consulta = "SELECT NombreUsuario, Contraseña FROM Configuraciones AS conf "
 						+ "INNER JOIN Cuentas AS cu ON cu.NombreUsuario = conf.Usuario "
-						+ "WHERE conf.ID = '" + configuracion.getID() + "'";
+						+ "WHERE conf.ID = ?";
 		try 
 		{
-			Statement statement = conexion.createStatement();
+			PreparedStatement statement = conexion.prepareStatement(consulta);
 			
-			ResultSet resultado = statement.executeQuery(consulta);
+			statement.setString(1, configuracion.getID());
+			
+			ResultSet resultado = statement.executeQuery();
 			
 			if(resultado.next())		//Salta a la primera y unica fila si la configuracion existe
 			{
@@ -743,15 +787,17 @@ public class AObjeto
 		String consulta = "SELECT pz.ID, Nombre, Descripcion, Precio, Tipo FROM Configuraciones AS conf " 
 						+ "INNER JOIN PiezasConfiguracionCoche AS PzConf ON PzConf.IDConfiguracion = conf.ID "
 						+ "INNER JOIN Piezas AS pz ON pz.ID = PzConf.IDPieza "
-						+ "WHERE conf.ID = '" + configuracion.getID() + "'";
+						+ "WHERE conf.ID = ?";
 		
 		PiezaImpl pieza;
 		
 		try
 		{
-			Statement statement = conexion.createStatement();
+			PreparedStatement statement = conexion.prepareStatement(consulta);
 			
-			ResultSet resultado = statement.executeQuery(consulta);
+			statement.setString(1, configuracion.getID());
+			
+			ResultSet resultado = statement.executeQuery();
 			
 			piezas = new ArrayList<PiezaImpl>();
 			
@@ -808,18 +854,20 @@ public class AObjeto
 		ArrayList<PiezaImpl> piezasExtra = null;
 		
 		String consulta = "SELECT pz.ID, Nombre, Descripcion, Precio, Tipo FROM Configuraciones AS conf " 
-						+ "INNER JOIN PiezasConfiguracionCoche AS PzConf ON PzConf.IDConfiguracion = conf.ID "
-						+ "INNER JOIN Piezas AS pz ON pz.ID = PzConf.IDPieza "
-						+ "WHERE conf.ID = '" + configuracion.getID() + "' "
-						+ "AND Tipo NOT IN ('motor', 'llantas', 'pintura')"; //OR Tipo IS NULL";
+				+ "INNER JOIN PiezasConfiguracionCoche AS PzConf ON PzConf.IDConfiguracion = conf.ID "
+				+ "INNER JOIN Piezas AS pz ON pz.ID = PzConf.IDPieza "
+				+ "WHERE conf.ID = ? ";
+				//+ "AND Tipo NOT IN ('motor', 'llantas', 'pintura') OR Tipo IS NULL";
 		
 		PiezaImpl pieza;
 		
 		try
 		{
-			Statement statement = conexion.createStatement();
+			PreparedStatement statement = conexion.prepareStatement(consulta);
 			
-			ResultSet resultado = statement.executeQuery(consulta);
+			statement.setString(1, configuracion.getID());
+			
+			ResultSet resultado = statement.executeQuery();
 			
 			piezasExtra = new ArrayList<PiezaImpl>();
 			
@@ -885,13 +933,15 @@ public class AObjeto
 	{
 		boolean existe = false;
 		
-		String consulta = "SELECT NombreUsuario FROM Cuentas WHERE NombreUsuario = '" + usuario + "'";
+		String consulta = "SELECT NombreUsuario FROM Cuentas WHERE NombreUsuario = ?";
 		
 		try
 		{
-			Statement statement = conexion.createStatement();
+			PreparedStatement statement = conexion.prepareStatement(consulta);
 			
-			ResultSet resultado = statement.executeQuery(consulta);
+			statement.setString(1, usuario);
+			
+			ResultSet resultado = statement.executeQuery();
 			
 			if(resultado.next())
 				existe = true;
@@ -921,7 +971,7 @@ public class AObjeto
 		ArrayList<VotacionImpl> votaciones = null;
 		
 		String consulta = "SELECT ID, Calificacion, Fecha FROM Votaciones " 
-						+ "WHERE IDConfiguracion = '" + configuracion.getID() + "'";		//TODO Como hacer que devuelva NULL si la configuracion no existe en la bbdd
+						+ "WHERE IDConfiguracion = ?";		//TODO Como hacer que devuelva NULL si la configuracion no existe en la bbdd
 		
 		Utils utils = new Utils();
 		
@@ -929,9 +979,11 @@ public class AObjeto
 		
 		try
 		{
-			Statement statement = conexion.createStatement();
+			PreparedStatement statement = conexion.prepareStatement(consulta);
 			
-			ResultSet resultado = statement.executeQuery(consulta);
+			statement.setString(1, configuracion.getID());
+			
+			ResultSet resultado = statement.executeQuery();
 			
 			votaciones = new ArrayList<VotacionImpl>();
 			
@@ -1150,12 +1202,18 @@ public class AObjeto
 		
 		String insert = "INSERT INTO Configuraciones "
 						+ "(ID, Usuario, Fecha, MarcaCoche, ModeloCoche) "
-						+ "VALUES ('" + ID + "', '" + usuario + "', '" + fecha + "', '" + marcaCoche + "', '" + modeloCoche + "');";
+						+ "VALUES (?, ?, ?, ?, ?)";
 		try 
 		{
-			Statement statement = conexion.createStatement();
+			PreparedStatement statement = conexion.prepareStatement(insert);
 			
-			int filasAfectadas = statement.executeUpdate(insert);
+			statement.setString(1, configuracion.getID());
+			statement.setString(2, configuracion.obtenerCuenta().getNombreUsuario());
+			statement.setString(3, utils.GregorianCalendarToDateTime(configuracion.getFecha()));
+			statement.setString(4, marcaCoche);
+			statement.setString(5, modeloCoche);
+			
+			int filasAfectadas = statement.executeUpdate();
 			
 			if(filasAfectadas > 0)
 				insertado = true;
@@ -1219,13 +1277,15 @@ public class AObjeto
 		boolean eliminado = false;
 		
 		String borrarPiezasExtra = "DELETE FROM PiezasConfiguracionCoche "
-				 + "WHERE IDConfiguracion = '" + configuracion.getID() + "'";
+				 + "WHERE IDConfiguracion = ?";
 		
 		try 
 		{
-			Statement statement = conexion.createStatement();
+			PreparedStatement statement = conexion.prepareStatement(borrarPiezasExtra);
 			
-			statement.executeUpdate(borrarPiezasExtra);
+			statement.setString(1, configuracion.getID());
+			
+			statement.executeUpdate();
 			eliminado = true;
 		}
 		catch(SQLException e)
@@ -1252,21 +1312,19 @@ public class AObjeto
 		boolean actualizado = false;
 		int filasAfectadas;
 		
-		String IDMotor;
-		
-		if(configuracion.obtenerMotor() != null)
-			IDMotor = String.valueOf(configuracion.obtenerMotor().getID());
-		else
-			IDMotor = "NULL";
-		
 		String updateConfiguracion = "UPDATE Configuraciones "
-								   + "SET IDMotor = " + IDMotor;
+								   + "SET IDMotor = ?";
 		
 		try
 		{
-			Statement statement = conexion.createStatement();
+			PreparedStatement statement = conexion.prepareStatement(updateConfiguracion);
 			
-			filasAfectadas = statement.executeUpdate(updateConfiguracion);
+			if(configuracion.obtenerMotor() != null)
+				statement.setInt(1, configuracion.obtenerMotor().getID());
+			else
+				statement.setNull(1, Types.INTEGER);
+			
+			filasAfectadas = statement.executeUpdate();
 			
 			if(filasAfectadas > 0)
 				actualizado = true;
@@ -1294,21 +1352,20 @@ public class AObjeto
 	{
 		boolean actualizado = false;
 		int filasAfectadas;
-		String IDLlantas;
-		
-		if(configuracion.obtenerLlantas() != null)
-			IDLlantas = String.valueOf(configuracion.obtenerLlantas().getID());
-		else
-			IDLlantas= "NULL";
 		
 		String updateConfiguracion = "UPDATE Configuraciones "
-								   + "SET IDLlantas = " + IDLlantas;
+								   + "SET IDLlantas = ?";
 		
 		try
 		{
-			Statement statement = conexion.createStatement();
+			PreparedStatement statement = conexion.prepareStatement(updateConfiguracion);
 			
-			filasAfectadas = statement.executeUpdate(updateConfiguracion);
+			if(configuracion.obtenerLlantas() != null)
+				statement.setInt(1, configuracion.obtenerLlantas().getID());
+			else
+				statement.setNull(1, Types.INTEGER);
+			
+			filasAfectadas = statement.executeUpdate();
 			
 			if(filasAfectadas > 0)
 				actualizado = true;
@@ -1336,21 +1393,20 @@ public class AObjeto
 	{
 		boolean actualizado = false;
 		int filasAfectadas;
-		String IDPintura;
-		
-		if(configuracion.obtenerPintura() != null)
-			IDPintura = String.valueOf(configuracion.obtenerPintura().getID());
-		else
-			IDPintura= "NULL";
 		
 		String updateConfiguracion = "UPDATE Configuraciones "
-								   + "SET IDPintura = " + IDPintura;
+								   + "SET IDPintura = ?";
 		
 		try
 		{
-			Statement statement = conexion.createStatement();
+			PreparedStatement statement = conexion.prepareStatement(updateConfiguracion);
 			
-			filasAfectadas = statement.executeUpdate(updateConfiguracion);
+			if(configuracion.obtenerPintura() != null) 
+				statement.setInt(1, configuracion.obtenerPintura().getID());
+			else 
+				statement.setNull(1, Types.INTEGER);
+			
+			filasAfectadas = statement.executeUpdate();
 			
 			if(filasAfectadas > 0)
 				actualizado = true;
@@ -1437,12 +1493,14 @@ public class AObjeto
 		CuentaImpl cuenta = null;
 		
 		String consulta = "SELECT Contraseña FROM Cuentas "
-						+ "WHERE NombreUsuario = '" + nombreUsuario + "'";
+						+ "WHERE NombreUsuario = ?";
 		try 
 		{
-			Statement statement = conexion.createStatement();
+			PreparedStatement statement = conexion.prepareStatement(consulta);
 			
-			ResultSet resultado = statement.executeQuery(consulta);
+			statement.setString(1, nombreUsuario);
+			
+			ResultSet resultado = statement.executeQuery();
 			
 			if(resultado.next())		//Salta a la primera y unica fila
 			{
@@ -1516,12 +1574,14 @@ public class AObjeto
 		Utils utils = new Utils();
 		
 		String consulta = "SELECT ID, Fecha FROM Configuraciones "
-						+ "WHERE Usuario = '" + cuenta.getNombreUsuario() + "'";
+						+ "WHERE Usuario = ?";
 		try 
 		{
-			Statement statement = conexion.createStatement();
+			PreparedStatement statement = conexion.prepareStatement(consulta);
+					
+			statement.setString(1, cuenta.getNombreUsuario());
 			
-			ResultSet resultado = statement.executeQuery(consulta);
+			ResultSet resultado = statement.executeQuery();
 			
 			configuraciones = new ArrayList<ConfiguracionImpl>();
 			
@@ -1561,12 +1621,14 @@ public class AObjeto
 		Utils utils = new Utils();
 		
 		String consulta = "SELECT ID, Fecha, Calificacion FROM Votaciones "
-						+ "WHERE Usuario = '" + cuenta.getNombreUsuario() + "'";
+						+ "WHERE Usuario = ?";
 		try 
 		{
-			Statement statement = conexion.createStatement();
+			PreparedStatement statement = conexion.prepareStatement(consulta);
 			
-			ResultSet resultado = statement.executeQuery(consulta);
+			statement.setString(1, cuenta.getNombreUsuario());
+			
+			ResultSet resultado = statement.executeQuery();
 			
 			votaciones = new ArrayList<VotacionImpl>();
 			
@@ -1659,16 +1721,16 @@ public class AObjeto
 	{
 		boolean insertado = false;
 		
-		String nombreUsuario = cuenta.getNombreUsuario();
-		String contrasena = cuenta.getContrasena();
-		
 		String insert = "INSERT INTO Cuentas "
-						+ "VALUES ('" + nombreUsuario + "', '" + contrasena + "');";
+						+ "VALUES (?, ?);";
 		try 
 		{
-			Statement statement = conexion.createStatement();
+			PreparedStatement statement = conexion.prepareStatement(insert);
 			
-			int filasAfectadas = statement.executeUpdate(insert);
+			statement.setString(1, cuenta.getNombreUsuario());
+			statement.setString(2, cuenta.getContrasena());
+			
+			int filasAfectadas = statement.executeUpdate();
 			
 			if(filasAfectadas > 0)
 				insertado = true;
@@ -1686,13 +1748,79 @@ public class AObjeto
 		return insertado;
 	}
 	
-	public boolean eliminarCuenta(CuentaImpl cuenta);
+	/* INTERFAZ
+	 * Comentario: Borra una cuenta de la base de datos
+	 * Prototipo: public boolean eliminarCuenta(CuentaImpl cuenta)
+	 * Entrada: la CuentaImpl que se desea eliminar de la de datos
+	 * Precondiciones: La conexion con la base de datos tiene que estar abierta
+	 * Salida: Un boolean indicando si se elimino la cuenta satisfactoriamente o no.
+	 * Postcondiciones: Asociado al nombre devuelve:
+	 * 					- True. Por lo tanto la cuenta ha sido eliminada correctamente de la base de datos
+	 * 					- False. La cuenta no se ha eliminado correctamente de la base de datos.
+	 */
+	public boolean eliminarCuenta(CuentaImpl cuenta)
+	{
+		boolean borrada = false;
+		
+		String delete = "DELETE FROM Cuentas "
+					  + "WHERE NombreUsuario = ?";
+		
+		try
+		{
+			PreparedStatement statement = conexion.prepareStatement(delete);
+			
+			statement.setString(1, cuenta.getNombreUsuario());
+			
+			int filasAfectadas = statement.executeUpdate();
+			
+			if(filasAfectadas > 0)
+				borrada = true;
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+		
+		return borrada;
+	}
 	
-	public boolean actualizarCuenta(CuentaImpl cuenta);
-	
-	//-------------------------------------------------------
-	
-	//PiezaImpl
+	/* INTERFAZ
+	 * Comentario: Actualiza una cuenta de la base de datos.
+	 * Prototipo: public boolean actualizarCuenta(CuentaImpl cuenta)
+	 * Entrada: la CuentaImpl que se desea actualizar en la de datos.
+	 * Precondiciones: La conexion con la base de datos tiene que estar abierta.
+	 * Salida: Un boolean indicando si se actualizó la cuenta satisfactoriamente o no.
+	 * Postcondiciones: Asociado al nombre devuelve:
+	 * 					- True. Por lo tanto la cuenta ha sido actualizada correctamente en la base de datos
+	 * 					- False. La cuenta no se ha actualizado correctamente en la base de datos.
+	 */
+	public boolean actualizarCuenta(CuentaImpl cuenta)
+	{
+		boolean actualizada = false;
+		
+		String update = "UPDATE Cuentas "
+					  + "SET Contraseña = ? "
+					  + "WHERE NombreUsuario = ?";
+		
+		try
+		{
+			PreparedStatement statement = conexion.prepareStatement(update);
+			
+			statement.setString(1, cuenta.getContrasena());
+			statement.setString(2, cuenta.getNombreUsuario());
+			
+			int filasAfectadas = statement.executeUpdate();
+			
+			if(filasAfectadas > 0)
+				actualizada = true;
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+		
+		return actualizada;
+	}
 	
 	/* INTERFAZ
 	 * Comentario: Obtiene una pieza dado su ID, busca en la base de datos
@@ -1711,13 +1839,15 @@ public class AObjeto
 		PiezaImpl pieza = null;
 		
 		String consulta = "SELECT Nombre, Descripcion, Precio FROM Piezas "
-						+ "WHERE ID = " + ID;
+						+ "WHERE ID = ?";
 		
 		try
 		{
-			Statement statement = conexion.createStatement();
+			PreparedStatement statement = conexion.prepareStatement(consulta);
 			
-			ResultSet resultado = statement.executeQuery(consulta);
+			statement.setInt(1, ID);
+			
+			ResultSet resultado = statement.executeQuery();
 			
 			if(resultado.next())
 			{
@@ -1751,12 +1881,14 @@ public class AObjeto
 		
 		String consulta = "SELECT Marca, Modelo, PrecioBase FROM Coches AS c "
 						+ "INNER JOIN PiezasCoches  AS pz ON pz.MarcaCoche = c.Marca AND pz.ModeloCoche = c.Modelo "
-						+ "WHERE pz.IDPieza = " + pieza.getID();
+						+ "WHERE pz.IDPieza = ?";
 		try 
 		{
-			Statement statement = conexion.createStatement();
+			PreparedStatement statement = conexion.prepareStatement(consulta);
 			
-			ResultSet resultado = statement.executeQuery(consulta);
+			statement.setInt(1, pieza.getID());
+			
+			ResultSet resultado = statement.executeQuery();
 			
 			cochesValidos = new ArrayList<CocheImpl>();
 			
@@ -1811,19 +1943,19 @@ public class AObjeto
 	{
 		boolean insertado = false;
 		
-		int ID = pieza.getID();
-		String nombre = pieza.getNombre();
-		String descripcion = pieza.getDescripcion();
-		double precio = pieza.getPrecio();
-		
 		String insert = "INSERT INTO Piezas "
 						+ "(ID, Nombre, Descripcion, Precio) "
-						+ "VALUES (" + ID + ", '" + nombre + "', '" + descripcion + "', " + precio + ");";
+						+ "VALUES (?, ?, ?, ?);";
 		try 
 		{
-			Statement statement = conexion.createStatement();
+			PreparedStatement statement = conexion.prepareStatement(insert);
 			
-			int filasAfectadas = statement.executeUpdate(insert);
+			statement.setInt(1, pieza.getID());
+			statement.setString(2, pieza.getNombre());
+			statement.setString(3, pieza.getDescripcion());
+			statement.setDouble(4, pieza.getPrecio());
+			
+			int filasAfectadas = statement.executeUpdate();
 			
 			if(filasAfectadas > 0)
 				insertado = true;
@@ -1857,12 +1989,15 @@ public class AObjeto
 		boolean insertado = false;
 		
 		String insert = "INSERT INTO PiezasConfiguracionCoche "
-					  + "VALUES (" + pieza.getID() + ", '" + configuracion.getID() + "');";
+					  + "VALUES (?, ?);";
 		try 
 		{
-			Statement statement = conexion.createStatement();
+			PreparedStatement statement = conexion.prepareStatement(insert);
 			
-			int filasAfectadas = statement.executeUpdate(insert);
+			statement.setInt(1, pieza.getID());
+			statement.setString(2, configuracion.getID());
+			
+			int filasAfectadas = statement.executeUpdate();
 			
 			if(filasAfectadas > 0)
 				insertado = true;
@@ -1891,6 +2026,7 @@ public class AObjeto
 	 * 					- False. Las piezas no se han asociado correctamente a la configuración en la base de datos.
 	 * 					- Lanza SQLServerException si se intenta introducir una pieza que ya está asociada a la configuración en la base de datos.
 	 */
+	//TODO PreparedStatement aqui
 	public boolean insertarPiezasEnConfiguracion(ArrayList<PiezaImpl> piezas, ConfiguracionImpl configuracion) throws SQLServerException
 	{
 		boolean insertado = false;
@@ -1948,40 +2084,42 @@ public class AObjeto
 	 * 					- Lanza SQLServerException si se intenta introducir un motor que ya existe en la base de datos.
 	 */
 	public boolean insertarPiezaMotor(MotorImpl motor) throws SQLServerException
-	{
+{
 		
 		boolean insertado = false;
 		
 		int ID = motor.getID();
-		String nombre = motor.getNombre();
-		String descripcion = motor.getDescripcion();
-		double precio = motor.getPrecio();
-		
-		char traccion = motor.getTraccion();
-		int numeroVelocidades = motor.getNumeroVelocidades();
-		int autonomia = motor.getAutonomia();
-		int potencia = motor.getPotencia();
-		String tipo = motor.getTipo();
 		
 		String insertPieza = "INSERT INTO Piezas "
-							+ "VALUES (" + ID + ", '" + nombre + "', '" + descripcion + "', " + precio + ", 'motor');";
+							+ "VALUES (?, ?, ?, ?, ?);";
 		
 		String insertMotor = "INSERT INTO Motores "
 							+ "(IDPieza, Traccion, NumeroVelocidades, Autonomia, Potencia, Tipo) "
-							+ "VALUES (" + ID + ", '" + traccion + "', " + numeroVelocidades + ", " + autonomia + ", " + potencia + ", '" + tipo + "');";
+							+ "VALUES (?, ?, ?, ?, ?, ?);";
 		try 
 		{
 			Statement statement = conexion.createStatement();
+			PreparedStatement statementPieza = conexion.prepareStatement(insertPieza);
+			PreparedStatement statementMotor = conexion.prepareStatement(insertMotor);
+			
+			statementPieza.setInt(1, ID);
+			statementPieza.setString(2, motor.getNombre());
+			statementPieza.setString(3, motor.getDescripcion());
+			statementPieza.setDouble(4, motor.getPrecio());
+			statementPieza.setString(5, "motor");
+			
+			statementMotor.setInt(1, ID);
+			statementMotor.setString(2, Character.toString(motor.getTraccion()));
+			statementMotor.setInt(3, motor.getNumeroVelocidades());
+			statementMotor.setInt(4, motor.getAutonomia());
+			statementMotor.setInt(5, motor.getPotencia());
+			statementMotor.setString(6, motor.getTipo());
 			
 			statement.execute("BEGIN TRAN");
 			
-			int filasAfectadas = statement.executeUpdate(insertPieza);
+			int filasAfectadas = statementPieza.executeUpdate();
 			
-			filasAfectadas += statement.executeUpdate(insertMotor);
-			
-			System.out.println("QUE?");
-			
-			System.out.println(filasAfectadas);
+			filasAfectadas += statementMotor.executeUpdate();
 			
 			if(filasAfectadas == 2)
 			{
@@ -2039,13 +2177,15 @@ public class AObjeto
 		
 		String consulta = "SELECT Nombre, Descripcion, Precio, Color, Acabado FROM Pinturas AS P "
 						+ "INNER JOIN Piezas AS Pz ON pz.ID = P.IDPieza "
-						+ "WHERE pz.ID = " + ID;
+						+ "WHERE pz.ID = ?";
 		
 		try
 		{
-			Statement statement = conexion.createStatement();
+			PreparedStatement statement = conexion.prepareStatement(consulta);
 			
-			ResultSet resultado = statement.executeQuery(consulta);
+			statement.setInt(1, ID);
+			
+			ResultSet resultado = statement.executeQuery();
 			
 			if(resultado.next())
 			{
@@ -2082,13 +2222,15 @@ public class AObjeto
 		
 		String consulta = "SELECT Nombre, Descripcion, Precio, Pulgadas FROM Llantas AS Ll "
 						+ "INNER JOIN Piezas AS Pz ON pz.ID = Ll.IDPieza "
-						+ "WHERE pz.ID = " + ID;
+						+ "WHERE pz.ID = ?";
 		
 		try
 		{
-			Statement statement = conexion.createStatement();
+			PreparedStatement statement = conexion.prepareStatement(consulta);
 			
-			ResultSet resultado = statement.executeQuery(consulta);
+			statement.setInt(1, ID);
+			
+			ResultSet resultado = statement.executeQuery();
 			
 			if(resultado.next())
 			{
@@ -2124,13 +2266,15 @@ public class AObjeto
 		
 		String consulta = "SELECT Nombre, Descripcion, Precio, Traccion, NumeroVelocidades, Autonomia, Potencia, M.Tipo FROM Motores AS M "
 						+ "INNER JOIN Piezas AS Pz ON pz.ID = M.IDPieza "
-						+ "WHERE pz.ID = " + ID;
+						+ "WHERE pz.ID = ?";
 		
 		try
 		{
-			Statement statement = conexion.createStatement();
+			PreparedStatement statement = conexion.prepareStatement(consulta);
 			
-			ResultSet resultado = statement.executeQuery(consulta);
+			statement.setInt(1, ID);
+			
+			ResultSet resultado = statement.executeQuery();
 			
 			if(resultado.next())
 			{
@@ -2169,13 +2313,15 @@ public class AObjeto
 		String consulta = "SELECT pz.ID, Nombre, Descripcion, Precio, Traccion, NumeroVelocidades, Autonomia, Potencia, mot.Tipo FROM Configuraciones AS confi "
 						+ "INNER JOIN Piezas AS pz ON pz.ID = confi.IDMotor "
 						+ "INNER JOIN Motores AS mot ON mot.IDPieza = pz.ID "
-						+ "WHERE confi.ID = '" + configuracion.getID() + "'";
+						+ "WHERE confi.ID = ?";
 		
 		try
 		{
-			Statement statement = conexion.createStatement();
+			PreparedStatement statement = conexion.prepareStatement(consulta);
 			
-			ResultSet resultado = statement.executeQuery(consulta);
+			statement.setString(1, configuracion.getID());
+			
+			ResultSet resultado = statement.executeQuery();
 			
 			if(resultado.next())
 			{
@@ -2215,13 +2361,15 @@ public class AObjeto
 		String consulta = "SELECT pz.ID, Nombre, Descripcion, Precio, Pulgadas FROM Configuraciones AS confi "
 						+ "INNER JOIN Piezas AS pz ON pz.ID = confi.IDLlantas "
 						+ "INNER JOIN Llantas AS pnt ON pnt.IDPieza = pz.ID "
-						+ "WHERE confi.ID = '" + configuracion.getID() + "'";
+						+ "WHERE confi.ID = ?";
 		
 		try
 		{
-			Statement statement = conexion.createStatement();
+			PreparedStatement statement = conexion.prepareStatement(consulta);
 			
-			ResultSet resultado = statement.executeQuery(consulta);
+			statement.setString(1, configuracion.getID());
+			
+			ResultSet resultado = statement.executeQuery();
 			
 			if(resultado.next())
 			{
@@ -2257,13 +2405,15 @@ public class AObjeto
 		String consulta = "SELECT pz.ID, Nombre, Descripcion, Precio, Color, Acabado FROM Configuraciones AS confi " 
 						+ "INNER JOIN Piezas AS pz ON pz.ID = confi.IDPintura " 
 						+ "INNER JOIN Pinturas AS pnt ON pnt.IDPieza = pz.ID "
-						+ "WHERE confi.ID = '" + configuracion.getID() + "'";
+						+ "WHERE confi.ID = ?";
 		
 		try
 		{
-			Statement statement = conexion.createStatement();
+			PreparedStatement statement = conexion.prepareStatement(consulta);
 			
-			ResultSet resultado = statement.executeQuery(consulta);
+			statement.setString(1, configuracion.getID());
+			
+			ResultSet resultado = statement.executeQuery();
 			
 			if(resultado.next())
 			{
@@ -2302,19 +2452,19 @@ public class AObjeto
 		boolean insertada = false;
 		Utils utils = new Utils();
 		
-		String ID = votacion.getID();
-		int calificacion = votacion.getCalificacion();
-		String fecha = utils.GregorianCalendarToDateTime(votacion.getFecha());
-		String IDConfiguracion = votacion.obtenerConfiguracion().getID();
-		String usuario = votacion.obtenerCuenta().getNombreUsuario();
-		
 		String insert = "INSERT INTO Votaciones "
-						+ "VALUES ('" + ID + "', " + calificacion + ", '" + fecha + "', '" + IDConfiguracion + "', '" + usuario + "');";
+						+ "VALUES (?, ?, ?, ?, ?);";
 		try 
 		{
-			Statement statement = conexion.createStatement();
+			PreparedStatement statement = conexion.prepareStatement(insert);
 			
-			int filasAfectadas = statement.executeUpdate(insert);
+			statement.setString(1, votacion.getID());
+			statement.setInt(2, votacion.getCalificacion());
+			statement.setString(3, utils.GregorianCalendarToDateTime(votacion.getFecha()));
+			statement.setString(4, votacion.obtenerConfiguracion().getID());
+			statement.setString(5, votacion.obtenerCuenta().getNombreUsuario());
+			
+			int filasAfectadas = statement.executeUpdate();
 			
 			if(filasAfectadas > 0)
 				insertada = true;

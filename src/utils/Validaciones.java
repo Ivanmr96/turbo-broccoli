@@ -281,18 +281,37 @@ public class Validaciones
 		return cuenta;
 	}
 	
-	public double validarPrecio()
+	public double validarPrecioMinimo()
 	{
 		double precio;
+		Scanner teclado = new Scanner(System.in);
 		
-		precio = 0.0;
+		do
+		{
+			System.out.print("Inserta precio minimo a buscar: ");
+			precio = teclado.nextDouble();
+		}while(precio < 0.0);
+		
+		return precio;
+	}
+	
+	public double validarPrecioMaximo(double precioMinimo)
+	{
+		double precio;
+		Scanner teclado = new Scanner(System.in);
+		
+		do
+		{
+			System.out.print("Inserta precio maximo a buscar: ");
+			precio = teclado.nextDouble();
+		}while(precio < precioMinimo);
 		
 		return precio;
 	}
 	
 	public GregorianCalendar leerYValidarFecha()
 	{
-		GregorianCalendar fecha = null;
+		GregorianCalendar fecha = new GregorianCalendar();
 		
 		return fecha;
 	}
