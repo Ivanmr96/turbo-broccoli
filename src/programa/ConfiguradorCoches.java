@@ -1,4 +1,4 @@
-package clases.gestion;
+package programa;
 
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
@@ -15,6 +15,13 @@ import clases.basicas.MotorImpl;
 import clases.basicas.PiezaImpl;
 import clases.basicas.PinturaImpl;
 import clases.basicas.VotacionImpl;
+import clases.gestion.ConexionSQL;
+import clases.gestion.GestionCoche;
+import clases.gestion.GestionConfiguracion;
+import clases.gestion.GestionCuenta;
+import clases.gestion.GestionPieza;
+import clases.gestion.GestionVotacion;
+import clases.gestion.Resguardo;
 import utils.Utils;
 import utils.Validaciones;
 
@@ -93,11 +100,20 @@ public class ConfiguradorCoches
 				  + "database=Coches;"
 				  + "user=usuarioCoches;"
 				  + "password=123;";
+		ConexionSQL gestionConexion = new ConexionSQL(URLConexion);
+		gestionConexion.abrirConexion();
 		
+		GestionConfiguracion gestionConfiguracion = new GestionConfiguracion(gestionConexion.getConexion());
+		GestionCoche gestionCoche = new GestionCoche(gestionConexion.getConexion());
+		GestionCuenta gestionCuenta = new GestionCuenta(gestionConexion.getConexion());
+		GestionPieza gestionPieza = new GestionPieza(gestionConexion.getConexion());
+		GestionVotacion gestionVotacion = new GestionVotacion(gestionConexion.getConexion());
+		Validaciones validacion = new Validaciones(gestionConexion.getConexion());
+			
 		Utils utils = new Utils();
 		Scanner teclado = new Scanner(System.in);
 		Resguardo resguardo = new Resguardo();
-		Validaciones validacion = new Validaciones(URLConexion);
+		
 		int opcionMenuPrincipal, opcionSesion, opcionSubMenuConfiguracionElegida, opcionMenuConfiguracionesComunidad, opcionMenuConfiguracionComunidadElegida;
 		CocheImpl opcionCoche, coche, cocheEdicionConfiguracion;
 		CuentaImpl cuentaSesion, cuentaBuscar;
@@ -106,13 +122,9 @@ public class ConfiguradorCoches
 		ConfiguracionImpl configuracionNueva, opcionConfiguracionPropia, configuracionComunidadElegida;
 		VotacionImpl calificacion;
 		ArrayList<ConfiguracionImpl> configuraciones;
-		AObjeto gestion = new AObjeto(URLConexion);
 		double precioMinimo, precioMaximo;
 		GregorianCalendar fechaBuscar;
 		PiezaImpl piezaElegidaEdicion;
-		
-		gestion.abrirConexion();
-		validacion.abrirConexion();
 		
 		//Mostrar menu principal y validar opcion
 		opcionMenuPrincipal = validacion.mostrarMenuPrincipalYValidarOpcion();
@@ -136,7 +148,7 @@ public class ConfiguradorCoches
 								case 1: 
 									//Nueva configuracion
 										//Mostrar coches disponibles y validar opcion de coche elegido
-										opcionCoche = validacion.mostrarObjetosYValidarObjetoElegido(gestion.obtenerCoches());
+										opcionCoche = validacion.mostrarObjetosYValidarObjetoElegido(gestionCoche.obtenerCoches());
 										
 										configuracionNueva = new ConfiguracionImpl(UUID.randomUUID().toString(), new GregorianCalendar());		//Instancia de nueva configuracion
 										configuracionNueva.establecerCoche(opcionCoche);											//Establecer la relacion del coche elegido con la nueva configuracion creada.
@@ -146,7 +158,7 @@ public class ConfiguradorCoches
 										{
 											try 
 											{
-												if(gestion.insertarConfiguracion(configuracionNueva));
+												if(gestionConfiguracion.insertarConfiguracion(configuracionNueva));
 													System.out.println();
 													System.out.println("Configuracion creada con exito, puedes editarla desde la pantalla \"Ver configuraciones propias\"");
 													System.out.println();
@@ -166,11 +178,11 @@ public class ConfiguradorCoches
 								case 2: 
 									//Ver configuraciones propias
 										//Mostrar configuraciones propias y validar opcion de configuracion elegida
-										configuraciones = gestion.obtenerConfiguraciones(cuentaSesion);
+										configuraciones = gestionConfiguracion.obtenerConfiguraciones(cuentaSesion);
 										
 										for(ConfiguracionImpl configuracion:configuraciones)
 										{
-											gestion.cargarRelacionesEnConfiguracion(configuracion);
+											gestionConfiguracion.cargarRelacionesEnConfiguracion(configuracion);
 										}
 										
 										opcionConfiguracionPropia = validacion.mostrarObjetosYValidarObjetoElegido(configuraciones); 
@@ -179,7 +191,7 @@ public class ConfiguradorCoches
 									
 										while(opcionConfiguracionPropia != null)
 										{
-											gestion.cargarRelacionesEnConfiguracion(opcionConfiguracionPropia);
+											gestionConfiguracion.cargarRelacionesEnConfiguracion(opcionConfiguracionPropia);
 											//Mostrar estadisticas
 											utils.mostrarConfiguracion(opcionConfiguracionPropia);
 											
@@ -200,7 +212,7 @@ public class ConfiguradorCoches
 														while(!opcionMenuConfiguracion.equals("0"))
 														{
 															cocheEdicionConfiguracion = opcionConfiguracionPropia.obtenerCoche();
-															gestion.cargarPiezasValidasEnCoche(cocheEdicionConfiguracion);
+															gestionCoche.cargarPiezasValidasEnCoche(cocheEdicionConfiguracion);
 															
 															//TODO Ver si esto ese puede meter en el switch de abajo
 															if(utils.esNumero(opcionMenuConfiguracion))
@@ -247,11 +259,11 @@ public class ConfiguradorCoches
 																confirmarGuardarConfiguracion = validacion.confirmarGuardarConfiguracion();
 																
 																if(confirmarGuardarConfiguracion == 'S')
-																	gestion.actualizarConfiguracion(opcionConfiguracionPropia);
+																	gestionConfiguracion.actualizarConfiguracion(opcionConfiguracionPropia);
 																else
 																{
-																	opcionConfiguracionPropia = gestion.obtenerConfiguracion(opcionConfiguracionPropia.getID());
-																	gestion.cargarRelacionesEnConfiguracion(opcionConfiguracionPropia);
+																	opcionConfiguracionPropia = gestionConfiguracion.obtenerConfiguracion(opcionConfiguracionPropia.getID());
+																	gestionConfiguracion.cargarRelacionesEnConfiguracion(opcionConfiguracionPropia);
 																}
 															}
 														}
@@ -262,7 +274,7 @@ public class ConfiguradorCoches
 														confirmadoEliminarConfiguracion = validacion.confirmarBorrarConfiguracion();
 														if(confirmadoEliminarConfiguracion == 'S')
 														{
-															gestion.eliminarConfiguracion(opcionConfiguracionPropia);
+															gestionConfiguracion.eliminarConfiguracion(opcionConfiguracionPropia);
 															System.out.println("configuracion borrada con exito");
 														}
 														break;
@@ -270,10 +282,10 @@ public class ConfiguradorCoches
 												opcionSubMenuConfiguracionElegida = (confirmadoEliminarConfiguracion == 'N') ? validacion.mostrarSubMenuConfiguracionElegidaYValidarOpcion() : 0 ;
 											}
 											
-											configuraciones = gestion.obtenerConfiguraciones(cuentaSesion);
+											configuraciones = gestionConfiguracion.obtenerConfiguraciones(cuentaSesion);
 											for(ConfiguracionImpl configuracion:configuraciones)
 											{
-												gestion.cargarRelacionesEnConfiguracion(configuracion);
+												gestionConfiguracion.cargarRelacionesEnConfiguracion(configuracion);
 											}
 											
 											opcionConfiguracionPropia = validacion.mostrarObjetosYValidarObjetoElegido(configuraciones);
@@ -294,28 +306,28 @@ public class ConfiguradorCoches
 											{
 												case 1:
 													//Mostrar todas las configuraciones de la comunidad
-													configuraciones = gestion.obtenerConfiguraciones();
+													configuraciones = gestionConfiguracion.obtenerConfiguraciones();
 													break;
 													
 												case 2:
 													//Buscar por marca
-													marca = validacion.mostrarObjetosYValidarObjetoElegido(gestion.obtenerMarcas());
+													marca = validacion.mostrarObjetosYValidarObjetoElegido(gestionCoche.obtenerMarcas());
 													
-													configuraciones = gestion.obtenerConfiguraciones(marca);
+													configuraciones = gestionConfiguracion.obtenerConfiguraciones(marca);
 													
 													break;
 													
 												case 3:
 													//Buscar por marca y modelo
 
-													marca = validacion.mostrarObjetosYValidarObjetoElegido(gestion.obtenerMarcas());
+													marca = validacion.mostrarObjetosYValidarObjetoElegido(gestionCoche.obtenerMarcas());
 													
 													//modelo = validacion.mostrarListaModelosYValidarModeloElegido(marca);
-													modelo = validacion.mostrarObjetosYValidarObjetoElegido(gestion.obtenerModelos(marca));
+													modelo = validacion.mostrarObjetosYValidarObjetoElegido(gestionCoche.obtenerModelos(marca));
 													
-													coche = gestion.obtenerCoche(marca, modelo);
+													coche = gestionCoche.obtenerCoche(marca, modelo);
 													
-													configuraciones = gestion.obtenerConfiguraciones(coche);
+													configuraciones = gestionConfiguracion.obtenerConfiguraciones(coche);
 													
 													break;
 													
@@ -323,7 +335,7 @@ public class ConfiguradorCoches
 													//Buscar por usuario
 													cuentaBuscar = validacion.validarUsuario();
 													
-													configuraciones = gestion.obtenerConfiguraciones(cuentaBuscar);
+													configuraciones = gestionConfiguracion.obtenerConfiguraciones(cuentaBuscar);
 													
 													break;
 													
@@ -332,7 +344,7 @@ public class ConfiguradorCoches
 													precioMinimo = validacion.validarPrecioMinimo();
 													precioMaximo = validacion.validarPrecioMaximo(precioMinimo);
 													
-													configuraciones = gestion.obtenerConfiguraciones(precioMinimo, precioMaximo);
+													configuraciones = gestionConfiguracion.obtenerConfiguraciones(precioMinimo, precioMaximo);
 													
 													break;
 													
@@ -350,7 +362,7 @@ public class ConfiguradorCoches
 											
 											for(ConfiguracionImpl configuracion:configuraciones)
 											{
-												gestion.cargarRelacionesEnConfiguracion(configuracion);
+												gestionConfiguracion.cargarRelacionesEnConfiguracion(configuracion);
 											}
 											
 											configuracionComunidadElegida = validacion.mostrarObjetosYValidarObjetoElegido(configuraciones);
@@ -372,9 +384,9 @@ public class ConfiguradorCoches
 													//Insertar calificacion
 													try 
 													{
-														gestion.insertarVotacion(calificacion);
+														gestionVotacion.insertarVotacion(calificacion);
 														System.out.println("Votación realizada con éxito.");
-														gestion.cargarRelacionesEnConfiguracion(configuracionComunidadElegida);
+														gestionConfiguracion.cargarRelacionesEnConfiguracion(configuracionComunidadElegida);
 													} 
 													catch (SQLServerException e) 
 													{
@@ -446,7 +458,7 @@ public class ConfiguradorCoches
 							//System.out.println(contrasena);
 							try 
 							{
-								if(gestion.insertarCuenta(new CuentaImpl(usuario, contrasena)))
+								if(gestionCuenta.insertarCuenta(new CuentaImpl(usuario, contrasena)))
 									System.out.println("Cuenta creada con exito.");
 								else
 									System.out.println("La cuenta no ha podido crearse, intentalo de nuevo.");
@@ -465,7 +477,6 @@ public class ConfiguradorCoches
 			opcionMenuPrincipal = validacion.mostrarMenuPrincipalYValidarOpcion();
 		}
 		
-		gestion.cerrarConexion();
-		validacion.cerrarConexion();
+		gestionConexion.cerrarConexion();
 	}
 }

@@ -13,7 +13,6 @@ import clases.basicas.LlantasImpl;
 import clases.basicas.MotorImpl;
 import clases.basicas.PiezaImpl;
 import clases.basicas.PinturaImpl;
-import clases.gestion.AObjeto;
 
 public class Utils 
 {
@@ -183,21 +182,5 @@ public class Utils
 			System.out.println("Calificacion media: Aun no hay ninguna votacion!");
 		
 		System.out.println("--------------------------------------------------------------");
-	}
-	
-	public static void main(String[] args)
-	{
-		AObjeto gestion = new AObjeto("jdbc:sqlserver://localhost;" + 
-						"database=Coches;" + 
-						"user=usuarioCoches;" + 
-						"password=123;");
-		
-		gestion.abrirConexion();
-		
-		ConfiguracionImpl conf = gestion.obtenerConfiguracion("60CF95F8-E474-48EC-89C7-AD4316D84AD2");
-		
-		gestion.cargarRelacionesEnConfiguracion(conf);
-		
-		System.out.println(conf.calificacionMedia());
 	}
 }

@@ -1,5 +1,6 @@
 package utils;
 
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.Scanner;
@@ -8,24 +9,30 @@ import java.util.UUID;
 import clases.basicas.CocheImpl;
 import clases.basicas.ConfiguracionImpl;
 import clases.basicas.CuentaImpl;
-import clases.basicas.LlantasImpl;
-import clases.basicas.MotorImpl;
 import clases.basicas.PiezaImpl;
-import clases.basicas.PinturaImpl;
 import clases.basicas.VotacionImpl;
-import clases.gestion.AObjeto;
+import clases.gestion.GestionCoche;
+import clases.gestion.GestionConfiguracion;
+import clases.gestion.GestionCuenta;
+import clases.gestion.GestionPieza;
+import clases.gestion.GestionVotacion;
 
 public class Validaciones 
 {
-	private AObjeto gestion;
+	private GestionCoche gestionCoche;
+	private GestionConfiguracion gestionConfiguracion;
+	private GestionCuenta gestionCuenta;
+	private GestionPieza gestionPieza;
+	private GestionVotacion gestionVotacion;
 	
-	public Validaciones(String URLConexion)
+	public Validaciones(Connection conexion)
 	{
-		gestion = new AObjeto(URLConexion);
+		gestionCoche = new GestionCoche(conexion);
+		gestionConfiguracion = new GestionConfiguracion(conexion);
+		gestionCuenta = new GestionCuenta(conexion);
+		gestionPieza = new GestionPieza(conexion);
+		gestionVotacion = new GestionVotacion(conexion);
 	}
-	
-	public void abrirConexion() { gestion.abrirConexion(); }
-	public void cerrarConexion() { gestion.cerrarConexion(); }
 	
 	public int mostrarMenuPrincipalYValidarOpcion()
 	{
@@ -72,7 +79,7 @@ public class Validaciones
 			System.out.print("Introduce nombre de usuario: ");
 			usuario = teclado.nextLine();
 			
-			cuenta = gestion.obtenerCuenta(usuario);
+			cuenta = gestionCuenta.obtenerCuenta(usuario);
 			
 		}while(cuenta == null);
 		
@@ -123,7 +130,7 @@ public class Validaciones
 			
 			usuario = teclado.nextLine();
 			
-		}while(gestion.existeUsuario(usuario));
+		}while(gestionCuenta.existeUsuario(usuario));
 		
 		return usuario;
 	}
@@ -262,7 +269,7 @@ public class Validaciones
 	{
 		String modelo = null;
 		
-		gestion.obtenerModelos(marca);
+		gestionCoche.obtenerModelos(marca);
 		
 		return modelo;
 	}
@@ -275,7 +282,7 @@ public class Validaciones
 		do
 		{
 			System.out.print("Nombre de usuario: ");
-			cuenta = gestion.obtenerCuenta(teclado.nextLine());
+			cuenta = gestionCuenta.obtenerCuenta(teclado.nextLine());
 		}while(cuenta == null);
 		
 		return cuenta;
@@ -442,7 +449,7 @@ public class Validaciones
 		PiezaImpl piezaElegida;
 		
 		System.out.println("PIEZAS EXTRA DISPONIBLES");
-		gestion.cargarPiezasValidasEnCoche(configuracion.obtenerCoche());
+		gestionCoche.cargarPiezasValidasEnCoche(configuracion.obtenerCoche());
 		piezaElegida = mostrarObjetosYValidarObjetoElegido(configuracion.obtenerCoche().obtenerPiezasExtraValidas());
 		
 		if(piezaElegida != null)
@@ -479,50 +486,5 @@ public class Validaciones
 		}while(confirmarGuardarConfiguracion != 'S' && confirmarGuardarConfiguracion != 'N');
 		
 		return confirmarGuardarConfiguracion;
-	}
-	
-	public static void main(String[] args)
-	{
-		Validaciones val = new Validaciones("jdbc:sqlserver://localhost;"
-				  + "database=Coches;"
-				  + "user=usuarioCoches;"
-				  + "password=123;");
-		
-		AObjeto gestion = new AObjeto("jdbc:sqlserver://localhost;"
-				  + "database=Coches;"
-				  + "user=usuarioCoches;"
-				  + "password=123;");
-		
-		val.abrirConexion();
-		
-		gestion.abrirConexion();
-		
-		CuentaImpl cuenta = gestion.obtenerCuenta("testuser");
-		
-		System.out.println(cuenta.getNombreUsuario());
-		
-		ArrayList<ConfiguracionImpl> lista = gestion.obtenerConfiguraciones(cuenta);
-		
-		for(ConfiguracionImpl confi:lista)
-		{
-			gestion.cargarRelacionesEnConfiguracion(confi);
-		}
-		
-		//val.mostrarObjetosYValidarObjetoElegido(lista);
-		
-		//CocheImpl cochesito = val.mostrarObjetosYValidarObjetoElegido(gestion.obtenerCochesValidos(gestion.obtenerPieza(2)));
-		
-		//System.out.println(cochesito.getModelo());
-		
-		lista = gestion.obtenerConfiguraciones(gestion.obtenerCoche("AUDI", "A1"));
-		
-		for(ConfiguracionImpl confi:lista)
-		{
-			gestion.cargarRelacionesEnConfiguracion(confi);
-		}
-		
-		ConfiguracionImpl opcion = val.mostrarObjetosYValidarObjetoElegido(lista);
-		
-		System.out.println(opcion.getFecha().getTime());
 	}
 }
