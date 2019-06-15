@@ -47,6 +47,7 @@ public class Utils
 		return fecha;
 	}
 	
+	//TODO Interfaz
 	public String GregorianCalendarToDateTime(GregorianCalendar fecha)
 	{
 		String dateTime;
@@ -96,6 +97,7 @@ public class Utils
 		return md5;
 	}
 	
+	//TODO Interfaz
 	public boolean esNumero(String caracteres)
 	{
 		boolean esNumero;
@@ -114,6 +116,7 @@ public class Utils
 		return esNumero;
 	}
 	
+	//TODO Interfaz
 	public String formatearFecha(GregorianCalendar fecha)
 	{
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
@@ -121,6 +124,7 @@ public class Utils
 		return sdf.format(fecha.getTime());
 	}
 	
+	//TODO Interfaz
 	public void mostrarConfiguracion(ConfiguracionImpl configuracion)
 	{
 		CocheImpl coche = configuracion.obtenerCoche();
@@ -182,12 +186,5 @@ public class Utils
 			System.out.println("Calificacion media: Aun no hay ninguna votacion!");
 		
 		System.out.println("--------------------------------------------------------------");
-	}
-	
-	public static void main(String[] args)
-	{
-		Utils utils = new Utils();
-				
-		System.out.println(utils.obtenerMD5("1234"));
 	}
 }

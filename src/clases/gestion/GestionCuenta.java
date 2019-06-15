@@ -101,7 +101,6 @@ public class GestionCuenta
 		return cuenta;
 	}
 	
-	
 	/* INTERFAZ
 	 * Comentario: Carga la lista con las configuraciones de una cuenta en dicha cuenta, buscando en la base de datos
 	 * Prototipo: public void cargarConfiguracionesEnCuenta(CuentaImpl cuenta)

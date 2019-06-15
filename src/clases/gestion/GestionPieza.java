@@ -160,7 +160,6 @@ public class GestionPieza
 		
 		return motor;
 	}
-	
 
 	/* INTERFAZ
 	 * Comentario: Obtiene la pieza de tipo pintura según un ID dado. Busca en la base de datos
@@ -668,7 +667,6 @@ public class GestionPieza
 			e.printStackTrace();
 		}
 		
-		
 		return insertado;
 	}
 	
@@ -690,7 +688,7 @@ public class GestionPieza
 		pieza.establecerCochesValidos(cochesValidos);
 	}
 	
-	//public boolean actualizarPieza(PiezaImpl pieza);
+	//TODO public boolean actualizarPieza(PiezaImpl pieza);
 	
-	//public boolean eliminarPieza(PiezaImpl pieza);
+	//TODO public boolean eliminarPieza(PiezaImpl pieza);
 }

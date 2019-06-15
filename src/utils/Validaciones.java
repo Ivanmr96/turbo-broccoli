@@ -1,6 +1,7 @@
 package utils;
 
 import java.io.Console;
+import java.io.IOException;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
@@ -35,6 +36,7 @@ public class Validaciones
 		gestionVotacion = new GestionVotacion(conexion);
 	}
 	
+	//TODO Interfaz
 	public int mostrarMenuPrincipalYValidarOpcion()
 	{
 		int opcion;
@@ -99,6 +101,7 @@ public class Validaciones
 		return cuenta;
 	}
 	
+	//TODO Interfaz
 	public int mostrarMenuSesionYValidarOpcion()
 	{
 		int opcion;
@@ -121,6 +124,7 @@ public class Validaciones
 		return opcion;
 	}
 	
+	//TODO Interfaz
 	public String validarNuevoNombreUsuario()
 	{
 		String usuario;
@@ -137,6 +141,7 @@ public class Validaciones
 		return usuario;
 	}
 	
+	//TODO Interfaz
 	public String contrasena()
 	{
 		Scanner teclado = new Scanner(System.in);
@@ -152,6 +157,7 @@ public class Validaciones
 		return contrasena;
 	}
 	
+	//TODO Interfaz
 	public <T> T mostrarObjetosYValidarObjetoElegido(ArrayList<T> lista)
 	{
 		T objeto = null;
@@ -177,6 +183,7 @@ public class Validaciones
 		return objeto;
 	}
 	
+	//TODO Interfaz
 	public int mostrarSubMenuConfiguracionElegidaYValidarOpcion()
 	{
 		int opcion;
@@ -195,6 +202,7 @@ public class Validaciones
 		return opcion;
 	}
 	
+	//TODO Interfaz
 	public int mostrarMenuConfiguracionesComunidadYValidarOpcion()
 	{
 		int opcion;		
@@ -218,6 +226,7 @@ public class Validaciones
 		return opcion;
 	}
 	
+	//TODO Interfaz
 	public int mostarMenuConfiguracionComunidadElegida()
 	{
 		int opcion;
@@ -236,6 +245,7 @@ public class Validaciones
 		return opcion;
 	}
 	
+	//TODO Interfaz
 	public VotacionImpl validarCalificacion()
 	{
 		VotacionImpl votacion = null;
@@ -253,6 +263,7 @@ public class Validaciones
 		return votacion;
 	}
 	
+	//TODO Interfaz
 	public String mostrarListaMarcasYValidarMarcaElegida()
 	{
 		String marca = null;
@@ -260,6 +271,7 @@ public class Validaciones
 		return marca;
 	}
 	
+	//TODO Interfaz
 	public ConfiguracionImpl mostrarConfiguracionesYValidar(ArrayList<ConfiguracionImpl> configuraciones)
 	{
 		ConfiguracionImpl configuracionElegida = null;
@@ -267,6 +279,7 @@ public class Validaciones
 		return configuracionElegida;
 	}
 	
+	//TODO Interfaz
 	public String mostrarListaModelosYValidarModeloElegido(String marca)
 	{
 		String modelo = null;
@@ -276,6 +289,7 @@ public class Validaciones
 		return modelo;
 	}
 	
+	//TODO Interfaz
 	public CuentaImpl validarUsuario()
 	{
 		CuentaImpl cuenta = null;
@@ -290,6 +304,7 @@ public class Validaciones
 		return cuenta;
 	}
 	
+	//TODO Interfaz
 	public double validarPrecioMinimo()
 	{
 		double precio;
@@ -304,6 +319,7 @@ public class Validaciones
 		return precio;
 	}
 	
+	//TODO Interfaz
 	public double validarPrecioMaximo(double precioMinimo)
 	{
 		double precio;
@@ -318,6 +334,7 @@ public class Validaciones
 		return precio;
 	}
 	
+	//TODO Interfaz
 	public GregorianCalendar leerYValidarFecha()
 	{
 		GregorianCalendar fecha = new GregorianCalendar();
@@ -325,7 +342,8 @@ public class Validaciones
 		return fecha;
 	}
 	
-	public String MostrarMenuEdicionConfiguracionYValidarOpcion(ConfiguracionImpl configuracion)
+	//TODO Interfaz
+	public String mostrarMenuEdicionConfiguracionYValidarOpcion(ConfiguracionImpl configuracion)
 	{
 		String opcion;
 		Utils utils = new Utils();
@@ -405,6 +423,7 @@ public class Validaciones
 		return opcion;
 	}
 	
+	//TODO Interfaz
 	public PiezaImpl mostrarMotoresDisponiblesYElegirMotor(ConfiguracionImpl configuracion)
 	{
 		PiezaImpl piezaElegida;
@@ -422,6 +441,7 @@ public class Validaciones
 		return piezaElegida;
 	}
 	
+	//TODO Interfaz
 	public PiezaImpl mostrarLlantasDisponiblesYElegirLlantas(ConfiguracionImpl configuracion)
 	{
 		PiezaImpl piezaElegida;
@@ -434,6 +454,7 @@ public class Validaciones
 		return piezaElegida;
 	}
 	
+	//TODO Interfaz
 	public PiezaImpl mostrarPinturasDisponiblesYElegirPintura(ConfiguracionImpl configuracion)
 	{
 		PiezaImpl piezaElegida;
@@ -446,6 +467,7 @@ public class Validaciones
 		return piezaElegida;
 	}
 	
+	//TODO Interfaz
 	public PiezaImpl mostrarPiezasExtraDisponiblesYElegirPiezaExtra(ConfiguracionImpl configuracion)
 	{
 		PiezaImpl piezaElegida;
@@ -461,6 +483,7 @@ public class Validaciones
 		return piezaElegida;
 	}
 	
+	//TODO Interfaz
 	public char confirmarBorrarConfiguracion()
 	{
 		char confirmadoEliminarConfiguracion;
@@ -475,6 +498,7 @@ public class Validaciones
 		return confirmadoEliminarConfiguracion;
 	}
 	
+	//TODO Interfaz
 	public char confirmarGuardarConfiguracion()
 	{
 		char confirmarGuardarConfiguracion;
@@ -490,6 +514,7 @@ public class Validaciones
 		return confirmarGuardarConfiguracion;
 	}
 	
+	//TODO Interfaz
 	public boolean confirmarBorrarCuenta()
 	{
 		boolean confirmar = false;
@@ -509,6 +534,7 @@ public class Validaciones
 		return confirmar;
 	}
 	
+	//TODO Interfaz
 	public boolean validarContrasenaActual(CuentaImpl cuenta)
 	{
 		boolean contrasenaCorrecta = false;
@@ -535,6 +561,7 @@ public class Validaciones
 		return contrasenaCorrecta;
 	}
 	
+	//TODO Interfaz
 	public String validarNuevaContrasena(String contrasenaActual)
 	{
 		String nuevaContrasena;
@@ -552,6 +579,7 @@ public class Validaciones
 		return nuevaContrasena;
 	}
 	
+	//TODO Interfaz
 	public int mostrarMenuEditarCuentaYValidarOpcion()
 	{
 		int opcion;

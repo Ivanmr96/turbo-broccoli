@@ -26,6 +26,8 @@ import clases.gestion.Resguardo;
 import utils.Utils;
 import utils.Validaciones;
 
+//TODO Comprobar si se puede hacer que despues de cada accion del usuario, se limpie la pantalla.
+
 /* PSEUDOCODIGO GENERALIZADO (Nivel 0)
  * 
  * Inicio
@@ -205,8 +207,6 @@ public class ConfiguradorCoches
 												else
 													e.printStackTrace();
 											}
-											
-											//Modulo Editar configuracion
 										}
 									break;
 									
@@ -222,15 +222,14 @@ public class ConfiguradorCoches
 										
 										opcionConfiguracionPropia = validacion.mostrarObjetosYValidarObjetoElegido(configuraciones); 
 										
-										
-									
 										while(opcionConfiguracionPropia != null)
 										{
-											gestionConfiguracion.cargarRelacionesEnConfiguracion(opcionConfiguracionPropia);
+											gestionConfiguracion.cargarRelacionesEnConfiguracion(opcionConfiguracionPropia);	//Cargar las relaciones en la configuración en cada iteración, para actualizar en memoria principal la información que tiene la bbdd.
+											
 											//Mostrar estadisticas
 											utils.mostrarConfiguracion(opcionConfiguracionPropia);
 											
-											confirmadoEliminarConfiguracion = 'N';
+											confirmadoEliminarConfiguracion = 'N';												//TODO ¿Esto por qué está aquí?
 											
 											//Mostrar submenuConfiguracionElegida y validar opcion elegida
 											opcionSubMenuConfiguracionElegida = validacion.mostrarSubMenuConfiguracionElegidaYValidarOpcion();
@@ -241,17 +240,15 @@ public class ConfiguradorCoches
 												{
 													case 1:
 														//Editar configuracion
-														opcionMenuConfiguracion = validacion.MostrarMenuEdicionConfiguracionYValidarOpcion(opcionConfiguracionPropia);
+														opcionMenuConfiguracion = validacion.mostrarMenuEdicionConfiguracionYValidarOpcion(opcionConfiguracionPropia);
 														
-														//TOOD Modular esto
+														//TODO Modular esto
 														while(!opcionMenuConfiguracion.equals("0"))
 														{
 															cocheEdicionConfiguracion = opcionConfiguracionPropia.obtenerCoche();
 															gestionCoche.cargarPiezasValidasEnCoche(cocheEdicionConfiguracion);
 															
-															//TODO Ver si esto ese puede meter en el switch de abajo
 															if(utils.esNumero(opcionMenuConfiguracion))
-															//if(!opcionMenuConfiguracion.equals("M") && !opcionMenuConfiguracion.equals("L") && !opcionMenuConfiguracion.equals("P") && !opcionMenuConfiguracion.equals("+"))
 															{
 																if(Integer.parseInt(opcionMenuConfiguracion) > 0)
 																{
@@ -286,10 +283,9 @@ public class ConfiguradorCoches
 																		break;
 																}
 															
-															opcionMenuConfiguracion = validacion.MostrarMenuEdicionConfiguracionYValidarOpcion(opcionConfiguracionPropia);
+															opcionMenuConfiguracion = validacion.mostrarMenuEdicionConfiguracionYValidarOpcion(opcionConfiguracionPropia);
 															
-															//Si sale de la pantalla, preguntar si desea guardar la configuracion o no.
-															if(opcionMenuConfiguracion.equals("0"))
+															if(opcionMenuConfiguracion.equals("0")) //Si sale de la pantalla, preguntar si desea guardar la configuracion o no.
 															{
 																confirmarGuardarConfiguracion = validacion.confirmarGuardarConfiguracion();
 																
@@ -297,12 +293,11 @@ public class ConfiguradorCoches
 																	gestionConfiguracion.actualizarConfiguracion(opcionConfiguracionPropia);
 																else
 																{
-																	opcionConfiguracionPropia = gestionConfiguracion.obtenerConfiguracion(opcionConfiguracionPropia.getID());
+																	opcionConfiguracionPropia = gestionConfiguracion.obtenerConfiguracion(opcionConfiguracionPropia.getID());	//Tiene que coger de nuevo de la base de datos la configuracion para que no se queden los cambios guardados(hasta salir) en memoria principal.
 																	gestionConfiguracion.cargarRelacionesEnConfiguracion(opcionConfiguracionPropia);
 																}
 															}
 														}
-														
 														break;
 													case 2:
 														//Borrar configuracion
@@ -310,7 +305,7 @@ public class ConfiguradorCoches
 														if(confirmadoEliminarConfiguracion == 'S')
 														{
 															gestionConfiguracion.eliminarConfiguracion(opcionConfiguracionPropia);
-															System.out.println("configuracion borrada con exito");
+															System.out.println("configuración borrada con éxito.");
 														}
 														break;
 												}
@@ -318,14 +313,14 @@ public class ConfiguradorCoches
 											}
 											
 											configuraciones = gestionConfiguracion.obtenerConfiguraciones(cuentaSesion);
-											for(ConfiguracionImpl configuracion:configuraciones)
+											
+											for(ConfiguracionImpl configuracion:configuraciones) //TODO Meter en un método "cargarRelacionesEnConfiguraciones(ArrayList<ConfiguraciomImpl>)"
 											{
 												gestionConfiguracion.cargarRelacionesEnConfiguracion(configuracion);
 											}
 											
 											opcionConfiguracionPropia = validacion.mostrarObjetosYValidarObjetoElegido(configuraciones);
 										}
-										
 									break;
 									
 								case 3: 
@@ -387,13 +382,10 @@ public class ConfiguradorCoches
 													//Buscar por fecha
 													fechaBuscar = validacion.leerYValidarFecha();
 													configuraciones = resguardo.obtenerConfiguraciones(fechaBuscar);
-													//configuraciones = gestion.obtenerConfiguraciones(fechaBuscar);
 													
 													break;
 													
 											}
-											
-											//configuracionComunidadElegida = validacion.mostrarConfiguracionesYValidar(configuraciones);
 											
 											for(ConfiguracionImpl configuracion:configuraciones)
 											{

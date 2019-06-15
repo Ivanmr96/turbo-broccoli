@@ -41,8 +41,8 @@ import utils.Utils;
 public class ConfiguracionImpl 
 {
 	private GregorianCalendar fecha;
-	
 	private String ID;
+	
 	private CocheImpl coche;
 	private CuentaImpl cuenta;
 	private ArrayList<PiezaImpl> piezas;
@@ -51,8 +51,6 @@ public class ConfiguracionImpl
 	private MotorImpl motor;
 	private LlantasImpl llantas;
 	private PinturaImpl pintura;
-	
-	//TODO El motor, las llantas y la pintura deben ser un atributo de la clase.
 	
 	public ConfiguracionImpl()
 	{
@@ -184,6 +182,4 @@ public class ConfiguracionImpl
 			   cuenta.getNombreUsuario() + " - " +
 			   this.obtenerPrecioTotal() + " €";
 	}
-	
-	//TODO Alguna funcion que pueda ser útil, como calcularPrecioTotal(), o calcularCalificacionMedia()
 }

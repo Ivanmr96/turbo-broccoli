@@ -229,7 +229,8 @@ public class GestionConfiguracion
 		return configuraciones;
 	}
 	
-	public ArrayList<ConfiguracionImpl> obtenerConfiguraciones(double precioMinimo, double precioMaximo) //TODO funcionalidad para calcular el precio de una configuracion
+	//TODO Interfaz
+	public ArrayList<ConfiguracionImpl> obtenerConfiguraciones(double precioMinimo, double precioMaximo)
 	{
 		ArrayList<ConfiguracionImpl> configuraciones = new ArrayList<ConfiguracionImpl>();
 		
@@ -249,6 +250,7 @@ public class GestionConfiguracion
 		return configuraciones;
 	}
 	
+	//TODO Interfaz
 	public ArrayList<ConfiguracionImpl> obtenerConfiguraciones(GregorianCalendar fecha)
 	{
 		ArrayList<ConfiguracionImpl> configuraciones = new ArrayList<ConfiguracionImpl>();
@@ -708,8 +710,6 @@ public class GestionConfiguracion
 		
 		return eliminado;
 	}
-	
-	/* =EJW=EWV=IM=·N=FOIEFNO"·NR)NQ=! N=!N =!·FIN !^FIN ÊFNOÑNKJAA IL! RU!^SACN ÑKCH U!O"NE^)NDAJVBIGHB^/T H"()ENDWUSPBFY"BHRQ^DBSYVEB(H!B"U!)"HR!)"RB)!"RH )NSCÑACS)SOC=!=!DN=)!R=!N"R */
 	
 	/* INTERFAZ
 	 * Comentario: Carga el coche de una configuración en ella, buscando en la base de datos.
