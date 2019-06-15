@@ -1,5 +1,6 @@
 package programa;
 
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.Scanner;
@@ -96,35 +97,64 @@ public class ConfiguradorCoches
 {
 	public static void main(String[] args)
 	{
+		//Conexion
 		String URLConexion = "jdbc:sqlserver://localhost;"
 				  + "database=Coches;"
 				  + "user=usuarioCoches;"
 				  + "password=123;";
+		
 		ConexionSQL gestionConexion = new ConexionSQL(URLConexion);
 		gestionConexion.abrirConexion();
+		Connection conexion = gestionConexion.getConexion();
 		
-		GestionConfiguracion gestionConfiguracion = new GestionConfiguracion(gestionConexion.getConexion());
-		GestionCoche gestionCoche = new GestionCoche(gestionConexion.getConexion());
-		GestionCuenta gestionCuenta = new GestionCuenta(gestionConexion.getConexion());
-		GestionPieza gestionPieza = new GestionPieza(gestionConexion.getConexion());
-		GestionVotacion gestionVotacion = new GestionVotacion(gestionConexion.getConexion());
-		Validaciones validacion = new Validaciones(gestionConexion.getConexion());
+		//Gestion
+		GestionConfiguracion gestionConfiguracion = new GestionConfiguracion(conexion);
+		GestionCoche gestionCoche = new GestionCoche(conexion);
+		GestionCuenta gestionCuenta = new GestionCuenta(conexion);
+		GestionPieza gestionPieza = new GestionPieza(conexion);
+		GestionVotacion gestionVotacion = new GestionVotacion(conexion);
+		Validaciones validacion = new Validaciones(conexion);
 			
 		Utils utils = new Utils();
 		Scanner teclado = new Scanner(System.in);
 		Resguardo resguardo = new Resguardo();
 		
-		int opcionMenuPrincipal, opcionSesion, opcionSubMenuConfiguracionElegida, opcionMenuConfiguracionesComunidad, opcionMenuConfiguracionComunidadElegida;
-		CocheImpl opcionCoche, coche, cocheEdicionConfiguracion;
-		CuentaImpl cuentaSesion, cuentaBuscar;
-		char confirmado, confirmadoEliminarConfiguracion, confirmarGuardarConfiguracion;
-		String usuario, contrasena, marca, modelo, opcionMenuConfiguracion;
-		ConfiguracionImpl configuracionNueva, opcionConfiguracionPropia, configuracionComunidadElegida;
-		VotacionImpl calificacion;
+		//Menu principal
+		int opcionMenuPrincipal;
+		
+		//Menu Sesion
+		int opcionSesion;
+		CuentaImpl cuentaSesion;
+		
+		//Nueva configuracion
+		CocheImpl opcionCoche;
+		ConfiguracionImpl configuracionNueva;
+		
+		//Ver configuraciones propias
 		ArrayList<ConfiguracionImpl> configuraciones;
-		double precioMinimo, precioMaximo;
-		GregorianCalendar fechaBuscar;
+		char confirmadoEliminarConfiguracion, confirmarGuardarConfiguracion;
+		int opcionSubMenuConfiguracionElegida;
+		String opcionMenuConfiguracion;
+		CocheImpl cocheEdicionConfiguracion;
 		PiezaImpl piezaElegidaEdicion;
+		ConfiguracionImpl opcionConfiguracionPropia;
+		
+		//Ver configuraciones de la comunidad
+		int opcionMenuConfiguracionesComunidad;
+		CocheImpl coche;
+		String marca, modelo;
+		CuentaImpl cuentaBuscar;
+		double precioMinimo, precioMaximo;
+		ConfiguracionImpl configuracionComunidadElegida;
+		int opcionMenuConfiguracionComunidadElegida;
+		GregorianCalendar fechaBuscar;
+		VotacionImpl calificacion;
+		
+		//Registro
+		char confirmadoRegistro;
+		String usuario, contrasena;
+		
+/* ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 		
 		//Mostrar menu principal y validar opcion
 		opcionMenuPrincipal = validacion.mostrarMenuPrincipalYValidarOpcion();
@@ -447,13 +477,13 @@ public class ConfiguradorCoches
 						{
 							System.out.print("Confirmar el registro? (S/N): ");
 							
-							confirmado = teclado.next().charAt(0);
+							confirmadoRegistro = teclado.next().charAt(0);
 							
-							confirmado = Character.toUpperCase(confirmado);
+							confirmadoRegistro = Character.toUpperCase(confirmadoRegistro);
 							
-						}while(confirmado != 'S' && confirmado != 'N');
+						}while(confirmadoRegistro != 'S' && confirmadoRegistro != 'N');
 						
-						if(confirmado == 'S')
+						if(confirmadoRegistro == 'S')
 							//Registrar cuenta
 							//System.out.println(contrasena);
 							try 

@@ -1,5 +1,6 @@
 package utils;
 
+import java.io.Console;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
@@ -69,6 +70,7 @@ public class Validaciones
 	{
 		CuentaImpl cuenta;
 		Scanner teclado = new Scanner(System.in);
+		Console cons = System.console();
 		String usuario;
 		Utils utils = new Utils();
 		String contrasena;
