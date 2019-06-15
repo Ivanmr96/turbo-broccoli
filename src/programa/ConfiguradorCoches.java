@@ -154,6 +154,10 @@ public class ConfiguradorCoches
 		char confirmadoRegistro;
 		String usuario, contrasena;
 		
+		//Editar cuenta
+		int opcionMenuEditarCuenta;
+		boolean confirmarBorrarCuenta = false;
+		
 /* ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 		
 		//Mostrar menu principal y validar opcion
@@ -441,8 +445,8 @@ public class ConfiguradorCoches
 									
 								case 4: 
 									//Editar cuenta
-									/*
-									opcionMenuEditarCuenta = mostrarMenuEditarCuentaYValidarOpcion();
+									
+									opcionMenuEditarCuenta = validacion.mostrarMenuEditarCuentaYValidarOpcion();
 									
 									while(opcionMenuEditarCuenta != 0)
 									{
@@ -450,18 +454,37 @@ public class ConfiguradorCoches
 										{
 											case 1:
 												//Borrar cuenta
+												confirmarBorrarCuenta = validacion.confirmarBorrarCuenta();
+												
+												if(confirmarBorrarCuenta)
+												{
+													if(gestionCuenta.eliminarCuenta(cuentaSesion))
+														System.out.println("La cuenta se borro correctamente.");
+													else
+														System.out.println("No se pudo borrar la cuenta, intentelo más tarde.");
+												}
+												break;
 											case 2:
 												//Cambiar contraseña
 										}
 										
-										opcionMenuEditarCuenta = mostrarMenuEditarCuentaYValidarOpcion();
-									}*/
+										if(!confirmarBorrarCuenta)
+											opcionMenuEditarCuenta = validacion.mostrarMenuEditarCuentaYValidarOpcion();
+										else
+											opcionMenuEditarCuenta = 0;
+									}
 									break;
 									
 							}
 							
 							//Mostrar menu sesion y validar opcion
-							opcionSesion = validacion.mostrarMenuSesionYValidarOpcion();
+							if(!confirmarBorrarCuenta)
+								opcionSesion = validacion.mostrarMenuSesionYValidarOpcion();
+							else
+							{
+								opcionSesion = 0;
+								confirmarBorrarCuenta = false;		//Se reinicia el indicador de cuenta borrada para el proximo inicio de sesion.
+							}
 						}
 					break;
 				case 2: 
@@ -485,7 +508,6 @@ public class ConfiguradorCoches
 						
 						if(confirmadoRegistro == 'S')
 							//Registrar cuenta
-							//System.out.println(contrasena);
 							try 
 							{
 								if(gestionCuenta.insertarCuenta(new CuentaImpl(usuario, contrasena)))

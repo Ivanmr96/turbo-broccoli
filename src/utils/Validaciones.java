@@ -489,4 +489,42 @@ public class Validaciones
 		
 		return confirmarGuardarConfiguracion;
 	}
+	
+	public boolean confirmarBorrarCuenta()
+	{
+		boolean confirmar = false;
+		char respuesta;
+		Scanner teclado = new Scanner(System.in);
+		
+		do
+		{
+			System.out.print("Estás segur@ que quieres borrar tu cuenta? Se borrarán todas las configuraciones y votaciones realizadas. (S/N): ");
+			respuesta = Character.toUpperCase(teclado.next().charAt(0));
+			
+		}while(respuesta != 'S' && respuesta != 'N');
+		
+		if(respuesta == 'S')
+			confirmar = true;
+		
+		return confirmar;
+	}
+	
+	public int mostrarMenuEditarCuentaYValidarOpcion()
+	{
+		int opcion;
+		Scanner teclado = new Scanner(System.in);
+		
+		System.out.println("0) Volver atras");
+		System.out.println("1) Borrar cuenta");
+		System.out.println("2) Cambiar contraseña");
+		
+		do
+		{
+			System.out.print("Elige una opcion: ");
+			opcion = teclado.nextInt();
+			System.out.println();
+		}while(opcion < 0 || opcion > 2);
+		
+		return opcion;
+	}
 }
