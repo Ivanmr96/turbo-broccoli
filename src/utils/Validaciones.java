@@ -509,6 +509,49 @@ public class Validaciones
 		return confirmar;
 	}
 	
+	public boolean validarContrasenaActual(CuentaImpl cuenta)
+	{
+		boolean contrasenaCorrecta = false;
+		String contrasenaActual;
+		Scanner teclado = new Scanner(System.in);
+		Utils utils = new Utils();
+		int intentos = 5;
+		
+		do
+		{
+			System.out.print("(" + intentos + " intentos restantes) Introduce la contraseña actual de la cuenta: ");
+			contrasenaActual = teclado.nextLine();
+			contrasenaActual = utils.obtenerMD5(contrasenaActual);
+			
+			intentos--;
+			
+		}while(!contrasenaActual.equals(cuenta.getContrasena()) && intentos > 0);
+		
+		if(contrasenaActual.equals(cuenta.getContrasena()))
+			contrasenaCorrecta = true;
+		else
+			System.out.println("Ya no te quedan intentos.");
+		
+		return contrasenaCorrecta;
+	}
+	
+	public String validarNuevaContrasena(String contrasenaActual)
+	{
+		String nuevaContrasena;
+		Scanner teclado = new Scanner(System.in);
+		Utils utils = new Utils();
+		
+		do
+		{
+			System.out.print("Introduce tu nueva contraseña: ");
+			nuevaContrasena = teclado.nextLine();
+			nuevaContrasena = utils.obtenerMD5(nuevaContrasena);
+			
+		}while(nuevaContrasena.equals(contrasenaActual));
+		
+		return nuevaContrasena;
+	}
+	
 	public int mostrarMenuEditarCuentaYValidarOpcion()
 	{
 		int opcion;

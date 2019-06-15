@@ -157,6 +157,7 @@ public class ConfiguradorCoches
 		//Editar cuenta
 		int opcionMenuEditarCuenta;
 		boolean confirmarBorrarCuenta = false;
+		String nuevaContrasena;
 		
 /* ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 		
@@ -466,6 +467,16 @@ public class ConfiguradorCoches
 												break;
 											case 2:
 												//Cambiar contraseña
+												if(validacion.validarContrasenaActual(cuentaSesion))
+												{
+													nuevaContrasena = validacion.validarNuevaContrasena(cuentaSesion.getContrasena());
+													cuentaSesion.setContrasena(nuevaContrasena);
+													
+													if(gestionCuenta.actualizarCuenta(cuentaSesion))
+														System.out.println("Contraseña cambiada correctamente.");
+													else
+														System.out.println("La contraseña no puedo cambiarse, intentelo más tarde.");
+												}
 										}
 										
 										if(!confirmarBorrarCuenta)

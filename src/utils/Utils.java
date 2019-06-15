@@ -183,4 +183,11 @@ public class Utils
 		
 		System.out.println("--------------------------------------------------------------");
 	}
+	
+	public static void main(String[] args)
+	{
+		Utils utils = new Utils();
+				
+		System.out.println(utils.obtenerMD5("1234"));
+	}
 }
