@@ -1,11 +1,23 @@
 package tests;
 
 import clases.basicas.CocheImpl;
+import clases.basicas.PiezaImpl;
+import clases.gestion.ConexionSQL;
+import clases.gestion.GestionCoche;
 
 public class CocheImplTest {
 
 	public static void main(String[] args) 
 	{
+		String URLConexion = "jdbc:sqlserver://localhost;"
+				  + "database=Coches;"
+				  + "user=usuarioCoches;"
+				  + "password=123;";
+		
+		ConexionSQL gestionConexion = new ConexionSQL(URLConexion);
+		gestionConexion.abrirConexion();
+		GestionCoche gestion = new GestionCoche(gestionConexion.getConexion());
+		
 		CocheImpl porDefecto = new CocheImpl();
 		CocheImpl conParametros = new CocheImpl("Audi", "A1", 27500);
 		CocheImpl deCopia = new CocheImpl(conParametros);
@@ -45,6 +57,53 @@ public class CocheImplTest {
 		porDefecto.setPrecioBase(24220);
 		
 		System.out.println("DESPUES -> " + deCopia.getPrecioBase());
+		
+		System.out.println("-------------------------------------------------------");
+		System.out.println("-------------------------------------------------------");
+		
+		System.out.println("conParametros.obtenerPiezasValidas()");
+		gestion.cargarPiezasValidasEnCoche(conParametros);
+		
+		for(PiezaImpl pieza:conParametros.obtenerPiezasValidas())
+		{
+			System.out.println(pieza.toString());
+		}
+		
+		System.out.println("-------------------------------------------------------");
+		
+		System.out.println("conParametros.obtenerPiezasExtraValidas()");
+		
+		for(PiezaImpl piezaExtra:conParametros.obtenerPiezasExtraValidas())
+		{
+			System.out.println(piezaExtra.toString());
+		}
+		
+		System.out.println("-------------------------------------------------------");
+		
+		System.out.println("conParametros.obtenerMotoresValidos()");
+		
+		for(PiezaImpl motor:conParametros.obtenerMotoresValidos())
+		{
+			System.out.println(motor.toString());
+		}
+		
+		System.out.println("-------------------------------------------------------");
+		
+		System.out.println("conParametros.obtenerLlantasValidas()");
+		
+		for(PiezaImpl llantas:conParametros.obtenerLlantasValidas())
+		{
+			System.out.println(llantas.toString());
+		}
+		
+		System.out.println("-------------------------------------------------------");
+		
+		System.out.println("conParametros.obtenerPinturasValidas()");
+		
+		for(PiezaImpl pintura:conParametros.obtenerPinturasValidas())
+		{
+			System.out.println(pintura.toString());
+		}
 	}
 
 }

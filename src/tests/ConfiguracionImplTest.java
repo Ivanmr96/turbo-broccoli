@@ -9,8 +9,10 @@ public class ConfiguracionImplTest {
 	public static void main(String[] args) 
 	{
 		ConfiguracionImpl porDefecto = new ConfiguracionImpl();
-		ConfiguracionImpl conParametros = new ConfiguracionImpl(new GregorianCalendar());
+		ConfiguracionImpl conParametros = new ConfiguracionImpl("EF49FC93-2EEF-4F9A-BBBD-B4CF232D17A9", new GregorianCalendar());
 		ConfiguracionImpl deCopia = new ConfiguracionImpl(conParametros);
+		
+		System.out.println("conParametros.getID(): " + conParametros.getID());
 		
 		System.out.println("conParametros.getFecha().getTime(): " + conParametros.getFecha().getTime());
 

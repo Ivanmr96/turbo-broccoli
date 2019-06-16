@@ -44,6 +44,9 @@ public class VotacionImplTest {
 		deCopia.setCalificacion(3);
 		
 		System.out.println("DESPUES -> " + deCopia.getCalificacion());
+		
+		System.out.println("-------------------------------------------------------");
+		System.out.println("-------------------------------------------------------");
 	}
 
 }

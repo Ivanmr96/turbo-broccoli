@@ -164,7 +164,14 @@ END --TRIGGER
 GO
 
 GO
--- Borra una configuracion en cascada, es decir borra tambien sus votaciones y en la tabla PiezasConfiguracionCoche borra las filas asociadas a dicha configuracion
+/* INTERFAZ
+Comentario: Borra una configuracion en cascada, es decir borra tambien sus votaciones y en la tabla PiezasConfiguracionCoche borra las filas asociadas a dicha 
+Prototipo: PROCEDURE BorrarConfiguracion @IDConfiguracion AS uniqueidentifier
+Entrada: Un uniqueidentifier con el ID de la configuración a borrar
+Precondiciones: No hay
+Salida: No hay
+Postcondiciones: La configuración queda borrada, así como las votaciones asociadas a ella y las tuplas de la tabla PiezasConfiguracionCoche con el ID de la configuracion dada.
+*/
 CREATE PROCEDURE BorrarConfiguracion
 	@IDConfiguracion AS uniqueidentifier
 AS
@@ -178,4 +185,28 @@ BEGIN
 	DELETE FROM Configuraciones
 	WHERE ID = @IDConfiguracion
 END --PROCEDURE
+GO
+
+GO
+/* INTERFAZ
+Comentario: Comprueba si existe una configuracion buscando por su ID
+Prototipo: FUNCTION ExisteConfiguracion (@IDConfiguracion uniqueidentifier)
+Entrada: Un uniqueidentifer con el ID de la configuracion a comprobar
+Precondiciones: No hay
+Salida: un bit indicando si al configuración existe o no.
+Postcondiciones: Asociado al nombre devuelve un bit, que será 1 si la configuracion existe o 0 si no existe.
+*/
+CREATE FUNCTION ExisteConfiguracion (@IDConfiguracion uniqueidentifier)
+	RETURNS bit AS
+BEGIN
+	DECLARE @Existe AS bit
+	SET @Existe = 0
+
+	IF EXISTS (SELECT ID FROM Configuraciones WHERE ID = @IDConfiguracion)
+	BEGIN
+		SET @Existe = 1
+	END
+
+	RETURN @Existe
+END
 GO

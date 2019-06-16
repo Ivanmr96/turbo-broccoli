@@ -66,7 +66,7 @@ import utils.Utils;
  * 
  * Para cargar las relaciones, ha de usarse la clase de gestión {@link clases.gestion.GestionConfiguracion}.
  * 
- * @author Iván Moreno
+ * @author Iván Moreno <br> <a href="https://github.com/Ivanmr96/">Github</a>
  */
 public class ConfiguracionImpl 
 {

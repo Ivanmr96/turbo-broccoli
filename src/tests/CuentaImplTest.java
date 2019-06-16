@@ -22,6 +22,9 @@ public class CuentaImplTest {
 		porDefecto.setContrasena("108ea74f4f4b7e9cbf66ae06d9707a05");
 		
 		System.out.println("DESPUES -> " + porDefecto.getContrasena());
+		
+		System.out.println("-------------------------------------------------------");
+		System.out.println("-------------------------------------------------------");
 	}
 
 }

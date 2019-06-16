@@ -4,6 +4,14 @@ BEGIN
 END
 
 GO
+/* INTERFAZ
+Comentario: Comprueba si existe una configuracion buscando por su ID
+Prototipo: FUNCTION ExisteConfiguracion (@IDConfiguracion uniqueidentifier)
+Entrada: Un uniqueidentifer con el ID de la configuracion a comprobar
+Precondiciones: No hay
+Salida: un bit indicando si al configuración existe o no.
+Postcondiciones: Asociado al nombre devuelve un bit, que será 1 si la configuracion existe o 0 si no existe.
+*/
 CREATE FUNCTION ExisteConfiguracion (@IDConfiguracion uniqueidentifier)
 	RETURNS bit AS
 BEGIN

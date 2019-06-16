@@ -47,6 +47,9 @@ public class PiezaImplTest {
 		deCopia.setPrecio(4250);
 		
 		System.out.println("DESPUES -> " + deCopia.getPrecio());
+		
+		System.out.println("-------------------------------------------------------");
+		System.out.println("-------------------------------------------------------");
 	}
 
 }

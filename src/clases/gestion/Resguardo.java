@@ -5,7 +5,6 @@ import java.util.GregorianCalendar;
 
 import clases.basicas.ConfiguracionImpl;
 
-//TODO Javadoc
 public class Resguardo 
 {
 	public ArrayList<ConfiguracionImpl> obtenerConfiguraciones(GregorianCalendar fecha)
