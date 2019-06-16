@@ -1,7 +1,5 @@
 package utils;
 
-import java.io.Console;
-import java.io.IOException;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
@@ -14,29 +12,39 @@ import clases.basicas.CuentaImpl;
 import clases.basicas.PiezaImpl;
 import clases.basicas.VotacionImpl;
 import clases.gestion.GestionCoche;
-import clases.gestion.GestionConfiguracion;
+//import clases.gestion.GestionConfiguracion;
 import clases.gestion.GestionCuenta;
-import clases.gestion.GestionPieza;
-import clases.gestion.GestionVotacion;
+//import clases.gestion.GestionPieza;
+//import clases.gestion.GestionVotacion;
 
 public class Validaciones 
 {
 	private GestionCoche gestionCoche;
-	private GestionConfiguracion gestionConfiguracion;
+	//private GestionConfiguracion gestionConfiguracion;
 	private GestionCuenta gestionCuenta;
-	private GestionPieza gestionPieza;
-	private GestionVotacion gestionVotacion;
+	//private GestionPieza gestionPieza;
+	//private GestionVotacion gestionVotacion;
 	
 	public Validaciones(Connection conexion)
 	{
 		gestionCoche = new GestionCoche(conexion);
-		gestionConfiguracion = new GestionConfiguracion(conexion);
+		//gestionConfiguracion = new GestionConfiguracion(conexion);
 		gestionCuenta = new GestionCuenta(conexion);
-		gestionPieza = new GestionPieza(conexion);
-		gestionVotacion = new GestionVotacion(conexion);
+		//gestionPieza = new GestionPieza(conexion);
+		//gestionVotacion = new GestionVotacion(conexion);
 	}
 	
-	//TODO Interfaz
+	/* INTERFAZ
+	 * Comentario: Muestra el menu principal y valida una opcion elegida
+	 * Prototipo: public int mostrarMenuPrincipalYValidarOpcion()
+	 * Entrada: No hay
+	 * Precondiciones: No hay
+	 * Salida: Un int indicando la opción elegida.
+	 * Postcondiciones: Asociado al nombre devuelve un int con la opcion elegida:
+	 * 						- 1 para iniciar sesión
+	 * 						- 2 para registrarse
+	 * 						- 0 para salir
+	 */
 	public int mostrarMenuPrincipalYValidarOpcion()
 	{
 		int opcion;
@@ -56,6 +64,8 @@ public class Validaciones
 			
 		}while(opcion < 0 || opcion > 2);
 		
+		teclado.close();
+		
 		return opcion;
 	}
 	
@@ -72,7 +82,6 @@ public class Validaciones
 	{
 		CuentaImpl cuenta;
 		Scanner teclado = new Scanner(System.in);
-		Console cons = System.console();
 		String usuario;
 		Utils utils = new Utils();
 		String contrasena;
@@ -98,10 +107,24 @@ public class Validaciones
 			
 		}while(!contrasenaCorrecta);
 		
+		teclado.close();
+		
 		return cuenta;
 	}
 	
-	//TODO Interfaz
+	/* INTERFAZ
+	 * Comentario: Muestra en pantalla el menu de la sesión y valida una opcion elegida
+	 * Prototipo: public int mostrarMenuSesionYValidarOpcion()
+	 * Entrada: No hay
+	 * Precondiciones: No hay
+	 * Salida: Un int indicando la opción del menu de la sesión elegida.
+	 * Postcondiciones: Asociado al nombre devuelve un int con la opción elegida:
+	 * 						- 1 para una nueva configuración
+	 * 						- 2 para ver las configuraciones propias
+	 * 						- 3 para ver las configuraciones de la comunidad
+	 * 						- 4 para editar la cuenta
+	 * 						- 0 para salir
+	 */
 	public int mostrarMenuSesionYValidarOpcion()
 	{
 		int opcion;
@@ -121,10 +144,19 @@ public class Validaciones
 			
 		}while(opcion < 0 || opcion > 4);
 		
+		teclado.close();
+		
 		return opcion;
 	}
 	
-	//TODO Interfaz
+	/* INTERFAZ
+	 * Comentario: Valida un nuevo nombre de usuario, de forma que solo se puede escoger uno que no exista en la base de datos.
+	 * Prototipo: public String validarNuevoNombreUsuario()
+	 * Entrada: No hay
+	 * Precondiciones: La conexión con la base de datos debe estar abierta.
+	 * Salida: Un String con el nombre de usuario nuevo.
+	 * Postcondiciones: Asociado al nombre devuelve un String con el nuevo nombre de usuario, validado de forma que no existe en la base de datos.
+	 */
 	public String validarNuevoNombreUsuario()
 	{
 		String usuario;
@@ -138,10 +170,19 @@ public class Validaciones
 			
 		}while(gestionCuenta.existeUsuario(usuario));
 		
+		teclado.close();
+		
 		return usuario;
 	}
 	
-	//TODO Interfaz
+	/* INTERFAZ
+	 * Comentario: Pide al usuario una contraseña y la devuelve encriptada en MD5.
+	 * Prototipo: public String contrasena()
+	 * Entrada: No hay
+	 * Precondiciones: No hay
+	 * Salida: Un String con la contraseña introducida, encriptada en MD5.
+	 * Postcondiciones: Asociado al nombre devuelve un String con la contraseña introducida, encriptada en MD5.
+	 */
 	public String contrasena()
 	{
 		Scanner teclado = new Scanner(System.in);
@@ -154,10 +195,21 @@ public class Validaciones
 		
 		contrasena = utils.obtenerMD5(contrasena);
 		
+		teclado.close();
+		
 		return contrasena;
 	}
 	
-	//TODO Interfaz
+	/* INTERFAZ
+	 * Comentario: Muestra enumerados la lista de objetos determinada y valida la elección de una de ellos.
+	 * 				También muestra una opción de volver atrás.
+	 * Prototipo: public <T> T mostrarObjetosYValidarObjetoElegido(ArrayList<T> lista)
+	 * Entrada: Un ArrayList<T> con la lista de objetos que se desean mostrar enumerados y validar la elección de uno de ellos.
+	 * Precondiciones: No hay
+	 * Salida: El Objeto elegido de la lista
+	 * Postcondiciones: Asociado al nombre devuelve un objeto del mismo tipo que la lista (T), que será el objeto elegido.
+	 * 					- Si el usuario selecciona la opción 0 (volver atrás), el objeto devuelto será null.
+	 */
 	public <T> T mostrarObjetosYValidarObjetoElegido(ArrayList<T> lista)
 	{
 		T objeto = null;
@@ -180,10 +232,22 @@ public class Validaciones
 		if(opcion > 0)
 			objeto = lista.get(opcion-1);
 		
+		teclado.close();
+		
 		return objeto;
 	}
 	
-	//TODO Interfaz
+	/* INTERFAZ
+	 * Comentario: Muestra el SubMenu de la configuración y valida una opción elegida:
+	 * Prototipo: public int mostrarSubMenuConfiguracionElegidaYValidarOpcion()
+	 * Entrada: No hay
+	 * Precondiciones: No hay
+	 * Salida: Un int indicando la opción elegida.
+	 * Postcondiciones: Asociado al nombre devuelve un int indicando la opción elegida.
+	 * 						-> 1 para editar la configuración
+	 * 						-> 2 para borrar la configuración
+	 * 						-> 0 para volver atrás.
+	 */
 	public int mostrarSubMenuConfiguracionElegidaYValidarOpcion()
 	{
 		int opcion;
@@ -199,10 +263,26 @@ public class Validaciones
 			opcion = teclado.nextInt();
 		}while(opcion < 0 || opcion > 2);
 		
+		teclado.close();
+		
 		return opcion;
 	}
 	
-	//TODO Interfaz
+	/* INTERFAZ
+	 * Comentario: Muestra el menu de las configuraciones de la comunidad y valida una opción elegida.
+	 * Prototipo: public int mostrarMenuConfiguracionesComunidadYValidarOpcion()
+	 * Entrada: No hay
+	 * Precondiciones: No hay
+	 * Salida: Un int indicando la opción elegida.
+	 * Postcondiciones: Asociado al nombre devuelve un int indicando la opción elegida:
+	 * 						-> 1 para ver todas las configuraciones
+	 * 						-> 2 para buscar configuraciones por marca
+	 * 						-> 3 para buscar configuraciones por marca y modelo
+	 * 						-> 4 para buscar configuraciones por usuario
+	 * 						-> 5 para buscar configuraciones por rango de precio
+	 * 						-> 6 para buscar configuraciones por fecha
+	 * 						-> 0 para volver atras
+	 */
 	public int mostrarMenuConfiguracionesComunidadYValidarOpcion()
 	{
 		int opcion;		
@@ -223,11 +303,22 @@ public class Validaciones
 			
 		}while(opcion < 0 || opcion > 6);
 		
+		teclado.close();
+		
 		return opcion;
 	}
 	
-	//TODO Interfaz
-	public int mostarMenuConfiguracionComunidadElegida()
+	/* INTERFAZ
+	 * Comentario: Muestra el menu de la configuración de la comunidad elegida y valida la opción elegida
+	 * Prototipo: public int mostarMenuConfiguracionComunidadElegidaYValidarOpcion()
+	 * Entrada: No hay
+	 * Precondiciones: No hay
+	 * Salida: Un int indicando la opción elegida
+	 * Postcondiciones: Asociado al nombre devuelve un int con la opción elegida:
+	 * 							-> 1 para votar la configuracion
+	 * 							-> 0 para volver atras
+	 */
+	public int mostarMenuConfiguracionComunidadElegidaYValidarOpcion()
 	{
 		int opcion;
 		Scanner teclado = new Scanner(System.in);
@@ -242,10 +333,19 @@ public class Validaciones
 			
 		}while(opcion < 0 || opcion > 1);
 		
+		teclado.close();
+		
 		return opcion;
 	}
 	
-	//TODO Interfaz
+	/* INTERFAZ
+	 * Comentario: Valida la calificación de una configuración.
+	 * Prototipo: public VotacionImpl validarCalificacion()
+	 * Entrada: No hay
+	 * Precondiciones: No hay
+	 * Salida: Una VotacionImpl con la calificación realizada.
+	 * Postcondiciones: Asociado al nombre devuelve una VotacionImpl con la calificación realizada.
+	 */
 	public VotacionImpl validarCalificacion()
 	{
 		VotacionImpl votacion = null;
@@ -260,37 +360,20 @@ public class Validaciones
 		
 		votacion = new VotacionImpl(UUID.randomUUID().toString(), new GregorianCalendar(), valoracion);
 		
+		teclado.close();
+		
 		return votacion;
 	}
 	
-	//TODO Interfaz
-	public String mostrarListaMarcasYValidarMarcaElegida()
-	{
-		String marca = null;
-		
-		return marca;
-	}
-	
-	//TODO Interfaz
-	public ConfiguracionImpl mostrarConfiguracionesYValidar(ArrayList<ConfiguracionImpl> configuraciones)
-	{
-		ConfiguracionImpl configuracionElegida = null;
-		
-		return configuracionElegida;
-	}
-	
-	//TODO Interfaz
-	public String mostrarListaModelosYValidarModeloElegido(String marca)
-	{
-		String modelo = null;
-		
-		gestionCoche.obtenerModelos(marca);
-		
-		return modelo;
-	}
-	
-	//TODO Interfaz
-	public CuentaImpl validarUsuario()
+	/* INTERFAZ
+	 * Comentario: Lee y valida un nombre de usuario
+	 * Prototipo: public CuentaImpl leerYValidarUsuario()
+	 * Entrada: No hay
+	 * Precondiciones: La conexión con la base de datos debe estar abierta.
+	 * Salida: Una CuentaImpl con la cuenta del usuario leido.
+	 * Postcondiciones: Asociado al nombre devuelve una CuentaImpl con el usuario leido y validado.
+	 */
+	public CuentaImpl leerYValidarUsuario()
 	{
 		CuentaImpl cuenta = null;
 		Scanner teclado = new Scanner(System.in);
@@ -301,11 +384,20 @@ public class Validaciones
 			cuenta = gestionCuenta.obtenerCuenta(teclado.nextLine());
 		}while(cuenta == null);
 		
+		teclado.close();
+		
 		return cuenta;
 	}
 	
-	//TODO Interfaz
-	public double validarPrecioMinimo()
+	/* INTERFAZ
+	 * Comentario: Lee y valida el precio mínimo para buscar en las configuraciones de la comunidad
+	 * Prototipo: public double leerYValidarPrecioMinimo()
+	 * Entrada: No hay
+	 * Precondiciones: No hay
+	 * Salida: Un double con el precio mínimo validado.
+	 * Postcondiciones: Asociado al nombre devuelve un double con el precio mínimo validado.
+	 */
+	public double leerYValidarPrecioMinimo()
 	{
 		double precio;
 		Scanner teclado = new Scanner(System.in);
@@ -316,11 +408,20 @@ public class Validaciones
 			precio = teclado.nextDouble();
 		}while(precio < 0.0);
 		
+		teclado.close();
+		
 		return precio;
 	}
 	
-	//TODO Interfaz
-	public double validarPrecioMaximo(double precioMinimo)
+	/* INTERFAZ
+	 * Comentario: Lee y valida el precio máximo para buscar en las configuraciones de la comunidad. Que no podrá ser mayor que el precio mínimo.
+	 * Prototipo: public double leerYValidarPrecioMaximo(double precioMinimo)
+	 * Entrada: Un double con el precio mínimo.
+	 * Precondiciones: No hay
+	 * Salida: Un double con el precio máximo para buscar en las configuraciones de la comunidad.
+	 * Postcondiciones: Asociado al nombre devuelve un doble con el precio máximo para buscar en las configuraciones de la comunidad.
+	 */
+	public double leerYValidarPrecioMaximo(double precioMinimo)
 	{
 		double precio;
 		Scanner teclado = new Scanner(System.in);
@@ -331,24 +432,47 @@ public class Validaciones
 			precio = teclado.nextDouble();
 		}while(precio < precioMinimo);
 		
+		teclado.close();
+		
 		return precio;
 	}
 	
-	//TODO Interfaz
+	/* INTERFAZ
+	 * Comentario: Lee y valida una fecha (dia, mes y año)
+	 * Prototipo: public GregorianCalendar leerYValidarFec
+	 * Entrada: No hay
+	 * Precondiciones: No hay
+	 * Salida: Un GregorianCalendar con la fecha validada
+	 * Postcondiciones: Asociado al nombre devuelve un GregorianCalendar con la fecha validada.
+	 */
 	public GregorianCalendar leerYValidarFecha()
 	{
 		GregorianCalendar fecha = new GregorianCalendar();
 		
+		System.out.println("leerYValidarFecha en construccion");
+		
 		return fecha;
 	}
 	
-	//TODO Interfaz
+	/* INTERFAZ
+	 * Comentario: Muestra en pantalla el menu de edición de una configuración y valida una opción elegida.
+	 * Prototipo: public String mostrarMenuEdicionConfiguracionYValidarOpcion(ConfiguracionImpl configuracion)
+	 * Entrada: La ConfiguracionImpl de la cual se desea mostrar el menu de edición.
+	 * Precondiciones: La ConfiguracionImpl ha de tener un CocheImpl (no puede ser null). @see ConfiguracionImpl
+	 * Salida: Un String indicando la opción elegida.
+	 * Postcondiciones: Asociado al nombre devuelve un String indiciando la opción elegida:
+	 * 						-> 0 para volver atrás
+	 * 						-> M para entrar en la configuración del motor
+	 * 						-> L para entrar en la configuración de las llantas
+	 * 						-> P para entrar en la configuración de la pintura
+	 * 						-> de 1 a N por cada pieza extra existente para eliminarla de la configuracion.
+	 * 						-> + para añadir una nueva pieza extra.
+	 */
 	public String mostrarMenuEdicionConfiguracionYValidarOpcion(ConfiguracionImpl configuracion)
 	{
 		String opcion;
 		Utils utils = new Utils();
 		Scanner teclado = new Scanner(System.in);
-		PiezaImpl pieza = null;
 		int opcionNumerica;
 		int cantidadPiezasExtra;
 		boolean correcto;
@@ -420,54 +544,81 @@ public class Validaciones
 			
 		}while(!correcto);
 		
+		teclado.close();
+		
 		return opcion;
 	}
 	
-	//TODO Interfaz
+	/* INTERFAZ
+	 * Comentario: Muestra los motores disponibles para el coche de una configuración y valida la opción de motor elegido.
+	 * Prototipo: public PiezaImpl mostrarMotoresDisponiblesYElegirMotor(ConfiguracionImpl configuracion)
+	 * Entrada: Una ConfiguracionImpl a la cual se le quiere elegir un motor válido.
+	 * Precondiciones: La configuración ha de tener un CocheImpl (no puede ser null) @see ConfiguracionImpl
+	 * Salida: Una PiezaImpl con el motor elegido.
+	 * Postcondiciones: Asociado al nombre devuelve una PiezaImpl con el motor elegido.
+	 */
 	public PiezaImpl mostrarMotoresDisponiblesYElegirMotor(ConfiguracionImpl configuracion)
 	{
 		PiezaImpl piezaElegida;
-		//if(configuracion.obtenerMotor() == null)
-		//{
+		
 			System.out.println("MOTORES DISPONIBLES");
-			//piezaElegida = mostrarObjetosYValidarObjetoElegido(cocheEdicionConfiguracion.obtenerMotoresValidos());
+			
 			piezaElegida = mostrarObjetosYValidarObjetoElegido(configuracion.obtenerCoche().obtenerMotoresValidos());
 			System.out.println();
-			//configuracion.establecerMotor((MotorImpl)piezaElegida);
-			//}
-		//else
-		//piezaElegida = configuracion.obtenerMotor();
 		
 		return piezaElegida;
 	}
 	
-	//TODO Interfaz
+	/* INTERFAZ
+	 * Comentario: Muestra las llantas disponibles para el coche de una configuración y valida la opción de llantas elegidas.
+	 * Prototipo: public PiezaImpl mostrarLlantasDisponiblesYElegirLlantas(ConfiguracionImpl configuracion)
+	 * Entrada: Una ConfiguracionImpl a la cual se le quiere elegir unas llantas válidas.
+	 * Precondiciones: La configuración ha de tener un CocheImpl (no puede ser null) @see ConfiguracionImpl
+	 * Salida: Unas PiezaImpl con las llantas elegidas.
+	 * Postcondiciones: Asociado al nombre devuelve una PiezaImpl con las llantas elegidas.
+	 */
 	public PiezaImpl mostrarLlantasDisponiblesYElegirLlantas(ConfiguracionImpl configuracion)
 	{
 		PiezaImpl piezaElegida;
 		
 			System.out.println("LLANTAS DISPONIBLES");
+			
 			piezaElegida = mostrarObjetosYValidarObjetoElegido(configuracion.obtenerCoche().obtenerLlantasValidas());
 			System.out.println();
-			//configuracion.establecerLlantas((LlantasImpl)piezaElegida);
 			
 		return piezaElegida;
 	}
 	
-	//TODO Interfaz
+	/* INTERFAZ
+	 * Comentario: Muestra las pinturas disponibles para el coche de una configuración y valida la opción de pintura elegida.
+	 * Prototipo: public PiezaImpl mostrarPinturasDisponiblesYElegirPintura(ConfiguracionImpl configuracion)
+	 * Entrada: Una ConfiguracionImpl a la cual se le quiere elegir una pintura válida.
+	 * Precondiciones: La configuración ha de tener un CocheImpl (no puede ser null) @see ConfiguracionImpl
+	 * Salida: Una PiezaImpl con la pintura elegida.
+	 * Postcondiciones: Asociado al nombre devuelve una PiezaImpl con la pintura elegida.
+	 */
 	public PiezaImpl mostrarPinturasDisponiblesYElegirPintura(ConfiguracionImpl configuracion)
 	{
 		PiezaImpl piezaElegida;
 		
 			System.out.println("PINTURAS DISPONIBLES");
+			
 			piezaElegida = mostrarObjetosYValidarObjetoElegido(configuracion.obtenerCoche().obtenerPinturasValidas());
 			System.out.println();
-			//configuracion.establecerPintura((PinturaImpl)piezaElegida);
 		
 		return piezaElegida;
 	}
 	
-	//TODO Interfaz
+	/* INTERFAZ
+	 * Comentario: Muestra las piezas extra disponibles para el coche de una configuración y valida la opción de pieza extra elegida.
+	 * Prototipo: public PiezaImpl mostrarPiezasExtraDisponiblesYElegirPiezaExtra(ConfiguracionImpl configuracion)
+	 * Entrada: Una ConfiguracionImpl a la cual se le quiere elegir una pieza extra.
+	 * Precondiciones: 
+	 * 				- La configuración ha de tener un CocheImpl (no puede ser null) @see ConfiguracionImpl
+	 * 				- La conexión con la base de datos ha de estar abierta.
+	 * Salida: Una PiezaImpl con la pieza extra elegida.
+	 * Postcondiciones: Asociado al nombre devuelve una PiezaImpl con la pieza extra elegida.
+	 */
 	public PiezaImpl mostrarPiezasExtraDisponiblesYElegirPiezaExtra(ConfiguracionImpl configuracion)
 	{
 		PiezaImpl piezaElegida;
@@ -483,7 +634,16 @@ public class Validaciones
 		return piezaElegida;
 	}
 	
-	//TODO Interfaz
+	/* INTERFAZ
+	 * Comentario: Lee y validar la confirmación para borrar una configuración o no.
+	 * Prototipo: public char confirmarBorrarConfiguracion()
+	 * Entrada: No hay
+	 * Precondiciones: No hay
+	 * Salida: un char indicando si se confirma el borrado o no.
+	 * Postcondiciones: Asociado al nombre devuelve un char:
+	 * 						- 'S' si se confirma el borrado
+	 * 						- 'N' si no se confirma
+	 */
 	public char confirmarBorrarConfiguracion()
 	{
 		char confirmadoEliminarConfiguracion;
@@ -495,10 +655,21 @@ public class Validaciones
 			confirmadoEliminarConfiguracion = Character.toUpperCase(teclado.next().charAt(0));
 		}while(confirmadoEliminarConfiguracion != 'S' && confirmadoEliminarConfiguracion != 'N');
 		
+		teclado.close();
+		
 		return confirmadoEliminarConfiguracion;
 	}
 	
-	//TODO Interfaz
+	/* INTERFAZ
+	 * Comentario: Lee y validar si se desea guardar en la base de datos una configuración o no.
+	 * Prototipo: public char confirmarGuardarConfiguracion()
+	 * Entrada: No hay
+	 * Precondiciones: No hay
+	 * Salida: un char indicando si se confirma el guardado de la configuración en la base de datos o no.
+	 * Postcondiciones: Asociado al nombre devuelve un char:
+	 * 						- 'S' si se confirma el guardado.
+	 * 						- 'N' si no se confirma
+	 */
 	public char confirmarGuardarConfiguracion()
 	{
 		char confirmarGuardarConfiguracion;
@@ -511,10 +682,21 @@ public class Validaciones
 			
 		}while(confirmarGuardarConfiguracion != 'S' && confirmarGuardarConfiguracion != 'N');
 		
+		teclado.close();
+		
 		return confirmarGuardarConfiguracion;
 	}
 	
-	//TODO Interfaz
+	/* INTERFAZ
+	 * Comentario: Lee y validar la confirmación para borrar una cuenta o no.
+	 * Prototipo: public boolean confirmarBorrarCuenta()
+	 * Entrada: No hay
+	 * Precondiciones: No hay
+	 * Salida: un boolean indicando si se confirma el borrado de la cuenta o no.
+	 * Postcondiciones: Asociado al nombre devuelve un char:
+	 * 						- true si se confirma que se desea borrar
+	 * 						- false si no se quiere borrar la cuenta
+	 */
 	public boolean confirmarBorrarCuenta()
 	{
 		boolean confirmar = false;
@@ -531,11 +713,22 @@ public class Validaciones
 		if(respuesta == 'S')
 			confirmar = true;
 		
+		teclado.close();
+		
 		return confirmar;
 	}
 	
-	//TODO Interfaz
-	public boolean validarContrasenaActual(CuentaImpl cuenta)
+	/* INTERFAZ
+	 * Comentario: Lee y valida la contraseña actual de la cuenta. El usuario tendrá 5 intentos.
+	 * Prototipo: public boolean leerYValidarContrasenaActual(CuentaImpl cuenta)
+	 * Entrada: la CuentaImpl de la que se desea leer y validar su contraseña actual.
+	 * Precondiciones: No hay.
+	 * Salida: Un boolean indicando si se introdujo la contraseña actual correctamente o no.
+	 * Postcondiciones: Asociado al nombre devuelve:
+	 * 						- true si se introdujo bien la contraseña actual de la cuenta
+	 * 						- false si no se introdujo correctamente la contraseña después de los 5 intentos.
+	 */
+	public boolean leerYValidarContrasenaActual(CuentaImpl cuenta)
 	{
 		boolean contrasenaCorrecta = false;
 		String contrasenaActual;
@@ -558,11 +751,20 @@ public class Validaciones
 		else
 			System.out.println("Ya no te quedan intentos.");
 		
+		teclado.close();
+		
 		return contrasenaCorrecta;
 	}
 	
-	//TODO Interfaz
-	public String validarNuevaContrasena(String contrasenaActual)
+	/* INTERFAZ
+	 * Comentario: Lee y validar una nueva contraseña. La contraseña nueva será valida cuando no sea igual a la actual.
+	 * Prototipo: public String LeerYValidarNuevaContrasena(String contrasenaActual)
+	 * Entrada: Un String con la contraseña actual
+	 * Precondiciones: No hay
+	 * Salida: Un String con la contraseña nueva.
+	 * Postcondiciones: Asociado al nombre devuelve un String con la nueva contraseña elegida.
+	 */
+	public String LeerYValidarNuevaContrasena(String contrasenaActual)
 	{
 		String nuevaContrasena;
 		Scanner teclado = new Scanner(System.in);
@@ -576,16 +778,28 @@ public class Validaciones
 			
 		}while(nuevaContrasena.equals(contrasenaActual));
 		
+		teclado.close();
+		
 		return nuevaContrasena;
 	}
 	
-	//TODO Interfaz
+	/* INTERFAZ
+	 * Comentario: Muestra el menu de edición de la cuenta y valida una opción elegida
+	 * Prototipo: public int mostrarMenuEditarCuentaYValidarOpcion()
+	 * Entrada: No hay
+	 * Precondiciones: No hay
+	 * Salida: Un int indiciando la opción elegida
+	 * Postcondiciones: Asociado al nombre devuelve un int indicando la opción elegida:
+	 * 						-> 1 para borrar la cuenta
+	 * 						-> 2 para cambiar la contraseña
+	 * 						-> 0 para volver atrás.
+	 */
 	public int mostrarMenuEditarCuentaYValidarOpcion()
 	{
 		int opcion;
 		Scanner teclado = new Scanner(System.in);
 		
-		System.out.println("0) Volver atras");
+		System.out.println("0) Volver atrás");
 		System.out.println("1) Borrar cuenta");
 		System.out.println("2) Cambiar contraseña");
 		
@@ -595,6 +809,8 @@ public class Validaciones
 			opcion = teclado.nextInt();
 			System.out.println();
 		}while(opcion < 0 || opcion > 2);
+		
+		teclado.close();
 		
 		return opcion;
 	}

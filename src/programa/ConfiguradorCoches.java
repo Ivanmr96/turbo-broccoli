@@ -20,7 +20,7 @@ import clases.gestion.ConexionSQL;
 import clases.gestion.GestionCoche;
 import clases.gestion.GestionConfiguracion;
 import clases.gestion.GestionCuenta;
-import clases.gestion.GestionPieza;
+//import clases.gestion.GestionPieza;
 import clases.gestion.GestionVotacion;
 import clases.gestion.Resguardo;
 import utils.Utils;
@@ -113,7 +113,7 @@ public class ConfiguradorCoches
 		GestionConfiguracion gestionConfiguracion = new GestionConfiguracion(conexion);
 		GestionCoche gestionCoche = new GestionCoche(conexion);
 		GestionCuenta gestionCuenta = new GestionCuenta(conexion);
-		GestionPieza gestionPieza = new GestionPieza(conexion);
+		//GestionPieza gestionPieza = new GestionPieza(conexion);
 		GestionVotacion gestionVotacion = new GestionVotacion(conexion);
 		Validaciones validacion = new Validaciones(conexion);
 			
@@ -363,7 +363,7 @@ public class ConfiguradorCoches
 													
 												case 4:
 													//Buscar por usuario
-													cuentaBuscar = validacion.validarUsuario();
+													cuentaBuscar = validacion.leerYValidarUsuario();
 													
 													configuraciones = gestionConfiguracion.obtenerConfiguraciones(cuentaBuscar);
 													
@@ -371,8 +371,8 @@ public class ConfiguradorCoches
 													
 												case 5:
 													//Buscar por rango de precio
-													precioMinimo = validacion.validarPrecioMinimo();
-													precioMaximo = validacion.validarPrecioMaximo(precioMinimo);
+													precioMinimo = validacion.leerYValidarPrecioMinimo();
+													precioMaximo = validacion.leerYValidarPrecioMaximo(precioMinimo);
 													
 													configuraciones = gestionConfiguracion.obtenerConfiguraciones(precioMinimo, precioMaximo);
 													
@@ -399,7 +399,7 @@ public class ConfiguradorCoches
 												utils.mostrarConfiguracion(configuracionComunidadElegida);
 												
 												//Mostrar menu de configuracion de la comunidad elegida
-												opcionMenuConfiguracionComunidadElegida = validacion.mostarMenuConfiguracionComunidadElegida();
+												opcionMenuConfiguracionComunidadElegida = validacion.mostarMenuConfiguracionComunidadElegidaYValidarOpcion();
 												
 												while(opcionMenuConfiguracionComunidadElegida != 0)
 												{
@@ -426,7 +426,7 @@ public class ConfiguradorCoches
 													utils.mostrarConfiguracion(configuracionComunidadElegida);
 													
 													//Mostrar menu de configuracion de la comunidad elegida
-													opcionMenuConfiguracionComunidadElegida = validacion.mostarMenuConfiguracionComunidadElegida();
+													opcionMenuConfiguracionComunidadElegida = validacion.mostarMenuConfiguracionComunidadElegidaYValidarOpcion();
 												}
 												
 												configuracionComunidadElegida = validacion.mostrarObjetosYValidarObjetoElegido(configuraciones);
@@ -459,9 +459,9 @@ public class ConfiguradorCoches
 												break;
 											case 2:
 												//Cambiar contraseña
-												if(validacion.validarContrasenaActual(cuentaSesion))
+												if(validacion.leerYValidarContrasenaActual(cuentaSesion))
 												{
-													nuevaContrasena = validacion.validarNuevaContrasena(cuentaSesion.getContrasena());
+													nuevaContrasena = validacion.LeerYValidarNuevaContrasena(cuentaSesion.getContrasena());
 													cuentaSesion.setContrasena(nuevaContrasena);
 													
 													if(gestionCuenta.actualizarCuenta(cuentaSesion))
@@ -533,5 +533,6 @@ public class ConfiguradorCoches
 		}
 		
 		gestionConexion.cerrarConexion();
+		teclado.close();
 	}
 }

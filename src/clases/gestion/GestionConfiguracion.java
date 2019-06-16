@@ -229,7 +229,15 @@ public class GestionConfiguracion
 		return configuraciones;
 	}
 	
-	//TODO Interfaz
+	/* INTERFAZ
+	 * Comentario: Obtiene las configuraciones cuyo precio total está dentro del rango dado.
+	 * Prototipo: public ArrayList<ConfiguracionImpl> obtenerConfiguraciones(double precioMinimo, double precioMaximo)
+	 * Entrada: un double para el precio minimo y otro double para el precio máximo
+	 * Precondiciones: La conexión con la base de datos debe estar abierta.
+	 * Salida: Un ArrayList<ConfiguracionImpl> con las configuraciones cuyo precio total está dentro del rango dando
+	 * Postcondiciones: Asociado al nombre devuelve un ArrayList<ConfiguracionImpl> con las configuraciones cuyo precio está en el rango dado.
+	 * 				 	Si no hay ninguna configuración dentro del rango, la lista estará vacía.
+	 */
 	public ArrayList<ConfiguracionImpl> obtenerConfiguraciones(double precioMinimo, double precioMaximo)
 	{
 		ArrayList<ConfiguracionImpl> configuraciones = new ArrayList<ConfiguracionImpl>();
@@ -250,7 +258,15 @@ public class GestionConfiguracion
 		return configuraciones;
 	}
 	
-	//TODO Interfaz
+	/* INTERFAZ
+	 * Comentario: Obtiene las configuraciones realizadas en una fecha (dia/mes/año) determinada.
+	 * Prototipo: public ArrayList<ConfiguracionImpl> obtenerConfiguraciones(GregorianCalendar fecha)
+	 * Entrada: Un GregorianCalendar con la fecha en la que se desean buscar las configuraciones
+	 * Precondiciones: La conexión con la base de datos debe estar abierta.
+	 * Salida: Un ArrayList<ConfiguracionImpl> con las configuraciones realizadas en la fecha dada
+	 * Postcondiciones: Asociado al nombre devuelve un Arraylist<ConfiguracionImpl> con las configuraciones realizadas en la fecha dada.
+	 * 					Si no hay ninguna configuracion en la fecha determinada, la lista estará vacía.
+	 */
 	public ArrayList<ConfiguracionImpl> obtenerConfiguraciones(GregorianCalendar fecha)
 	{
 		ArrayList<ConfiguracionImpl> configuraciones = new ArrayList<ConfiguracionImpl>();

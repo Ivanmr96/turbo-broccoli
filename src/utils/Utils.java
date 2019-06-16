@@ -47,7 +47,14 @@ public class Utils
 		return fecha;
 	}
 	
-	//TODO Interfaz
+	/* INTERFAZ
+	 * Comentario: Convierte la fecha de un objeto GregorianCalendar en un string con el formato DateTime de SQL.
+	 * Prototipo: public String GregorianCalendarToDateTime(GregorianCalendar fecha)
+	 * Entrada: Un objeto GregorianCalendar con la fecha que se desea convertir a un string con el formate DateTime.
+	 * Precondiciones: No hay
+	 * Salida: Un String con la fecha del objeto GregorianCalendar dado en el formato DateTime de SQL.
+	 * Postcondiciones: Asociado al nombre devuelve un String cojn la fecha del objeto GregorianCalendar dado, en el formato DateTime de SQL.
+	 */
 	public String GregorianCalendarToDateTime(GregorianCalendar fecha)
 	{
 		String dateTime;
@@ -97,7 +104,16 @@ public class Utils
 		return md5;
 	}
 	
-	//TODO Interfaz
+	/* INTERFAZ
+	 * Comentario: Analiza una cadena para determinar si es un número o no.
+	 * Prototipo: public boolean esNumero(String caracteres)
+	 * Entrada: Un String con la cadena a analizar.
+	 * Precondiciones: No hay.
+	 * Salida: Un boolean indicando si la cadena es un número o no.
+	 * Postcondiciones: Asociado al nombre devuelve:
+	 * 					- True si la cadena dada es un número.
+	 * 					- False si la cadena dada no es un número.
+	 */
 	public boolean esNumero(String caracteres)
 	{
 		boolean esNumero;
@@ -116,7 +132,14 @@ public class Utils
 		return esNumero;
 	}
 	
-	//TODO Interfaz
+	/* INTERFAZ
+	 * Comentario: Formatea una fecha dada (GregorianCalendar) con el formato "dia/mes/año hora:minutos:segundos"
+	 * Prototipo: public String formatearFecha(GregorianCalendar fecha)
+	 * Entrada: Un objeto GregorianCalendar con la fecha que se desea formatear
+	 * Precondiciones: No hay
+	 * Salida: Un String con la fecha dada formateada.
+	 * Postcondiciones: Asociado al nombre devuelve un String con la fecha formatea con el formato "dia/mes/año hora:minutos:segundos"
+	 */
 	public String formatearFecha(GregorianCalendar fecha)
 	{
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
@@ -124,7 +147,26 @@ public class Utils
 		return sdf.format(fecha.getTime());
 	}
 	
-	//TODO Interfaz
+	/* INTERFAZ
+	 * Comeantario: Imprime en pantalla de forma detallada una configuración, muestra:
+	 * 				- ID
+	 * 				- Fecha
+	 * 				- Modelo
+	 * 				- Precio total
+	 * 				- Piezas (motor, llantas, pintura y piezas extra si tiene)
+	 * 				- Calificación media
+	 * Prototipo: public void mostrarConfiguracion(ConfiguracionImpl configuracion)
+	 * Entrada: Una ConfiguracionImpl la cual se desea imprimir en pantalla de forma detallada.
+	 * Precondiciones: La ConfiguracionImpl debe tener sus relaciones cargadas, es decir, al menos el coche no puede ser null (las otras relaciones no son obligatorias)
+	 * Salida: No hay
+	 * Postcondiciones: No hay. Solo imprime en pantalla la configuración de forma detallada, mostrando:
+	 * 				- ID
+	 * 				- Fecha
+	 * 				- Modelo
+	 * 				- Precio total
+	 * 				- Piezas (motor, llantas, pintura y piezas extra si tiene)
+	 * 				- Calificación media 				
+	 */
 	public void mostrarConfiguracion(ConfiguracionImpl configuracion)
 	{
 		CocheImpl coche = configuracion.obtenerCoche();
