@@ -20,6 +20,7 @@ package clases.basicas;
  * public void setAcabado(String acabado);
  */
 
+//TODO Javadoc
 public class PinturaImpl extends PiezaImpl
 {
 	private String color;
@@ -57,4 +58,6 @@ public class PinturaImpl extends PiezaImpl
 	{
 		return this.getID() + " - " + this.getNombre() + " - " + this.getColor() + " " + this.getAcabado() + " - " + this.getPrecio() + " €";
 	}
+	
+	//TODO clone, hashcode, compareTo, equals
 }

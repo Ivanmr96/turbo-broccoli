@@ -215,10 +215,7 @@ public class ConfiguradorCoches
 										//Mostrar configuraciones propias y validar opcion de configuracion elegida
 										configuraciones = gestionConfiguracion.obtenerConfiguraciones(cuentaSesion);
 										
-										for(ConfiguracionImpl configuracion:configuraciones)
-										{
-											gestionConfiguracion.cargarRelacionesEnConfiguracion(configuracion);
-										}
+										gestionConfiguracion.cargarRelacionesEnConfiguraciones(configuraciones);
 										
 										opcionConfiguracionPropia = validacion.mostrarObjetosYValidarObjetoElegido(configuraciones); 
 										
@@ -242,7 +239,6 @@ public class ConfiguradorCoches
 														//Editar configuracion
 														opcionMenuConfiguracion = validacion.mostrarMenuEdicionConfiguracionYValidarOpcion(opcionConfiguracionPropia);
 														
-														//TODO Modular esto
 														while(!opcionMenuConfiguracion.equals("0"))
 														{
 															cocheEdicionConfiguracion = opcionConfiguracionPropia.obtenerCoche();
@@ -314,10 +310,7 @@ public class ConfiguradorCoches
 											
 											configuraciones = gestionConfiguracion.obtenerConfiguraciones(cuentaSesion);
 											
-											for(ConfiguracionImpl configuracion:configuraciones) //TODO Meter en un método "cargarRelacionesEnConfiguraciones(ArrayList<ConfiguraciomImpl>)"
-											{
-												gestionConfiguracion.cargarRelacionesEnConfiguracion(configuracion);
-											}
+											gestionConfiguracion.cargarRelacionesEnConfiguraciones(configuraciones);
 											
 											opcionConfiguracionPropia = validacion.mostrarObjetosYValidarObjetoElegido(configuraciones);
 										}
@@ -387,10 +380,7 @@ public class ConfiguradorCoches
 													
 											}
 											
-											for(ConfiguracionImpl configuracion:configuraciones)
-											{
-												gestionConfiguracion.cargarRelacionesEnConfiguracion(configuracion);
-											}
+											gestionConfiguracion.cargarRelacionesEnConfiguraciones(configuraciones);
 											
 											configuracionComunidadElegida = validacion.mostrarObjetosYValidarObjetoElegido(configuraciones);
 											
@@ -413,7 +403,8 @@ public class ConfiguradorCoches
 													{
 														gestionVotacion.insertarVotacion(calificacion);
 														System.out.println("Votación realizada con éxito.");
-														gestionConfiguracion.cargarRelacionesEnConfiguracion(configuracionComunidadElegida);
+														
+														gestionConfiguracion.cargarRelacionesEnConfiguracion(configuracionComunidadElegida);	//Actualiza de nuevo la configuracion con la votacion nueva realizada
 													} 
 													catch (SQLServerException e) 
 													{

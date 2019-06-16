@@ -12,6 +12,7 @@ import clases.basicas.ConfiguracionImpl;
 import clases.basicas.CuentaImpl;
 import clases.basicas.VotacionImpl;
 
+//TODO Javadoc
 public class GestionCuenta 
 {
 	private Connection conexion;

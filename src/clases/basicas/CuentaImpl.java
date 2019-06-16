@@ -31,6 +31,7 @@ import interfaces.Cuenta;
  * public void establecerVotaciones(ArrayList<VotacionImpl> votaciones);
  */
 
+//TODO Javadoc
 public class CuentaImpl implements Cuenta
 {
 	private String nombreUsuario;
@@ -81,4 +82,6 @@ public class CuentaImpl implements Cuenta
 	{
 		return this.nombreUsuario;
 	}
+	
+	//TODO clone, hashcode, compareTo, equals
 }

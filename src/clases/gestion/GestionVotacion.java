@@ -14,6 +14,7 @@ import clases.basicas.CuentaImpl;
 import clases.basicas.VotacionImpl;
 import utils.Utils;
 
+//TODO Javadoc
 public class GestionVotacion 
 {
 	private Connection conexion;
@@ -39,7 +40,7 @@ public class GestionVotacion
 		ArrayList<VotacionImpl> votaciones = null;
 		
 		String consulta = "SELECT ID, Calificacion, Fecha FROM Votaciones " 
-						+ "WHERE IDConfiguracion = ?";		//TODO Como hacer que devuelva NULL si la configuracion no existe en la bbdd
+						+ "WHERE IDConfiguracion = ?";
 		
 		Utils utils = new Utils();
 		

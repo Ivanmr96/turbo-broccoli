@@ -14,6 +14,7 @@ import clases.basicas.MotorImpl;
 import clases.basicas.PiezaImpl;
 import clases.basicas.PinturaImpl;
 
+//TODO Javadoc
 public class Utils 
 {
 	/* INTERFAZ

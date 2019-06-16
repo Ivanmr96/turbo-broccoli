@@ -32,6 +32,7 @@ import java.util.GregorianCalendar;
  * public void establecerCuenta(CuentaImpl cuenta);
  */
 
+//TODO Javadoc
 public class VotacionImpl 
 {
 	private String ID;
@@ -83,4 +84,6 @@ public class VotacionImpl
 	
 	public void establecerConfiguracion(ConfiguracionImpl configuracion) { this.configuracion = configuracion; }
 	public void establecerCuenta(CuentaImpl cuenta) { this.cuenta = cuenta; }
+	
+	//TODO clone, hashcode, compareTo, equals
 }

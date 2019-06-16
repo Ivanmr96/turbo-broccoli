@@ -17,6 +17,7 @@ import clases.gestion.GestionCuenta;
 //import clases.gestion.GestionPieza;
 //import clases.gestion.GestionVotacion;
 
+//TODO Javadoc
 public class Validaciones 
 {
 	private GestionCoche gestionCoche;

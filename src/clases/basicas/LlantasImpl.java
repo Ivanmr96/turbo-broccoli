@@ -17,6 +17,7 @@ package clases.basicas;
  * public void setPulgadas(int pulgadas);
  */
 
+//TODO Javadoc
 public class LlantasImpl extends PiezaImpl
 {
 	private int pulgadas;
@@ -48,4 +49,6 @@ public class LlantasImpl extends PiezaImpl
 	{
 		return this.getID() + " - " + this.getNombre() + " - " + this.pulgadas + "\"" + " - " + this.getPrecio() + " €";
 	}
+	
+	//TODO clone, hashcode, compareTo, equals
 }

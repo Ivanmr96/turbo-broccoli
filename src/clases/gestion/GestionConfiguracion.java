@@ -906,6 +906,32 @@ public class GestionConfiguracion
 	}
 	
 	/* INTERFAZ
+	 * Comentario: Carga todas las relaciones con otros objetos que tiene cada configuracion de una lista dada, es decir, carga los Coches que le pertenecen,
+	 * 				Las Cuentas que le pertenecen, las piezas y las votaciones.
+	 * Prototipo: public void cargarRelacionesEnConfiguracion(ConfiguracionImpl configuracion)
+	 * Entrada: No hay
+	 * Precondiciones: La conexion tiene que estar abierta
+	 * Salida: No hay
+	 * Entrada/Salida: Un ArrayList<ConfiguracionImpl> a la que se le desea cargar todas sus relaciones con otros objetos, busca en la base de datos.
+	 * Postcondiciones: Los objetos ConfiguracionImpl de la lista tienen cargadas todas sus relaciones con otros objetos, es decir:
+	 * 						- Carga en los objetos ConfiguracionImpl el CocheImpl que le pertenece a cada una según la base de datos.
+	 * 						- Carga en los objetos ConfiguracionImpl la CuentaImpl que le pertenece a cada una según la base de datos.
+	 * 						- Carga en los objetos ConfiguracionImpl el ArrayList<PiezaImpl> que le pertenece a cada una según la base de datos.
+	 * 						- Carga en los objetos ConfiguracionImpl el ArrayList<VotacionImpl> que le pertenece a cada una según la base de datos.
+	 * 						- Carga en los objetos ConfiguracionImpl el MotorImpl que le pertenece a cada una según la base de datos.
+	 * 						- Carga en los objetos ConfiguracionImpl las LlantasImpl que le pertenece a cada una según la base de datos.
+	 * 						- Carga en los objetos ConfiguracionImpl la Pintura que le pertenece a cada una según la base de datos.
+	 * 						- Si la hay alguna configuración que no existe en la base de datos, las relaciones de dicha configuracion no se modificarán.
+	 */
+	public void cargarRelacionesEnConfiguraciones(ArrayList<ConfiguracionImpl> configuraciones)
+	{
+		for(ConfiguracionImpl configuracion:configuraciones)
+		{
+			cargarRelacionesEnConfiguracion(configuracion);
+		}
+	}
+	
+	/* INTERFAZ
 	 * Comentario: Comprueba en la base de datos si una configuracion existe
 	 * Prototipo: public boolean existeConfiguracion(ConfiguracionImpl configuracion)
 	 * Entrada: Una ConfiguracionImpl de la que se desea comprobar su existencia en la base de datos.

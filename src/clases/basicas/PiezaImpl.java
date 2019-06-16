@@ -34,6 +34,7 @@ import interfaces.Pieza;
  * public void establecerCochesValidos(ArrayList<CocheImpl> cochesValidos);
  */
 
+//Javadoc
 public class PiezaImpl implements Pieza
 {
 	private int ID;
@@ -85,4 +86,6 @@ public class PiezaImpl implements Pieza
 	{
 		return this.ID + " - " + this.nombre + " - " + this.precio + " €";
 	}
+	
+	//TODO clone, hashcode, compareTo, equals
 }

@@ -22,6 +22,7 @@ package clases.basicas;
  * public void setPotencia(int potencia);
  */
 
+//TODO Javadoc
 public class MotorImpl extends PiezaImpl
 {
 	private char traccion;
@@ -77,4 +78,6 @@ public class MotorImpl extends PiezaImpl
 	{		
 		return this.getID() + " - " + this.getNombre() + " - "  + this.potencia + " cv - " + this.getPrecio() + " €";
 	}
+	
+	//TODO clone, hashcode, compareTo, equals
 }
