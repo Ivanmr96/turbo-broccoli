@@ -1,5 +1,11 @@
 package tests;
 
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.GregorianCalendar;
+
+import com.microsoft.sqlserver.jdbc.SQLServerException;
+
 import clases.basicas.ConfiguracionImpl;
 import clases.basicas.CuentaImpl;
 import clases.basicas.VotacionImpl;
@@ -40,7 +46,35 @@ public class GestionVotacionTest
 		}
 		System.out.println();
 	
-//		insertarVotacion(Votacion)
+		System.out.println("insertarVotacion(new VotacionImpl(\"5813a7ac-84d2-40bf-87ca-9f8dd35183af\", new GregorianCalendar(), 7)");
+		
+		try 
+		{
+			Statement statement = SQL.getConexion().createStatement();
+			
+			statement.execute("BEGIN TRANSACTION"); 			//Se realiza una transacción para que no se guarden los cambios.
+			
+			VotacionImpl votacionTest = new VotacionImpl("5813a7ac-84d2-40bf-87ca-9f8dd35183af", new GregorianCalendar(), 7);
+			votacionTest.establecerConfiguracion(configuracionTest);
+			votacionTest.establecerCuenta(cuentaTest);
+			
+			boolean insertada = gestionVotacion.insertarVotacion(votacionTest);
+			
+			if(insertada)
+				System.out.println("Votacion insertada.");
+			else
+				System.out.println("No se insertó la votación.");
+			
+			statement.execute("ROLLBACK");						//No se guardarán los cambios
+		}
+		catch(SQLServerException e)
+		{
+			System.out.println(e.getMessage());
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+		}
 	}
 
 }
