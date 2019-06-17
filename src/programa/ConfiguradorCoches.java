@@ -26,7 +26,103 @@ import clases.gestion.Resguardo;
 import utils.Utils;
 import utils.Validaciones;
 
-//TODO Comprobar si se puede hacer que despues de cada accion del usuario, se limpie la pantalla.
+/* ANALISIS
+ * Programa configurador de modelos de coches:
+ * Cada usuario podrá realizar configuraciones de coches, teniendo la posibilidad de elegir el modelo de coche, el motor, llantas, pinturas, piezas extra, etc...
+ * Los usuarios tendrán que ser usuarios registrados con un nombre de usuario y una contraseña.
+ * Las configuraciones serán públicas, es decir, todos los usuarios pueden ver todas las configuraciones realizadas por el resto de usuarios.
+ * Las configuraciones podrán ser calificadas con votaciones, cada usuario podrá votar una sola vez una configuración.
+ * 
+ * Entrada:
+ * 		-> Una opcion para el menu principal:
+ * 			1) Iniciar sesión
+ * 			2) Registrarse
+ * 			0) Salir
+ * 		
+ * 		-> Una opción para el menu de sesión
+ * 			1) Nueva configuración
+ * 			2) Ver configuraciones propias
+ * 			3) Ver configuraciones de la comunidad
+ * 			4) Editar cuenta
+ * 			0) Cerrar sesión
+ * 
+ * 		-> En la pantalla de ver configuraciones propias: una elección de configuración propia elegida
+ * 		
+ * 		-> Una opción para el menú de configuración propia:
+ * 			1) Editar configuración
+ * 			2) Borrar configuración
+ * 			0) Volver atrás
+ * 
+ * 		-> Una opción para el menú de edición de una configuración propia:
+ * 			M) Establecer Motor: Una elección de motor elegido entre las disponibles.
+ * 			L) Establecer Llantas: Una elección de llantas elegidas entre las disponibles.
+ * 			P) Establecer Pintura: Una elección de pintura elegida entre las disponibles.
+ * 			1...n) Eliminar Pieza extra																//Habrá una opcíon enumerada para cada pieza extra.
+ * 			+) Añadir una pieza extra: Una elección de pieza extra entre las disponibles
+ * 			0) Volver atrás
+ * 
+ * 		-> Una opción para el menu de configuraciones de la comunidad:
+ * 			1) Mostrar todas las configuraciones de la comunidad
+ * 			2) Mostrar configuraciones de la comunidad por marca: Una elección de marca para filtrar la búsqueda.
+ * 			3) Mostrar configuraciones de la comunidad por marca y modelo: Una elección de marca y de modelo para filtrar la búsqueda.
+ * 			4) Mostrar configuraciones de la comunidad por usuario: leer y validar un nombre de usuario para filtrar la búsqueda.
+ * 			5) Mostrar configuraciones de la comunidad por rango de precio: precio minimo y precio máximo para filtrar la búsqueda.
+ * 			6) Mostrar configuraciones de la comunidad por fecha: Una fecha para filtrar la búsqueda.
+ * 			0) Volver atrás.
+ * 
+ * 		-> Después de elegir un filtro de búsqueda de configuraciones, aparecerá un menú con todas las configuraciones enumeradas, se debe elegir una de las configuraciones.
+ * 			Aunque también estará la opción de volver atrás.
+ * 
+ * 		-> Una opción para el menu de una configuración de la comunidad:
+ * 			1) Calificar la configuración: Una calificación del 1 a 10
+ * 			0) Volver atrás.
+ * 
+ * 		-> Una opción para el menu de edición de cuenta:
+ * 			1) Borrar cuenta: Confirmación si desea borrar definitivamente la cuenta o no.
+ * 			2) Cambiar contraseña: Se pedirá contraseña actual y nueva contraseña.
+ * 			0) Volver atrás
+ * 
+ * Salida: A parte de los menús descritos anteriormente, habrá:
+ * 
+ * 		-> Distintos mensajes de ayuda al usuario y eco de los datos, para que el usuario sepa en todo momento en qué lugar de la aplicación se encuentra y qué está haciendo.
+ * 
+ * 		-> Al crear una nueva configuración se avisará que puede editarla desde la pantalla de edición de configuraciones propias.
+ * 
+ * 		-> Al entrar en una configuración propia podrá ver los detalles de su configuración, las piezas y sus precios, la calificación media de su configuración.
+ * 
+ * 		-> Al entrar en una configuración de otro usuario (de la comunidad) podrá ver algunos detalles de dicha configuración, podrá ver sus piezas, los precios, la calificación media...
+ * 
+ * Restricciones:
+ * 
+ * 		-> Para la opción del menu principal: un número del 0 al 2 (0 para salir)
+ * 	
+ * 		-> Para la opción del menu de sesión: un número del 0 al 4 (0 para cerrar sesión)
+ * 
+ * 		-> Para la opción del menu de configuración propia: un número del 0 al 2 (0 para volver atrás)
+ * 	
+ * 		-> Para la opción del menu de edición de una configuración propia: Una de estas opciones:
+ * 																			-> M para el motor
+ * 																			-> L para las llantas
+ * 																			-> P para la pintura
+ * 																			-> + para añadir una pieza extra
+ * 																			-> 1...n (una opción numérica para cada pieza extra que tenga la configuración) para eliminar la pieza extra.
+ * 																			-> 0 para volver atrás.
+ * 
+ * 		-> Para la opción del menú de configuraciones de la comunidad: un número de 0 al 6 (0 para volver atrás)
+ * 
+ * 		-> Para la opción del menú de una configuración de la comunidad: 1 para calificar la configuración y 0 para volver atrás.
+ * 
+ * 		-> Para la opción del menu de edición de cuenta: un número del 0 al 2 (0 para volver atrás).
+ * 
+ * 		-> En el menú de configuraciones de la comunidad:
+ * 			* Si se selecciona buscar por rango de precio: Se debe introducir un precio mínimo que debe ser mayor que 0, y un precio máximo que debe ser mayor o igual que el precio minimo.
+ * 			* Si se selecciona buscar por usuario: El usuario debe existir para poder ver sus configuraciones.
+ * 			* Si se selecciona buscar por fecha: Se debe introducir una fecha válida.
+ * 
+ * 		-> En las distintas listas para elegir entre distintas configuraciones, coches, piezas, etc: La entrada debe ser un número de esa lista. Por ejemplo:
+ * 			Si la lista tiene 15 piezas, debe ser un número entre 0 y 15, siendo el 0 para salir de la pantalla determinada.
+ * 		
+ */
 
 /* PSEUDOCODIGO GENERALIZADO (Nivel 0)
  * 
@@ -51,9 +147,9 @@ import utils.Validaciones;
  * 		Mientras (opcionSesion no sea salir)
  * 			Para(opcionSesion)
  * 				caso 1: Nueva configuracion
- * 				caso 3: Ver configuraciones propias
- * 				caso 4: Ver configuraciones de la comunidad
- * 				caso 5: Editar cuenta
+ * 				caso 2: Ver configuraciones propias
+ * 				caso 3: Ver configuraciones de la comunidad
+ * 				caso 4: Editar cuenta
  * 			FinPara
  * 			Mostrar menu sesion y validar opcion
  * 		FinMientras
@@ -71,28 +167,137 @@ import utils.Validaciones;
  */
 
 /* PSEUDOCODIGO MODULOS Nivel 2
- * 
- * - Nueva configuracion
- * Inicio
- * 		Mostrar coches disponibles y validar opcion de coche elegido
- * 		Si (opcionCoche no es salir)
- * 			Modulo Editar configuracion
- * 		FinSi
- * Fin
- * 
- * - Editar configuracion
- * Inicio
- * 		Mostrar menu editarConfiguracion y validar opcion menuEditarConfiguracion
- * 		Mientras (opcion menuEditarConfiguracion no sea volver atras)
- * 			Para(menuEditarConfiguracion)
- * 				caso 1: Modificar piezas
- * 				caso 2: Borrar configuracion
- * 			FinPara
- * 			Mostrar menu editarConfiguracion y validar opcion menuEditarConfiguracion
- * 		FinMientras
- * Fin
- * 
- * 
+
+********************************************************************************************************************************
+
+- Nueva configuracion
+	Mostrar coches disponibles y validar opción de coche elegido
+	Si(opcion no es volver atras)
+		Insertar configuración nueva.
+	FinSin
+Fin
+
+- Ver configuraciones propias
+	Mostrar configguraciones propias y validar opcion de configuración elegida
+	Mientras(opcion no sea volver atras)
+		Mostrar configuración
+		Mostrar submenu de configuración elegida y validar opcion elegida
+		Mientras (opcion submenu de configuracion no sea volver atras)
+			Para(opcionMenuConfiguracion)
+				caso 1: Editar configuración
+				caso 2: Borrar configuración
+			FinPara
+			Si ha borrado la configuración
+				Volver atrás
+			SiNo
+				Mostrar submenu de configuración elegida y validar opcion elegida
+		FinMientras
+	FinMientras
+Fin
+
+********************************************************************************************************************************
+
+- Editar configuracion
+	Si(La opcion del submenu elegida es eliminar una pieza extra)
+		Eliminar pieza elegida
+	FinSi
+	Sino
+		Para(opcion elegida)
+			caso M:
+				Mostrar motores y validar eleccion de motor
+				Establecer motor elegido en la configuracion
+			caso L:
+				Mostrar llantas y validar elección de llantas
+				Establecer llantas elegidas en la configuracion
+			caso P:
+				Mostrar pinturas y validar elección de pintura
+				Establecer pintura elegida en la configuración.
+			caso +:
+				Mostrar piezas extra disponibles y validar eleccion de pieza.
+				Añadir pieza extra.
+		FinPara
+	FinSino
+	Mostrar submenu de configuración elegida y validar opcion elegida
+	Si(la opcion elegida es salir)
+		Preguntar si se desea guardar la configuracion
+		Si(confirma guardado)
+			Guardar la configuración
+		FinSi
+	FinSi
+	SiNo
+		Cargar de nuevo la configuración desde la base de datos.
+	FinSiNo
+Fin
+
+- Borar configuración
+	Leer y validar si confirma el borrado de la configuración
+	Si(confirma el borrado)
+		Borrar la configuración
+	FinSi
+Fin
+
+********************************************************************************************************************************
+
+Ver configuraciones de la comunidad
+	Mostrar menuConfiguracionesComunidad y validar opcion elegida
+	Mientras(opcionMenuConfiguracionesComunidad  no sea salir)
+		Para(opcionMenuConfiguracionesComunidad)
+			caso 1: 
+				Mostrar todas las configuraciones de la comunidad
+			caso 2:
+				Mostrar marcas y validar elección de marca de coche
+				Mostrar todas las configuraciones de la marca de coche
+			caso 3:
+				Mostrar marcas y validar elección de marca de coche
+				Mostrar modelos de la marca y validar elección de modelo de coche
+				Mostrar todas las configuraciones del modelo de coche.
+			caso 4:
+				Leer y validar nombre de usuario
+				Mostrar todas las configuraciones del usuario dado.
+			caso 5:
+				Leer y validar rango de precio
+				Mostrar todas las configuraciones comprendidas en el rango de precio dado.
+			caso 6:
+				Leer y validar fecha
+				Mostrar todas las configuraciones de la fecha especificada
+		FinPara
+		Cargar las relaciones en las configuraciones filtradas
+		Mostrar configuraciones y validar elección de configuración
+		Mientras(opción elegida no sea salir)
+			Mostrar la configuración
+			Mostrar menu de configuración de la comunidad para la configuración elegida
+			Mientras(opcion del menu no sea salir)
+				Puntuar la calificacion
+				Guardar la calificacion
+				Mostrar la configuración
+				Mostrar menu de configuración de la comunidad para la configuración elegida
+			FinMientras
+			Mostrar configuraciones y validar elección de configuración
+		FinMientras
+		Mostrar menuConfiguracionesComunidad y validar opcion elegida
+	FinMientras
+Fin
+
+********************************************************************************************************************************
+
+- Editar cuenta
+	Mostrar menu edición de cuenta y validar opcion
+	Mientras(opcion no sea salir)
+		Para(opcion)
+			caso 1: Borrar cuenta
+			caso 2: Cambiar contraseña
+		FinPara
+		Si se ha borrado la cuenta
+			Salir
+		FinSi
+		SiNo
+			Mostrar menu edición de cuenta y validar opcion
+		FinSiNo
+	FinMientras
+Fin
+
+********************************************************************************************************************************
+
  */
 
 public class ConfiguradorCoches 
@@ -223,7 +428,7 @@ public class ConfiguradorCoches
 										{
 											gestionConfiguracion.cargarRelacionesEnConfiguracion(opcionConfiguracionPropia);	//Cargar las relaciones en la configuración en cada iteración, para actualizar en memoria principal la información que tiene la bbdd.
 											
-											//Mostrar estadisticas
+											//Mostrar configuración
 											utils.mostrarConfiguracion(opcionConfiguracionPropia);
 											
 											confirmadoEliminarConfiguracion = 'N';												//TODO ¿Esto por qué está aquí?
@@ -255,6 +460,7 @@ public class ConfiguradorCoches
 																	piezaElegidaEdicion = null;
 															}
 															else
+															{
 																switch(opcionMenuConfiguracion)
 																{
 																	case "M": 
@@ -278,6 +484,7 @@ public class ConfiguradorCoches
 																			opcionConfiguracionPropia.anhadirPiezaExtra(piezaElegidaEdicion);
 																		break;
 																}
+															}
 															
 															opcionMenuConfiguracion = validacion.mostrarMenuEdicionConfiguracionYValidarOpcion(opcionConfiguracionPropia);
 															
@@ -323,7 +530,7 @@ public class ConfiguradorCoches
 										
 										while (opcionMenuConfiguracionesComunidad != 0)
 										{
-											configuraciones = null;
+											configuraciones = null;	//TODO esto puede ir arriba
 											
 											switch(opcionMenuConfiguracionesComunidad)
 											{

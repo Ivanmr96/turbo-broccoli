@@ -13,11 +13,24 @@ import clases.basicas.CocheImpl;
 import clases.basicas.ConfiguracionImpl;
 import clases.basicas.PiezaImpl;
 
-//TODO Javadoc
+/**
+ * Gestiona lo relacionado con los coches en la base de datos.<br><br>
+ * 
+ * La clase principal sobre la que actúan los métodos de esta clase es {@link clases.basicas.CocheImpl}.<br>
+ * 
+ * @author Iván Moreno <br> <a href="https://github.com/Ivanmr96/">Github</a>
+ */
 public class GestionCoche 
 {
 	private Connection conexion;
 	
+	/**
+	 * Constructor con parámetro.
+	 * 
+	 * @see clases.gestion.ConexionSQL
+	 * 
+	 * @param conexion La conexión con la base de datos.
+	 */
 	public GestionCoche(Connection conexion)
 	{
 		this.conexion = conexion;
@@ -32,6 +45,15 @@ public class GestionCoche
 	 * Postcondiciones: Asociado al nombre devuelve un CocheImpl.
 	 * 					- El objeto devuelto tendrá la información correspondiente al Coche que pertenece a la configuración dada si dicha configuración existe en la base de datos
 	 * 					- El objeto devuelto será null si la configuración no existe en la base de datos.
+	 */
+	/**
+	 * Obtiene el coche asociado a la configuración dada, busca en la base de datos.<br>
+	 * <b>Precondiciones:</b> La conexion con la base de datos debe estar abierta.
+	 * 
+	 * @param configuracion La configuración de la que se desea obtener su coche.
+	 * 
+	 * @return El coche de la configuración.<br>
+	 * Es null si la configuración no existe en la base de datos.
 	 */
 	public CocheImpl obtenerCoche(ConfiguracionImpl configuracion)
 	{
@@ -120,6 +142,12 @@ public class GestionCoche
 	 * Salida: Un ArrayList<CocheImpl> con todos los coches de la base de datos.
 	 * Postcondiciones: Asociado al nombre devuelve un ArrayList<CocheImpl> con todos los coches de la base de datos.
 	 */
+	/**
+	 * Obtiene todos los coches de la base de datos.<br>
+	 * <b>Precondiciones:</b> La conexion con la base de datos debe estar abierta.
+	 * 
+	 * @return Todos los coches de la base de datos.
+	 */
 	public ArrayList<CocheImpl> obtenerCoches()
 	{
 		ArrayList<CocheImpl> coches = new ArrayList<CocheImpl>();
@@ -161,6 +189,14 @@ public class GestionCoche
 	 * Precondiciones: La conexion tiene que estar abierta.
 	 * Salida: Un ArrayList<CocheImpl> con los coches válidos para la pieza determinada.
 	 * Postcondiciones: Asociado al nombre devuelve un ArrayList<CocheImpl> con los coche válidos para la pieza determinada.
+	 */
+	/**
+	 * Obtiene una lista de los coches válidos para una pieza dada.<br>
+	 * <b>Precondiciones:</b> La conexion con la base de datos debe estar abierta.
+	 * 
+	 * @param pieza La pieza de la que se desea obtener todos los coches válidos.
+	 * @return Los coches válidos para la pieza determinada.<br>
+	 * Si la lista está vacía significa que no existen coches válidos en la base de datos para la pieza dada.
 	 */
 	public ArrayList<CocheImpl> obtenerCochesValidos(PiezaImpl pieza)
 	{
@@ -285,7 +321,7 @@ public class GestionCoche
 	 * Comentario: Inserta un nuevo coche en la base de datos
 	 * Prototipo: public boolean insertarCoche(CocheImpl coche)
 	 * Entrada: el CocheImpl que se desea insertar en la base de datos
-	 * Precondiciones: No hay
+	 * Precondiciones: La conexión con la base de datos debe estar abierta.
 	 * Salida: Un boolean indicando si se introdujo el coche satisfactoriamente o no.
 	 * Postcondiciones: Asociado al nombre devuelve:
 	 * 					- True. Por lo tanto el coche ha sido introducido correctamente en la base de datos
@@ -293,7 +329,9 @@ public class GestionCoche
 	 * 					- Lanza SQLServerException si se intenta introducir un coche(modelo y marca) que ya existe en la base de datos.
 	 */
 	/**
-	 * Inserta un nuevo coche en la base de datos.
+	 * Inserta un nuevo coche en la base de datos.<br>
+	 * <b>Precondiciones:</b> La conexion con la base de datos debe estar abierta.
+	 * 
 	 * @param coche Coche que se insertará en la base de datos.
 	 * @return Devuelve true si el coche ha sido introducido correctamente en la base de datos, false de lo contrario.
 	 * @throws SQLServerException Si se intenta introducir un coche con modelo y marca que ya existe en la base de datos.
@@ -333,14 +371,16 @@ public class GestionCoche
 	 * Comentario: Elimina un coche de la base de datos, asi como las configuraciones(y sus votaciones) asociadas a él.
 	 * Prototipo: public boolean eliminarCoche(CocheImpl coche)
 	 * Entrada: El CocheImpl que se desea eliminar de la base de datos
-	 * Precondiciones: No hay
+	 * Precondiciones: La conexión con la base de datos debe estar abierta.
 	 * Salida: Un boolean indicando si la eliminacion tuvo exito
 	 * Postcondiciones: Asociado al nombre devuelve:
 	 * 					- True. El coche ha sido borrado satisfactoriamente de la base de datos. Las configuraciones y las votaciones asociadas al cocha también se borran.
 	 * 					- False. El coche no se ha podido borrar de la base de datos (Puede que el coche(marca y modelo) no exista en la base de datos)
 	 */
 	/**
-	 * Elimina un coche de la base de datos, asi como las configuraciones(y sus votaciones) asociadas a él.
+	 * Elimina un coche de la base de datos, asi como las configuraciones(y sus votaciones) asociadas a él.<br>
+	 * <b>Precondiciones:</b> La conexion con la base de datos debe estar abierta.
+	 * 
 	 * @param coche El coche que se desea eliminar de la base de datos.
 	 * @return True si el coche ha sido borrado correctamente de la base de datos, las configuraciones y las votaciones asociadas al coche se borran también.<br>
 	 * 		   False si el coche no se ha podido borrar de la base de datos.
