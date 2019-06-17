@@ -108,7 +108,8 @@ CREATE TABLE Votaciones
 
 	CONSTRAINT PK_Votaciones PRIMARY KEY (ID),
 	CONSTRAINT FK_Votaciones_IDConfiguracion FOREIGN KEY (IDConfiguracion) REFERENCES Configuraciones(ID) ON DELETE NO ACTION ON UPDATE CASCADE,
-	CONSTRAINT FK_Votaciones_Usuario FOREIGN KEY (Usuario) REFERENCES Cuentas(NombreUsuario) ON DELETE NO ACTION ON UPDATE NO ACTION -- Se deberá borrar la cuenta con un procedimiento
+	CONSTRAINT FK_Votaciones_Usuario FOREIGN KEY (Usuario) REFERENCES Cuentas(NombreUsuario) ON DELETE NO ACTION ON UPDATE NO ACTION, -- Se deberá borrar la cuenta con un procedimiento
+	CONSTRAINT UQ_Votaciones_Usuario1SolaVotacion UNIQUE (IDConfiguracion, Usuario)
 )
 
 CREATE TABLE PiezasCoches
