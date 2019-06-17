@@ -65,8 +65,6 @@ public class Validaciones
 			
 		}while(opcion < 0 || opcion > 2);
 		
-		teclado.close();
-		
 		return opcion;
 	}
 	
@@ -108,8 +106,6 @@ public class Validaciones
 			
 		}while(!contrasenaCorrecta);
 		
-		teclado.close();
-		
 		return cuenta;
 	}
 	
@@ -145,8 +141,6 @@ public class Validaciones
 			
 		}while(opcion < 0 || opcion > 4);
 		
-		teclado.close();
-		
 		return opcion;
 	}
 	
@@ -171,8 +165,6 @@ public class Validaciones
 			
 		}while(gestionCuenta.existeUsuario(usuario));
 		
-		teclado.close();
-		
 		return usuario;
 	}
 	
@@ -195,8 +187,6 @@ public class Validaciones
 		contrasena = teclado.nextLine();
 		
 		contrasena = utils.obtenerMD5(contrasena);
-		
-		teclado.close();
 		
 		return contrasena;
 	}
@@ -233,8 +223,6 @@ public class Validaciones
 		if(opcion > 0)
 			objeto = lista.get(opcion-1);
 		
-		teclado.close();
-		
 		return objeto;
 	}
 	
@@ -263,8 +251,6 @@ public class Validaciones
 			System.out.println("Elige una opcion: ");
 			opcion = teclado.nextInt();
 		}while(opcion < 0 || opcion > 2);
-		
-		teclado.close();
 		
 		return opcion;
 	}
@@ -304,8 +290,6 @@ public class Validaciones
 			
 		}while(opcion < 0 || opcion > 6);
 		
-		teclado.close();
-		
 		return opcion;
 	}
 	
@@ -334,8 +318,6 @@ public class Validaciones
 			
 		}while(opcion < 0 || opcion > 1);
 		
-		teclado.close();
-		
 		return opcion;
 	}
 	
@@ -361,8 +343,6 @@ public class Validaciones
 		
 		votacion = new VotacionImpl(UUID.randomUUID().toString(), new GregorianCalendar(), valoracion);
 		
-		teclado.close();
-		
 		return votacion;
 	}
 	
@@ -384,8 +364,6 @@ public class Validaciones
 			System.out.print("Nombre de usuario: ");
 			cuenta = gestionCuenta.obtenerCuenta(teclado.nextLine());
 		}while(cuenta == null);
-		
-		teclado.close();
 		
 		return cuenta;
 	}
@@ -409,8 +387,6 @@ public class Validaciones
 			precio = teclado.nextDouble();
 		}while(precio < 0.0);
 		
-		teclado.close();
-		
 		return precio;
 	}
 	
@@ -432,9 +408,6 @@ public class Validaciones
 			System.out.print("Inserta precio maximo a buscar: ");
 			precio = teclado.nextDouble();
 		}while(precio < precioMinimo);
-		
-		teclado.close();
-		
 		return precio;
 	}
 	
@@ -545,8 +518,6 @@ public class Validaciones
 			
 		}while(!correcto);
 		
-		teclado.close();
-		
 		return opcion;
 	}
 	
@@ -656,8 +627,6 @@ public class Validaciones
 			confirmadoEliminarConfiguracion = Character.toUpperCase(teclado.next().charAt(0));
 		}while(confirmadoEliminarConfiguracion != 'S' && confirmadoEliminarConfiguracion != 'N');
 		
-		teclado.close();
-		
 		return confirmadoEliminarConfiguracion;
 	}
 	
@@ -682,8 +651,6 @@ public class Validaciones
 			confirmarGuardarConfiguracion = Character.toUpperCase(teclado.next().charAt(0));
 			
 		}while(confirmarGuardarConfiguracion != 'S' && confirmarGuardarConfiguracion != 'N');
-		
-		teclado.close();
 		
 		return confirmarGuardarConfiguracion;
 	}
@@ -713,8 +680,6 @@ public class Validaciones
 		
 		if(respuesta == 'S')
 			confirmar = true;
-		
-		teclado.close();
 		
 		return confirmar;
 	}
@@ -752,8 +717,6 @@ public class Validaciones
 		else
 			System.out.println("Ya no te quedan intentos.");
 		
-		teclado.close();
-		
 		return contrasenaCorrecta;
 	}
 	
@@ -778,8 +741,6 @@ public class Validaciones
 			nuevaContrasena = utils.obtenerMD5(nuevaContrasena);
 			
 		}while(nuevaContrasena.equals(contrasenaActual));
-		
-		teclado.close();
 		
 		return nuevaContrasena;
 	}
@@ -810,8 +771,6 @@ public class Validaciones
 			opcion = teclado.nextInt();
 			System.out.println();
 		}while(opcion < 0 || opcion > 2);
-		
-		teclado.close();
 		
 		return opcion;
 	}
