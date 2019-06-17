@@ -615,8 +615,8 @@ public class ConfiguradorCoches
 													} 
 													catch (SQLServerException e) 
 													{
-														if(e.getErrorCode() == 2726)
-															System.out.println("Esta votacion ya existe, no se realizará.");
+														if(e.getErrorCode() == 2627)
+															System.out.println("No puedes votar una configuración que ya has votado!");
 														else if(e.getErrorCode() == 50000)
 															System.out.println(e.getMessage());
 														else

@@ -204,7 +204,7 @@ public class Utils
 			System.out.println("Llantas: Aun no tiene!");
 		
 		if(pintura != null)
-			System.out.println("Pintura: " + pintura.getNombre() + " - " + pintura.getAcabado() + " - " + motor.getPrecio() + "€");
+			System.out.println("Pintura: " + pintura.getNombre() + " - " + pintura.getAcabado() + " - " + pintura.getPrecio() + "€");
 		else
 			System.out.println("Pintura: Aun no tiene!");
 		
