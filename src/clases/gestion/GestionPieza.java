@@ -688,8 +688,4 @@ public class GestionPieza
 		
 		pieza.establecerCochesValidos(cochesValidos);
 	}
-	
-	//TODO public boolean actualizarPieza(PiezaImpl pieza);
-	
-	//TODO public boolean eliminarPieza(PiezaImpl pieza);
 }

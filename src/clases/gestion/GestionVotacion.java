@@ -64,7 +64,7 @@ public class GestionVotacion
 				
 				votacion = new VotacionImpl(ID, fecha, calificacion);
 				
-				votacion.establecerConfiguracion(configuracion);	//Aprovecha la situacion y establece la relacion con su configuracion determinada.
+				votacion.establecerConfiguracion(configuracion);
 				
 				votaciones.add(votacion);
 			}

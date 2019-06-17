@@ -4,12 +4,21 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-//TODO Javadoc
+/**
+ * Gestiona la conexión con la base de datos.
+ * 
+ * @author Iván Moreno <br> <a href="https://github.com/Ivanmr96/">Github</a>
+ */
 public class ConexionSQL 
 {
 	private String URLConexion;
 	private Connection conexion;
 	
+	/**
+	 * Constructor con parámetro.
+	 * 
+	 * @param URLConexion La URL de la conexión con la base de datos.
+	 */
 	public ConexionSQL(String URLConexion)
 	{
 		this.URLConexion = URLConexion;
@@ -22,6 +31,9 @@ public class ConexionSQL
 	 * Precondiciones: No hay
 	 * Salida: No hay
 	 * Postcondiciones: Se abre una nueva conexion a la base de datos establecida, con las credenciales dadas y en el servidor determinado.
+	 */
+	/**
+	 * Abre la conexión con la base de datos.
 	 */
 	public void abrirConexion()
 	{
@@ -43,6 +55,9 @@ public class ConexionSQL
 	 * Salida: No hay
 	 * Postcondiciones: Se cierra la conexión a la base de datos establecida, con las credenciales dadas y en el servidor determinado.
 	 */
+	/**
+	 * Cierra la conexión con la base de datos.
+	 */
 	public void cerrarConexion()
 	{
 		try 
@@ -55,7 +70,17 @@ public class ConexionSQL
 		}
 	}
 	
+	/**
+	 * Obtiene la conexión con la base de datos.
+	 * 
+	 * @return la conexión con la base de datos.
+	 */
 	public Connection getConexion() { return this.conexion; }
+	
+	/**
+	 * Establece la conexión con la base de datos.
+	 * @param conexion La conexión a establecer.
+	 */
 	public void setConexion(Connection conexion) { this.conexion = conexion; }
 	
 }

@@ -23,10 +23,10 @@ public class ConexionSQLTest {
 		System.out.println(con.toString());
 		
 
-		try {
+		try{
 			System.out.println("Esta cerrada: " + con.isClosed());
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+		} catch (SQLException e) 
+		{
 			e.printStackTrace();
 		}
 		
@@ -34,10 +34,11 @@ public class ConexionSQLTest {
 		
 		conexion.cerrarConexion();
 		
-		try {
+		try 
+		{
 			System.out.println("Esta cerrada: " + con.isClosed());
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+		} catch (SQLException e) 
+		{
 			e.printStackTrace();
 		}
 		
