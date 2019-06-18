@@ -198,35 +198,54 @@ Fin
 ********************************************************************************************************************************
 
 - Editar configuracion
-	Si(La opcion del submenu elegida es eliminar una pieza extra)
-		Eliminar pieza elegida
-	FinSi
-	Sino
-		Para(opcion elegida)
-			caso M:
-				Mostrar motores y validar eleccion de motor
-				Establecer motor elegido en la configuracion
-			caso L:
-				Mostrar llantas y validar elección de llantas
-				Establecer llantas elegidas en la configuracion
-			caso P:
-				Mostrar pinturas y validar elección de pintura
-				Establecer pintura elegida en la configuración.
-			caso +:
-				Mostrar piezas extra disponibles y validar eleccion de pieza.
-				Añadir pieza extra.
-		FinPara
-	FinSino
-	Mostrar submenu de configuración elegida y validar opcion elegida
-	Si(la opcion elegida es salir)
-		Preguntar si se desea guardar la configuracion
-		Si(confirma guardado)
-			Guardar la configuración
+	Mostrar menu edición configuración y validar opción
+	Mientras(opcion no sea volver atras)
+		Obtener el coche de la configuración elegida y cargar las piezas validas
+		Si(la opción es eliminar una pieza extra)
+			Eliminar pieza extra elegida
 		FinSi
+		Sino
+			Para(opcionMenuEdicion)
+				caso M:
+					Mostrar motores y validar eleccion de motor
+					Si(no quiere volver atras)
+						Establecer motor elegido en la configuracion
+					FinSi
+				caso L:
+					Mostrar llantas y validar elección de llantas
+					Si(no quiere volver atras)
+						Establecer llantas elegidas en la configuracion
+					FinSi
+				caso P:
+					Mostrar pinturas y validar elección de pintura
+					Si(no quiere volver atras)
+						Establecer pintura elegida en la configuración.
+					FinSi
+				caso +:
+					Mostrar piezas extra disponibles y validar eleccion de pieza.
+					Si(no quiere volver atras)
+						Añadir pieza extra.
+					FinSi
+			FinPara
+		FinSino
+		Mostrar menu edición configuración y validar opción
+		Si(La opción es salir)	
+			Confirmar si desea guardar
+			Si(confirma que desea guardar)
+				Guardar configuración
+			FinSi
+			SiNo
+				Cargar de nuevo la configuración
+			FinSino
+		FinSi
+	FinMientras
+Fin
+
+- Borar configuración
+	Leer y validar si confirma el borrado de la configuración
+	Si(confirma el borrado)
+		Borrar la configuración
 	FinSi
-	SiNo
-		Cargar de nuevo la configuración desde la base de datos.
-	FinSiNo
 Fin
 
 - Borar configuración
