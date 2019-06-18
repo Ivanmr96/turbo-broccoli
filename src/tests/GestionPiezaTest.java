@@ -1,7 +1,11 @@
 package tests;
 
+import java.sql.SQLException;
+import java.sql.Statement;
+
 import clases.basicas.CocheImpl;
 import clases.basicas.ConfiguracionImpl;
+import clases.basicas.MotorImpl;
 import clases.basicas.PiezaImpl;
 import clases.gestion.ConexionSQL;
 import clases.gestion.GestionCoche;
@@ -23,7 +27,7 @@ public class GestionPiezaTest
 		GestionConfiguracion gestionConfiguracion = new GestionConfiguracion(SQL.getConexion());
 		GestionCoche gestionCoche = new GestionCoche(SQL.getConexion());
 		
-		ConfiguracionImpl configuracionTest = gestionConfiguracion.obtenerConfiguracion("EF49FC93-2EEF-4F9A-BBBD-B4CF232D17A9");
+		ConfiguracionImpl configuracionTest = gestionConfiguracion.obtenerConfiguracion("5E825DA3-140D-4B16-BD28-31B359EA79AA");
 		
 		CocheImpl cocheTest = gestionCoche.obtenerCoche("Audi", "A1");
 		
@@ -31,7 +35,15 @@ public class GestionPiezaTest
 		System.out.println("obtenerPiezaLlantas(32): "+ gestionPieza.obtenerPiezaLlantas(32).toString());
 		System.out.println("obtenerPiezaMotor(27): " + gestionPieza.obtenerPiezaMotor(27).toString());
 		System.out.println("obtenerPiezaPintura(44): " + gestionPieza.obtenerPiezaPintura(44).toString());
-		System.out.println("obtenerPiezaLlantas(configuracionTest): " + gestionPieza.obtenerPiezaLlantas(configuracionTest).toString());
+		
+		try
+		{
+			System.out.println("obtenerPiezaLlantas(configuracionTest): " + gestionPieza.obtenerPiezaLlantas(configuracionTest).toString());
+		}
+		catch(NullPointerException e)
+		{
+			System.out.println("obtenerPiezaLlantas(configuracionTest): No tiene");
+		}
 		
 		try 
 		{
@@ -59,8 +71,94 @@ public class GestionPiezaTest
 		}
 		System.out.println();
 		
-//		insertarPieza(Pieza)
-//		insertarPiezaMotor(Motor)
+		System.out.println("-------------------------------------------------------------------------");
+		PiezaImpl piezaTest = new PiezaImpl(110, "Pieza test", "Descripcion test", 1024.33);
+		
+		System.out.println("piezaTest -> " + piezaTest.toString());
+		
+		System.out.println();
+		
+		System.out.println("insertarPieza(piezaTest)");
+		
+		try
+		{
+			Statement statement = SQL.getConexion().createStatement();
+			
+			statement.execute("BEGIN TRANSACTION");
+			
+			try
+			{
+				System.out.println("ANTES -> obtenerPieza(110) -> " + gestionPieza.obtenerPieza(110).toString());
+			}
+			catch(NullPointerException e)
+			{
+				System.out.println("ANTES -> obtenerPieza(110) -> No existe");
+			}
+			
+			System.out.println();
+			
+			if(gestionPieza.insertarPieza(piezaTest))
+				System.out.println("Pieza insertada correctamente");
+			else
+				System.out.println("La pieza no se insertó.");
+			
+			System.out.println();
+			
+			System.out.println("DESPUES -> obtenerPieza(110) -> " + gestionPieza.obtenerPieza(110).toString());
+			
+			statement.execute("ROLLBACK");
+			
+		}
+		catch(SQLException e)
+		{
+			
+		}
+		
+		System.out.println("-------------------------------------------------------------------------");
+		
+		MotorImpl motorTest = new MotorImpl(110, "Motor test", "Descripcion motor test", 1024.33, 'T', 6, 760, 135, "D");
+		
+		System.out.println("motorTest -> " + motorTest.toString());
+		
+		System.out.println();
+		
+		System.out.println("insertarPiezaMotor(motorTest)");
+		
+		try
+		{
+			Statement statement = SQL.getConexion().createStatement();
+			
+			statement.execute("BEGIN TRANSACTION");
+			
+			try
+			{
+				System.out.println("ANTES -> obtenerPiezaMotor(110) -> " + gestionPieza.obtenerPiezaMotor(110).toString());
+			}
+			catch(NullPointerException e)
+			{
+				System.out.println("ANTES -> obtenerPiezaMotor(110) -> No existe");
+			}
+			
+			System.out.println();
+			
+			if(gestionPieza.insertarPiezaMotor(motorTest))
+				System.out.println("Motor insertado correctamente");
+			else
+				System.out.println("El motor no se insertó.");
+			
+			System.out.println();
+			
+			System.out.println("DESPUES -> obtenerPiezaMotor(110) -> " + gestionPieza.obtenerPiezaMotor(110).toString());
+			
+			statement.execute("ROLLBACK");
+			
+		}
+		catch(SQLException e)
+		{
+			
+		}
+		
+		System.out.println("-------------------------------------------------------------------------");
 	
 		System.out.println("cargarCochesValidosEnPieza(pieza)");
 		

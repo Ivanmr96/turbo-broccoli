@@ -87,13 +87,10 @@ CREATE TABLE Configuraciones
 
 CREATE TABLE PiezasConfiguracionCoche
 (
-	--MarcaCoche varchar(20) NOT NULL,
-	--ModeloCoche varchar(25) NOT NULL,
 	IDPieza int NOT NULL,
 	IDConfiguracion uniqueidentifier NOT NULL,
 
 	CONSTRAINT PK_PiezasConfiguracionCoche PRIMARY KEY (IDPieza, IDConfiguracion),
-	--CONSTRAINT FK_PiezasConfiguracionCoche_MarcaCoche FOREIGN KEY (MarcaCoche, ModeloCoche) REFERENCES Coches(Marca, Modelo) ON DELETE NO ACTION ON UPDATE CASCADE,
 	CONSTRAINT FK_PiezasConfiguracionCoche_IDPieza FOREIGN KEY (IDPieza) REFERENCES Piezas(ID) ON DELETE CASCADE ON UPDATE CASCADE, 
 	CONSTRAINT FK_PiezasConfiguracionCoche_IDConfiguracion FOREIGN KEY (IDConfiguracion) REFERENCES Configuraciones(ID) ON DELETE CASCADE ON UPDATE CASCADE 
 )
