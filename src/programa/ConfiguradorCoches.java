@@ -398,6 +398,7 @@ public class ConfiguradorCoches
 										
 										if(opcionCoche != null)
 										{
+											//Insertar configuracion nueva
 											try 
 											{
 												if(gestionConfiguracion.insertarConfiguracion(configuracionNueva));
@@ -417,21 +418,21 @@ public class ConfiguradorCoches
 									
 								case 2: 
 									//Ver configuraciones propias
+										configuraciones = gestionConfiguracion.obtenerConfiguraciones(cuentaSesion);	//Obtiene la configuración.
+										
+										gestionConfiguracion.cargarRelacionesEnConfiguraciones(configuraciones);		//Carga las relaciones necesarias
+										
 										//Mostrar configuraciones propias y validar opcion de configuracion elegida
-										configuraciones = gestionConfiguracion.obtenerConfiguraciones(cuentaSesion);
-										
-										gestionConfiguracion.cargarRelacionesEnConfiguraciones(configuraciones);
-										
 										opcionConfiguracionPropia = validacion.mostrarObjetosYValidarObjetoElegido(configuraciones); 
 										
 										while(opcionConfiguracionPropia != null)
 										{
+											confirmadoEliminarConfiguracion = 'N';		//Se reinicia el indicador de configuración eliminada.
+											
 											gestionConfiguracion.cargarRelacionesEnConfiguracion(opcionConfiguracionPropia);	//Cargar las relaciones en la configuración en cada iteración, para actualizar en memoria principal la información que tiene la bbdd.
 											
 											//Mostrar configuración
 											utils.mostrarConfiguracion(opcionConfiguracionPropia);
-											
-											confirmadoEliminarConfiguracion = 'N';												//TODO ¿Esto por qué está aquí?
 											
 											//Mostrar submenuConfiguracionElegida y validar opcion elegida
 											opcionSubMenuConfiguracionElegida = validacion.mostrarSubMenuConfiguracionElegidaYValidarOpcion();
@@ -442,10 +443,13 @@ public class ConfiguradorCoches
 												{
 													case 1:
 														//Editar configuracion
+														
+														//Mostrar menu edicion configuracion y validar opción
 														opcionMenuConfiguracion = validacion.mostrarMenuEdicionConfiguracionYValidarOpcion(opcionConfiguracionPropia);
 														
 														while(!opcionMenuConfiguracion.equals("0"))
 														{
+															//Obtener el coche de la configuración elegida y cargar las piezas validas
 															cocheEdicionConfiguracion = opcionConfiguracionPropia.obtenerCoche();
 															gestionCoche.cargarPiezasValidasEnCoche(cocheEdicionConfiguracion);
 															
@@ -453,6 +457,7 @@ public class ConfiguradorCoches
 															{
 																if(Integer.parseInt(opcionMenuConfiguracion) > 0)
 																{
+																	//Eliminar pieza extra elegida
 																	piezaElegidaEdicion = opcionConfiguracionPropia.obtenerPiezas().get(Integer.parseInt(opcionMenuConfiguracion)-1);
 																	opcionConfiguracionPropia.eliminarPiezaExtra(piezaElegidaEdicion);
 																}
@@ -464,38 +469,50 @@ public class ConfiguradorCoches
 																switch(opcionMenuConfiguracion)
 																{
 																	case "M": 
+																		//Mostrar motores y validar elección motor
 																		piezaElegidaEdicion = validacion.mostrarMotoresDisponiblesYElegirMotor(opcionConfiguracionPropia);
 																		if(piezaElegidaEdicion != null)
+																			//Establecer motor elegido en la configuración
 																			opcionConfiguracionPropia.establecerMotor((MotorImpl)piezaElegidaEdicion);
 																		break;
 																	case "L":
+																		//Mostrar llantas y validar elección de llantas
 																		piezaElegidaEdicion = validacion.mostrarLlantasDisponiblesYElegirLlantas(opcionConfiguracionPropia);
 																		if(piezaElegidaEdicion != null)
+																			//Establecer llantas elegidas en la configuracion
 																			opcionConfiguracionPropia.establecerLlantas((LlantasImpl)piezaElegidaEdicion);
 																		break;
 																	case "P":
+																		//Mostrar pinturas y validar elección de pintura
 																		piezaElegidaEdicion = validacion.mostrarPinturasDisponiblesYElegirPintura(opcionConfiguracionPropia);
 																		if(piezaElegidaEdicion != null)
+																			//Establecer pintura elegida en la configuración.
 																			opcionConfiguracionPropia.establecerPintura((PinturaImpl)piezaElegidaEdicion);
 																		break;
 																	case "+":
+																		//Mostrar piezas extra disponibles y validar eleccion de pieza.
 																		piezaElegidaEdicion = validacion.mostrarPiezasExtraDisponiblesYElegirPiezaExtra(opcionConfiguracionPropia);
 																		if(piezaElegidaEdicion != null)
+																			//Añadir pieza extra.
 																			opcionConfiguracionPropia.anhadirPiezaExtra(piezaElegidaEdicion);
 																		break;
 																}
 															}
 															
+															//Mostrar menu edición configuración y validar opción
 															opcionMenuConfiguracion = validacion.mostrarMenuEdicionConfiguracionYValidarOpcion(opcionConfiguracionPropia);
 															
 															if(opcionMenuConfiguracion.equals("0")) //Si sale de la pantalla, preguntar si desea guardar la configuracion o no.
 															{
+																//Confirmar si desea guardar
 																confirmarGuardarConfiguracion = validacion.confirmarGuardarConfiguracion();
 																
 																if(confirmarGuardarConfiguracion == 'S')
+																	//Guardar configuración
 																	gestionConfiguracion.actualizarConfiguracion(opcionConfiguracionPropia);
 																else
 																{
+																	//Cargar de nuevo la configuración
 																	opcionConfiguracionPropia = gestionConfiguracion.obtenerConfiguracion(opcionConfiguracionPropia.getID());	//Tiene que coger de nuevo de la base de datos la configuracion para que no se queden los cambios guardados(hasta salir) en memoria principal.
 																	gestionConfiguracion.cargarRelacionesEnConfiguracion(opcionConfiguracionPropia);
 																}
@@ -504,18 +521,21 @@ public class ConfiguradorCoches
 														break;
 													case 2:
 														//Borrar configuracion
+														//Leer y validar si confirma el borrado de la configuración
 														confirmadoEliminarConfiguracion = validacion.confirmarBorrarConfiguracion();
 														if(confirmadoEliminarConfiguracion == 'S')
 														{
+															//Borrar la configuración
 															gestionConfiguracion.eliminarConfiguracion(opcionConfiguracionPropia);
 															System.out.println("configuración borrada con éxito.");
 														}
 														break;
 												}
+												
 												opcionSubMenuConfiguracionElegida = (confirmadoEliminarConfiguracion == 'N') ? validacion.mostrarSubMenuConfiguracionElegidaYValidarOpcion() : 0 ;
 											}
 											
-											configuraciones = gestionConfiguracion.obtenerConfiguraciones(cuentaSesion);
+											configuraciones = gestionConfiguracion.obtenerConfiguraciones(cuentaSesion);		//Obtiene de nuevo la configuración de la base de datos.
 											
 											gestionConfiguracion.cargarRelacionesEnConfiguraciones(configuraciones);
 											
@@ -541,18 +561,19 @@ public class ConfiguradorCoches
 													
 												case 2:
 													//Buscar por marca
-													marca = validacion.mostrarObjetosYValidarObjetoElegido(gestionCoche.obtenerMarcas());
 													
+													//Mostrar marcas y validar elección de marca de coche
+													marca = validacion.mostrarObjetosYValidarObjetoElegido(gestionCoche.obtenerMarcas());
 													configuraciones = gestionConfiguracion.obtenerConfiguraciones(marca);
 													
 													break;
 													
 												case 3:
 													//Buscar por marca y modelo
-
+													
+													//Mostrar modelos de la marca y validar elección de modelo de coche
 													marca = validacion.mostrarObjetosYValidarObjetoElegido(gestionCoche.obtenerMarcas());
 													
-													//modelo = validacion.mostrarListaModelosYValidarModeloElegido(marca);
 													modelo = validacion.mostrarObjetosYValidarObjetoElegido(gestionCoche.obtenerModelos(marca));
 													
 													coche = gestionCoche.obtenerCoche(marca, modelo);
@@ -563,6 +584,8 @@ public class ConfiguradorCoches
 													
 												case 4:
 													//Buscar por usuario
+													
+													//Leer y validar nombre de usuario
 													cuentaBuscar = validacion.leerYValidarUsuario();
 													
 													configuraciones = gestionConfiguracion.obtenerConfiguraciones(cuentaBuscar);
@@ -571,6 +594,8 @@ public class ConfiguradorCoches
 													
 												case 5:
 													//Buscar por rango de precio
+													
+													//Leer y validar rango de precio
 													precioMinimo = validacion.leerYValidarPrecioMinimo();
 													precioMaximo = validacion.leerYValidarPrecioMaximo(precioMinimo);
 													
@@ -580,6 +605,8 @@ public class ConfiguradorCoches
 													
 												case 6:
 													//Buscar por fecha
+													
+													//Leer y validar fecha
 													fechaBuscar = validacion.leerYValidarFecha();
 													configuraciones = resguardo.obtenerConfiguraciones(fechaBuscar);
 													
@@ -587,15 +614,18 @@ public class ConfiguradorCoches
 													
 											}
 											
+											//Cargar las relaciones en las configuraciones filtradas
 											gestionConfiguracion.cargarRelacionesEnConfiguraciones(configuraciones);
 											
+											//Mostrar configuraciones y validar elección de configuración
 											configuracionComunidadElegida = validacion.mostrarObjetosYValidarObjetoElegido(configuraciones);
 											
 											while(configuracionComunidadElegida != null)
 											{
+												//Mostrar la configuración
 												utils.mostrarConfiguracion(configuracionComunidadElegida);
 												
-												//Mostrar menu de configuracion de la comunidad elegida
+												//Mostrar menu de configuración de la comunidad para la configuración elegida
 												opcionMenuConfiguracionComunidadElegida = validacion.mostarMenuConfiguracionComunidadElegidaYValidarOpcion();
 												
 												while(opcionMenuConfiguracionComunidadElegida != 0)
@@ -605,7 +635,7 @@ public class ConfiguradorCoches
 													calificacion.establecerConfiguracion(configuracionComunidadElegida);
 													calificacion.establecerCuenta(cuentaSesion);
 													
-													//Insertar calificacion
+													//Guardar calificacion
 													try 
 													{
 														gestionVotacion.insertarVotacion(calificacion);
@@ -623,15 +653,18 @@ public class ConfiguradorCoches
 															e.printStackTrace();
 													}
 													
+													//Mostrar la configuración
 													utils.mostrarConfiguracion(configuracionComunidadElegida);
 													
 													//Mostrar menu de configuracion de la comunidad elegida
 													opcionMenuConfiguracionComunidadElegida = validacion.mostarMenuConfiguracionComunidadElegidaYValidarOpcion();
 												}
 												
+												//Mostrar configuraciones y validar elección de configuración
 												configuracionComunidadElegida = validacion.mostrarObjetosYValidarObjetoElegido(configuraciones);
 											}
 											
+											//Mostrar menuConfiguracionesComunidad y validar opcion elegida
 											opcionMenuConfiguracionesComunidad = validacion.mostrarMenuConfiguracionesComunidadYValidarOpcion();
 										}
 									break;
@@ -639,6 +672,7 @@ public class ConfiguradorCoches
 								case 4: 
 									//Editar cuenta
 									
+									//Mostrar menu edición de cuenta y validar opcion
 									opcionMenuEditarCuenta = validacion.mostrarMenuEditarCuentaYValidarOpcion();
 									
 									while(opcionMenuEditarCuenta != 0)
@@ -672,10 +706,12 @@ public class ConfiguradorCoches
 												}
 										}
 										
-										if(!confirmarBorrarCuenta)
-											opcionMenuEditarCuenta = validacion.mostrarMenuEditarCuentaYValidarOpcion();
-										else
+										if(confirmarBorrarCuenta)
+											//Salir
 											opcionMenuEditarCuenta = 0;
+										else
+											//Mostrar menu edición de cuenta y validar opcion
+											opcionMenuEditarCuenta = validacion.mostrarMenuEditarCuentaYValidarOpcion();
 									}
 									break;
 									

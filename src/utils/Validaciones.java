@@ -67,7 +67,7 @@ public class Validaciones
 		int opcion;
 		Scanner teclado = new Scanner(System.in);
 		
-		System.out.println("MENU PRINCIPAL");
+		System.out.println("TURBO BROCCOLI");
 		System.out.println("1) Iniciar Sesion");
 		System.out.println("2) Registrarse");
 		System.out.println("0) Salir");
