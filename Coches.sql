@@ -183,7 +183,6 @@ BEGIN
 	DELETE FROM Configuraciones
 	WHERE ID = @IDConfiguracion
 END --PROCEDURE
-GO
 
 GO
 /* INTERFAZ

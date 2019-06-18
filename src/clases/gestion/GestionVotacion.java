@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
@@ -170,5 +171,28 @@ public class GestionVotacion
 		
 		
 		return insertada;
+	}
+	
+	public boolean eliminarVotacion(VotacionImpl votacion)
+	{
+		boolean borrada = false;
+		
+		String delete = "DELETE FROM Votaciones "
+					  + "WHERE ID = '" + votacion.getID() + "'";
+		
+		try
+		{
+			Statement statement = conexion.createStatement();
+			
+			statement.execute(delete);
+			
+			borrada = true;
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+		
+		return borrada;
 	}
 }

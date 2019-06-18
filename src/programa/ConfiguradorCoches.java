@@ -651,6 +651,7 @@ public class ConfiguradorCoches
 												
 												if(confirmarBorrarCuenta)
 												{
+													gestionCuenta.cargarRelacionesEnCuenta(cuentaSesion);
 													if(gestionCuenta.eliminarCuenta(cuentaSesion))
 														System.out.println("La cuenta se borro correctamente.");
 													else

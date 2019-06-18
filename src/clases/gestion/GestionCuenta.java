@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 import com.microsoft.sqlserver.jdbc.SQLServerException;
@@ -251,23 +252,43 @@ public class GestionCuenta
 	public boolean eliminarCuenta(CuentaImpl cuenta)
 	{
 		boolean borrada = false;
-		
-		String delete = "DELETE FROM Cuentas "
-					  + "WHERE NombreUsuario = ?";
+		GestionVotacion gestionVotacion = new GestionVotacion(conexion);
+		GestionConfiguracion gestionConfiguracion = new GestionConfiguracion(conexion);
 		
 		try
 		{
-			PreparedStatement statement = conexion.prepareStatement(delete);
+			Statement statement = conexion.createStatement();
 			
-			statement.setString(1, cuenta.getNombreUsuario());
+			statement.execute("BEGIN TRANSACTION");
 			
-			int filasAfectadas = statement.executeUpdate();
+			for(VotacionImpl votacion:cuenta.obtenerVotaciones())
+			{
+				gestionVotacion.eliminarVotacion(votacion);
+			}
 			
-			if(filasAfectadas > 0)
-				borrada = true;
+			for(ConfiguracionImpl configuracion:cuenta.obtenerConfiguraciones())
+			{
+				gestionConfiguracion.eliminarConfiguracion(configuracion);
+			}
+			
+			statement.execute("DELETE FROM Cuentas WHERE NombreUsuario = '" + cuenta.getNombreUsuario() + "'");
+			
+			borrada = true;
+			
+			statement.execute("COMMIT");
 		}
 		catch(SQLException e)
 		{
+			try 
+			{
+				Statement statement = conexion.createStatement();
+				statement.execute("ROLLBACK");
+			} 
+			catch (SQLException e1) 
+			{
+				e1.printStackTrace();
+			}
+			
 			e.printStackTrace();
 		}
 		

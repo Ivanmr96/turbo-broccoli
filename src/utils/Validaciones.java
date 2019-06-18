@@ -506,6 +506,7 @@ public class Validaciones
 			}
 			else
 			{
+				opcion = opcion.toUpperCase();
 				if(!opcion.equals("M") && !opcion.equals("L") && !opcion.equals("P") && !opcion.equals("+"))
 				{
 					correcto = false;
