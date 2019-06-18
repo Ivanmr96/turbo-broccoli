@@ -163,6 +163,4 @@ public class MotorImpl extends PiezaImpl
 	{		
 		return this.getID() + " - " + this.getNombre() + " - "  + this.potencia + " cv - " + this.getPrecio() + " €";
 	}
-	
-	//TODO clone, hashcode, compareTo, equals
 }

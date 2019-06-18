@@ -346,5 +346,4 @@ public class ConfiguracionImpl
 			   this.obtenerPrecioTotal() + " €";
 	}
 	
-	//TODO clone, hashcode, compareTo, equals
 }

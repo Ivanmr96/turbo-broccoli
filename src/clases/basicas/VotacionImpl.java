@@ -161,6 +161,4 @@ public class VotacionImpl
 	 * @param cuenta La cuenta que realiza la votación a establecer.
 	 */
 	public void establecerCuenta(CuentaImpl cuenta) { this.cuenta = cuenta; }
-	
-	//TODO clone, hashcode, compareTo, equals
 }

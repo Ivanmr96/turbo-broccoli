@@ -148,6 +148,4 @@ public class CuentaImpl implements Cuenta
 	{
 		return this.nombreUsuario;
 	}
-	
-	//TODO clone, hashcode, compareTo, equals
 }

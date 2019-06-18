@@ -338,7 +338,7 @@ public class ConfiguradorCoches
 		ConfiguracionImpl configuracionNueva;
 		
 		//Ver configuraciones propias
-		ArrayList<ConfiguracionImpl> configuraciones;
+		ArrayList<ConfiguracionImpl> configuraciones = null;
 		char confirmadoEliminarConfiguracion, confirmarGuardarConfiguracion;
 		int opcionSubMenuConfiguracionElegida;
 		String opcionMenuConfiguracion;
@@ -550,8 +550,6 @@ public class ConfiguradorCoches
 										
 										while (opcionMenuConfiguracionesComunidad != 0)
 										{
-											configuraciones = null;	//TODO esto puede ir arriba
-											
 											switch(opcionMenuConfiguracionesComunidad)
 											{
 												case 1:

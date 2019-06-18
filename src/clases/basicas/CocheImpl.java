@@ -237,6 +237,4 @@ public class CocheImpl implements Coche
 	{
 		return marca + " " + modelo + " - " + precioBase;
 	}
-	
-	//TODO clone, hashcode, compareTo, equals
 }

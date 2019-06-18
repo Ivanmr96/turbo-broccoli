@@ -50,10 +50,25 @@ public class MotorImplTest {
 		
 		System.out.println("DESPUES -> " + porDefecto.getPotencia());
 		
-		//TODO setAutonomia y setTipo
+		System.out.println("-------------------------------------------------------");
+		
+		System.out.println("conParametros.setAutonomia(750)");
+		
+		System.out.println("ANTES -> " + conParametros.getAutonomia());
+		
+		conParametros.setAutonomia(750);
+		
+		System.out.println("DESPUES -> " + conParametros.getAutonomia());
 		
 		System.out.println("-------------------------------------------------------");
-		System.out.println("-------------------------------------------------------");
+		
+		System.out.println("conParametros.setTipo(\"E\")");
+		
+		System.out.println("ANTES -> " + conParametros.getTipo());
+		
+		conParametros.setTipo("E");
+		
+		System.out.println("DESPUES -> " + conParametros.getTipo());
 	}
 
 }

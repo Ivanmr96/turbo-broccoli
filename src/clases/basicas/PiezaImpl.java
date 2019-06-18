@@ -165,6 +165,4 @@ public class PiezaImpl implements Pieza
 	{
 		return this.ID + " - " + this.nombre + " - " + this.precio + " €";
 	}
-	
-	//TODO clone, hashcode, compareTo, equals
 }

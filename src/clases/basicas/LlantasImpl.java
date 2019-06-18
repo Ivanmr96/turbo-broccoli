@@ -83,6 +83,4 @@ public class LlantasImpl extends PiezaImpl
 	{
 		return this.getID() + " - " + this.getNombre() + " - " + this.pulgadas + "\"" + " - " + this.getPrecio() + " €";
 	}
-	
-	//TODO clone, hashcode, compareTo, equals
 }
