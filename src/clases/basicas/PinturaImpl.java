@@ -1,5 +1,7 @@
 package clases.basicas;
 
+import interfaces.Pintura;
+
 /* ESTUDIO DE INTERFAZ
  * 
  * Propiedades básicas:
@@ -26,7 +28,7 @@ package clases.basicas;
  * @author Iván Moreno <br> <a href="https://github.com/Ivanmr96/">Github</a>
  *
  */
-public class PinturaImpl extends PiezaImpl
+public class PinturaImpl extends PiezaImpl implements Pintura
 {
 	private String color;
 	private String acabado;

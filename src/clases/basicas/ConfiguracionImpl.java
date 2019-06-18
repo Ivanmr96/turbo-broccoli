@@ -3,6 +3,7 @@ package clases.basicas;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
+import interfaces.Configuracion;
 import utils.Utils;
 
 /* ESTUDIO DE INTERFAZ
@@ -68,7 +69,7 @@ import utils.Utils;
  * 
  * @author Iván Moreno <br> <a href="https://github.com/Ivanmr96/">Github</a>
  */
-public class ConfiguracionImpl 
+public class ConfiguracionImpl implements Configuracion
 {
 	private GregorianCalendar fecha;
 	private String ID;

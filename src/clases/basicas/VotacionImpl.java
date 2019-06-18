@@ -2,6 +2,8 @@ package clases.basicas;
 
 import java.util.GregorianCalendar;
 
+import interfaces.Votacion;
+
 /* ESTUDIO DE INTERFAZ
  * 
  * Propiedades básicas:
@@ -45,7 +47,7 @@ import java.util.GregorianCalendar;
  * @author Iván Moreno <br> <a href="https://github.com/Ivanmr96/">Github</a>
  *
  */
-public class VotacionImpl 
+public class VotacionImpl implements Votacion
 {
 	private String ID;
 	private GregorianCalendar fecha;

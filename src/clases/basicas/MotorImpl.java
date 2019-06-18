@@ -1,5 +1,7 @@
 package clases.basicas;
 
+import interfaces.Motor;
+
 /* ESTUDIO DE INTERFAZ
  * 
  * Propiedades básicas:
@@ -27,7 +29,7 @@ package clases.basicas;
  * 
  * @author Iván Moreno <br> <a href="https://github.com/Ivanmr96/">Github</a>
  */
-public class MotorImpl extends PiezaImpl
+public class MotorImpl extends PiezaImpl implements Motor
 {
 	private char traccion;
 	private int numeroVelocidades;

@@ -1,5 +1,7 @@
 package clases.basicas;
 
+import interfaces.Llantas;
+
 /* ESTUDIO DE INTERFAZ
  * 
  * Propiedades básicas:
@@ -22,7 +24,7 @@ package clases.basicas;
  * 
  * @author Iván Moreno <br> <a href="https://github.com/Ivanmr96/">Github</a>
  */
-public class LlantasImpl extends PiezaImpl
+public class LlantasImpl extends PiezaImpl implements Llantas
 {
 	private int pulgadas;
 	
