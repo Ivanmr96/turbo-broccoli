@@ -16,11 +16,24 @@ import clases.basicas.MotorImpl;
 import clases.basicas.PiezaImpl;
 import clases.basicas.PinturaImpl;
 
-//TODO Javadoc
+/**
+ * Gestiona lo relacionado con las piezas en la base de datos. <br><br>
+ * 
+ * La clase principal sobre la que actúan los métodos de esta clase es {@link clases.basicas.PiezaImpl}.
+ * 
+ * @author Iván Moreno <br> <a href="https://github.com/Ivanmr96/">Github</a>
+ */
 public class GestionPieza 
 {
 	private Connection conexion;
 	
+	/**
+	 * Constructor con parámetro.
+	 * 
+	 * @see clases.gestion.ConexionSQL
+	 * 
+	 * @param conexion La conexión con la base de datos.
+	 */
 	public GestionPieza(Connection conexion)
 	{
 		this.conexion = conexion;
@@ -37,6 +50,20 @@ public class GestionPieza
 	 * 						Este método no obtiene la información extra que tienen estas piezas especializadas, solo la parte común a todas las piezas.
 	 * 						Para las piezas especializadas, usar los métodos obtenerPiezaPintura, obtenerPiezaLlantas y obtenerPiezaMotor...
 	 * 					- Si el ID no es de ninguna pieza existente en la base de datos, devuelve null.
+	 */
+	/**
+	 * Obtiene una pieza dado su ID, busca en la base de datos.<br>
+	 * <b>Precondiciones:</b> La conexión con la base de datos debe estar abierta.<br><br>
+	 * 
+	 * Este método no debe utilizarse para obtener piezas especializadas, es decir, {@link clases.basicas.MotorImpl}, {@link clases.basicas.LlantasImpl} o {@link clases.basicas.PinturaImpl}.
+	 * 
+	 * @see #obtenerPiezaMotor(int)
+	 * @see #obtenerPiezaLlantas(int)
+	 * @see #obtenerPiezaPintura(int)
+	 * 
+	 * @param ID El identificador de la pieza a buscar.
+	 * @return La pieza perteneciente al ID en la base de datos.<br>
+	 * Si el ID no es de ninguna pieza existente en la base de datos, devuelve null.
 	 */
 	public PiezaImpl obtenerPieza(int ID)
 	{
@@ -79,6 +106,13 @@ public class GestionPieza
 	 * Postcondiciones: Asociado al nombre devuelve devuelve un objeto LlantasImpl.
 	 * 					- Si la ID dada pertenece a unas llantas existentes en la base de datos, devuelve el objeto con la información.
 	 * 					- Si la ID dada no pertenece a unas llantas existentes en la base de datos, devuelve el objeto null.
+	 */
+	/**
+	 * Obtiene la pieza de tipo llantas según un ID dado. Busca en la base de datos.<br>
+	 * <b>Precondiciones:</b> La conexión con la base de datos debe estar abierta.<br><br>
+	 * @param ID El identificador de las llantas.
+	 * @return Las llantas pertenecientes al ID en la base de datos.
+	 * Si la ID dada no pertenece a ningunas llantas de la base de datos, devuelve null.
 	 */
 	public LlantasImpl obtenerPiezaLlantas(int ID)
 	{
@@ -123,6 +157,13 @@ public class GestionPieza
 	 * Postcondiciones: Asociado al nombre devuelve devuelve un objeto MotorImpl.
 	 * 					- Si la ID dada pertenece a un motor existente en la base de datos, devuelve el objeto con la información.
 	 * 					- Si la ID dada no pertenece a un motor existente en la base de datos, devuelve el objeto null.
+	 */
+	/**
+	 * Obtiene la pieza de tipo motor según un ID dado. Busca en la base de datos.<br>
+	 * <b>Precondiciones:</b> La conexión con la base de datos debe estar abierta.<br><br>
+	 * @param ID El identificador del motor.
+	 * @return El motor pertenecientes al ID en la base de datos.
+	 * Si la ID dada no pertenece a ningún motor de la base de datos, devuelve null.
 	 */
 	public MotorImpl obtenerPiezaMotor(int ID)
 	{
@@ -172,6 +213,13 @@ public class GestionPieza
 	 * 					- Si la ID dada pertenece a una pintura existente en la base de datos, devuelve el objeto con la información.
 	 * 					- Si la ID dada no pertenece a una pintura existente en la base de datos, devuelve el objeto null.
 	 */
+	/**
+	 * Obtiene la pieza de tipo pintura según un ID dado. Busca en la base de datos.<br>
+	 * <b>Precondiciones:</b> La conexión con la base de datos debe estar abierta.<br><br>
+	 * @param ID El identificador de la pintura.
+	 * @return La pintura pertenecientes al ID en la base de datos.
+	 * Si la ID dada no pertenece a ninguna pintura de la base de datos, devuelve null.
+	 */
 	public PinturaImpl obtenerPiezaPintura(int ID)
 	{
 		PinturaImpl pintura = null;
@@ -214,6 +262,14 @@ public class GestionPieza
 	 * Precondiciones: La conexion tiene que estar abierta.
 	 * Salida: Unas LlantasImpl que pertenece, en la base de datos, a la configuracion determinada.
 	 * Postcondiciones: Asociado al nombre devuelve las LlantasImpl de la configuracion dada, busca en la base de datos.
+	 */
+	/**
+	 * Obtiene las llantas de una configuracion dada. Busca en la base de datos.<br>
+	 * <b>Precondiciones:</b> La conexión con la base de datos debe estar abierta.<br>
+	 * 
+	 * @param configuracion La configuración de la cual se desea obtener sus llantas.
+	 * @return Las llantas asociadas a la configuración según la base de datos.<br>
+	 * Si no tiene ningunas llantas asociadas, devuelve null.
 	 */
 	public LlantasImpl obtenerPiezaLlantas(ConfiguracionImpl configuracion)
 	{
@@ -259,6 +315,14 @@ public class GestionPieza
 	 * Salida: Unas PinturaImpl que pertenece, en la base de datos, a la configuracion determinada.
 	 * Postcondiciones: Asociado al nombre devuelve la PinturaImpl de la configuracion dada, busca en la base de datos.
 	 */
+	/**
+	 * Obtiene la pintura de una configuracion dada. Busca en la base de datos.<br>
+	 * <b>Precondiciones:</b> La conexión con la base de datos debe estar abierta.<br>
+	 * 
+	 * @param configuracion La configuración de la cual se desea obtener su pintura.
+	 * @return La pintura asociada a la configuración según la base de datos.<br>
+	 * Si no tiene ninguna pintura asociada, devuelve null.
+	 */
 	public PinturaImpl obtenerPiezaPintura(ConfiguracionImpl configuracion)
 	{
 		PinturaImpl pintura = null;
@@ -303,6 +367,14 @@ public class GestionPieza
 	 * Precondiciones: La conexion tiene que estar abierta.
 	 * Salida: Una MotorImpl que pertenece, en la base de datos, a la configuracion determinada.
 	 * Postcondiciones: Asociado al nombre devuelve el MotorImpl de la configuracion dada, busca en la base de datos.
+	 */
+	/**
+	 * Obtiene el motor de una configuracion dada. Busca en la base de datos.<br>
+	 * <b>Precondiciones:</b> La conexión con la base de datos debe estar abierta.<br>
+	 * 
+	 * @param configuracion La configuración de la cual se desea obtener su motor.
+	 * @return El motor asociado a la configuración según la base de datos.<br>
+	 * Si no tiene ningun motor asociado, devuelve null.
 	 */
 	public MotorImpl obtenerPiezaMotor(ConfiguracionImpl configuracion)
 	{
@@ -352,8 +424,15 @@ public class GestionPieza
 	 * Salida: Un ArrayList de PiezaImpl con la lista de las piezas extra la configuracion dada.
 	 * Postcondiciones: Asociado al nombe devuelve un ArrayList<PiezaImpl>.
 	 * 					- Si la configuracion existe en la base de datos, la lista tendrá las piezas extra de dicha configuracion, es posible que la lista esté vacía.
-	 * 						Significa que la configuración no tiene ninguna pieza extra.
-	 * 					- Si la configuración no existe en la base de datos, el ArrayList<PiezaImpl> será null.
+	 * 						Significa que la configuración no tiene ninguna pieza extra o no existe en la base de datos.
+	 */
+	/**
+	 * Obtiene la lista de las piezas extra de una configuracion. Busca en la base de datos.<br>
+	 * <b>Precondiciones:</b> La conexión con la base de datos debe estar abierta.<br>
+	 * 
+	 * @param configuracion La configuración de la que se desea obtener la lista de sus piezas extra.
+	 * @return Las piezas extra de la configuración dada.<br>
+	 * Si la configuración no existe o no tiene ningúna pieza extra, la lista estará vacía.
 	 */
 	public ArrayList<PiezaImpl> obtenerPiezasExtra(ConfiguracionImpl configuracion)
 	{
@@ -403,8 +482,15 @@ public class GestionPieza
 	 * Salida: Un ArrayList de PiezaImpl con la lista de las piezas la configuracion dada.
 	 * Postcondiciones: Asociado al nombe devuelve un ArrayList<PiezaImpl>.
 	 * 					- Si la configuracion existe en la base de datos, la lista tendrá las piezas de dicha configuracion, es posible que la lista esté vacía.
-	 * 						Significa que la configuración no tiene ninguna pieza.
-	 * 					- Si la configuración no existe en la base de datos, el ArrayList<PiezaImpl> será null.
+	 * 						Significa que la configuración no tiene ninguna pieza o la configuración no existe.
+	 */
+	/**
+	 * Obtiene la lista de todas las piezas de una configuracion. Busca en la base de datos.<br>
+	 * <b>Precondiciones:</b> La conexión con la base de datos debe estar abierta.<br>
+	 * 
+	 * @param configuracion La configuración de la que se desea obtener la lista de sus piezas.
+	 * @return Las piezas extra de la configuración dada.<br>
+	 * Si la configuración no existe o no tiene ningúna pieza, la lista estará vacía.
 	 */
 	public ArrayList<PiezaImpl> obtenerPiezas(ConfiguracionImpl configuracion)
 	{
@@ -479,11 +565,18 @@ public class GestionPieza
 	/**
 	 * Busca las piezas validas de un coche en la base de datos. <br>
 	 * <b>Precondiciones: </b>La conexion con la base de datos debe estar abierta.
+	 * 
 	 * @param coche El coche del que se desean obtener sus piezas válidas.
 	 * @return Las piezas válidas del coche. <br>
-	 * - Si, aunque el coche exista en la base de datos, este no tienen ninguna pieza válida, la lista estará vacía. <br>
-	 * - Si el coche no existe en la base de datos, devuelve null. <br>
+	 * - Si, el coche no existe en la base de datos o no tiene ninguna pieza válida, la lista estará vacía. <br>
 	 * - Si el coche existe y tiene piezas válidas, devuelve una lista con las piezas válidas.
+	 */
+	/**
+	 * Busca y obtiene las piezas validas de un coche en la base de datos.<br>
+	 * <b>Precondiciones:</b> La conexión con la base de datos debe estar abierta.<br>
+	 * @param coche EL coche del cual se desea obtener sus piezas válidas.
+	 * @return Las piezas válidas del coche.<br>
+	 * Si el coche no existe en la base de datos o no tiene ninguna pieza válida, la lista estará vacía.<br>
 	 */
 	public ArrayList<PiezaImpl> obtenerPiezasValidas(CocheImpl coche)
 	{
@@ -554,6 +647,14 @@ public class GestionPieza
 	 * 					- False. La pieza no se ha introducido correctamente en la base de datos.
 	 * 					- Lanza SQLServerException si se intenta introducir una pieza que ya existe en la base de datos.
 	 */
+	/**
+	 * Inserta una nueva pieza en la base de datos.<br>
+	 * <b>Precondiciones: </b>La conexion con la base de datos debe estar abierta.
+	 * 
+	 * @param pieza La pieza que se desea insertar en la base de datos.
+	 * @return True si la pieza ha sido introducida correctamente en la base de datos.<br> False si la pieza no ha sido introducida correctamente en la base de datos.
+	 * @throws SQLServerException Si se intenta introducir una pieza que ya existe en la base de datos.
+	 */
 	public boolean insertarPieza(PiezaImpl pieza) throws SQLServerException
 	{
 		boolean insertado = false;
@@ -598,6 +699,14 @@ public class GestionPieza
 	 * 					- True. Por lo tanto el motor ha sido introducido correctamente en la base de datos
 	 * 					- False. El motor no se ha introducido correctamente en la base de datos.
 	 * 					- Lanza SQLServerException si se intenta introducir un motor que ya existe en la base de datos.
+	 */
+	/**
+	 * Inserta una nueva pieza de tipo motor en la base de datos.<br>
+	 * <b>Precondiciones: </b>La conexion con la base de datos debe estar abierta.
+	 * 
+	 * @param motor El motor que se desea insertar en la base de datos.
+	 * @return True si el motor ha sido introducido correctamente en la base de datos.<br> False si el motor no ha sido introducido correctamente en la base de datos.
+	 * @throws SQLServerException Si se intenta introducir un motor que ya existe en la base de datos.
 	 */
 	public boolean insertarPiezaMotor(MotorImpl motor) throws SQLServerException
 {
@@ -679,6 +788,11 @@ public class GestionPieza
 	 * Entrada/Salida: Una PiezaImpl a la que se le desea cargar la lista de coches validos buscando en la base de datos.
 	 * Salida: No hay
 	 * Postcondiciones: El Objeto PiezaImpl de la lista de parámetros tiene cargada la lista de coches validos según la base de datos.
+	 */
+	/**
+	 * Carga en una pieza la lista de coches validos.<br>
+	 * <b>Precondiciones: </b>La conexion con la base de datos debe estar abierta.
+	 * @param pieza La pieza a la que se le desea cargar la lista de coches válidos buscando en la base de datos.
 	 */
 	public void cargarCochesValidosEnPieza(PiezaImpl pieza)
 	{

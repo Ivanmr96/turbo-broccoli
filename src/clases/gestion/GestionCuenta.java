@@ -13,11 +13,22 @@ import clases.basicas.ConfiguracionImpl;
 import clases.basicas.CuentaImpl;
 import clases.basicas.VotacionImpl;
 
-//TODO Javadoc
+/**
+ * Gestiona lo relacionado con las cuentas en la base de datos. <br><br>
+ * 
+ * La clase principal sobre la que actúan los métodos de esta clase es {@link clases.basicas.CuentaImpl}.
+ * 
+ * @author Iván Moreno <br> <a href="https://github.com/Ivanmr96/">Github</a>
+ */
 public class GestionCuenta 
 {
 	private Connection conexion;
 	
+	/**
+	 * Constructor con parámetro.
+	 * 
+	 * @param conexion La conexión con la base de datos.
+	 */
 	public GestionCuenta(Connection conexion)
 	{
 		this.conexion = conexion;
@@ -31,6 +42,13 @@ public class GestionCuenta
 	 * Salida: Una CuentaImpl con la cuenta perteneciente a ese nombre de usuario.
 	 * Postcondiciones: Asociado al nombre devuelve una CuentaImpl perteneciente al nombre de usuario dado, busca en la base de datos.
 	 * 					Si el nombre de usuario no existe, devuelve una CuentaImpl null.
+	 */
+	/**
+	 * Obtiene una cuenta a partir de su nombre de usuario buscando en la base de datos, la contraseña está cifrada con MD5.<br>
+	 * <b>Precondiciones:</b> La conexión con la base de datos debe estar abierta.
+	 * @param nombreUsuario El nombre de usuario de la cuenta a buscar.
+	 * @return La cuenta perteneciente al nombre de usuario dado.<br>
+	 * Si el nombre de usuario no existe, devuelve null.
 	 */
 	public CuentaImpl obtenerCuenta(String nombreUsuario)
 	{
@@ -70,6 +88,14 @@ public class GestionCuenta
 	 * Postcondiciones: Asociado al nombre devuelve una CuentaImpl
 	 * 					- El objeto tendrá la información con la cuenta correspondiente a la configuracion si dicha configuracion existe en la base de datos.
 	 * 					- El objeto será null si la configuración no existe en la base de datos.
+	 */
+	/**
+	 * Obtiene la cuenta de una configuración. Busca en la base de datos.<br>
+	 * <b>Precondiciones:</b> La conexión con la base de datos debe estar abierta.
+	 * 
+	 * @param configuracion La configuración de la cual se desea obtener la cuenta que la realizó.
+	 * @return La cuenta correspondiente a la configuración dada.<br>
+	 * Si la configuración no existe en la base de datos, devuelve null.
 	 */
 	public CuentaImpl obtenerCuenta(ConfiguracionImpl configuracion)
 	{
@@ -111,7 +137,14 @@ public class GestionCuenta
 	 * Salida: No hay
 	 * Entrada/Salida: Una CuentaImpl a la que se le desea cargar la lista de configuraciones que tiene asociada, buscando en la base de datos.
 	 * Postcondiciones: El objeto CuentaImpl pasado por parámetro tiene la lista de las configuraciones que le pertenecen según la base de datos.
-	 * 					Si la cuenta no existe en la base de datos, la lista de las votaciones será null.
+	 * 					Si la cuenta no existe en la base de datos, la lista de las configuraciones será null.
+	 */
+	/**
+	 * Carga la lista con las configuraciones de una cuenta en dicha cuenta, buscando en la base de datos.<br>
+	 * <b>Precondiciones:</b> La conexión con la base de datos debe estar abierta.
+	 * 
+	 * @param cuenta La cuenta a la que se le desea cargar la lista de configuraciones que tiene asociada en la base de datos.<br>
+	 * Si la cuenta no existe en la base de datos, la lista de configuraciones cargadas será null.
 	 */
 	public void cargarConfiguracionesEnCuenta(CuentaImpl cuenta)
 	{
@@ -132,6 +165,13 @@ public class GestionCuenta
 	 * Postcondiciones: El objeto CuentaImpl pasado por parámetro tiene la lista de las votaciones que le pertenecen según la base de datos.
 	 * 					Si la cuenta no existe en la base de datos, la lista de las votaciones será null.
 	 */
+	/**
+	 * Carga la lista con las votacines realizadas por una cuenta en dicha cuenta, buscando en la base de datos.<br>
+	 * <b>Precondiciones:</b> La conexión con la base de datos debe estar abierta.
+	 * 
+	 * @param cuenta Una cuenta a la que se le dewsea cargar la lista de votaciones que ha realizado, buscando en la base de datos.<br>
+	 * Si la cuenta no existe en la base de datos, la lista de votaciones cargadas será null.
+	 */
 	public void cargarVotacionesEnCuenta(CuentaImpl cuenta)
 	{
 		GestionVotacion gestionVotacion = new GestionVotacion(conexion);
@@ -151,7 +191,14 @@ public class GestionCuenta
 	 * Postcondiciones: El objeto CuentaImpl tiene cargada todas sus relaciones con otros objetos, es decir:
 	 * 						- Carga en el objeto CuentaImpl el ArrayList<ConfiguracionImpl> que le pertenece según la base de datos.
 	 * 						- Carga en el objeto CuentaImpl el ArrayList<VotacionImpl> que le pertenece según la base de datos.
-	 * 						- Si la configuración no existe en la base de datos, las relaciones quedarán con valores null.
+	 * 						- Si la cuenta no existe en la base de datos, las relaciones quedarán con valores null.
+	 */
+	/**
+	 * Carga todas las relaciones con otros objetos que tiene una cuenta en ella misma, es decir, carga las configuraciones que le pertenece y las votaciones.<br>
+	 * <b>Precondiciones:</b> La conexión con la base de datos debe estar abierta.
+	 * @param cuenta Cuenta a la que se le desea cargar todas sus relaciones con otros objetos.<br>
+	 * Cargara las configuraciones y las votaciones que le pertenece a la cuenta.<br>
+	 * Si la cuenta no existe en la base de datos, la lista de configuraciones y la lista de votaciones quedarán con valores null.
 	 */
 	public void cargarRelacionesEnCuenta(CuentaImpl cuenta)
 	{
@@ -166,9 +213,16 @@ public class GestionCuenta
 	 * Precondiciones: La conexion tiene que estar abierta
 	 * Salida: Un boolean indicando si se introdujo la cuenta satisfactoriamente o no.
 	 * Postcondiciones: Asociado al nombre devuelve:
-	 * 					- True. Por lo tanto la cuenta ha sido introducido correctamente en la base de datos
+	 * 					- True. Por lo tanto la cuenta ha sido introducida correctamente en la base de datos.
 	 * 					- False. La cuenta no se ha introducido correctamente en la base de datos.
 	 * 					- Lanza SQLServerException si se intenta introducir una cuenta que ya existe en la base de datos.
+	 */
+	/**
+	 * Inserta una nueva cuenta en la base de datos.<br>
+	 * <b>Precondiciones:</b> La conexión con la base de datos debe estar abierta.
+	 * @param cuenta La cuenta que se desea insertar en la base de datos.<br> False si la cuenta no se ha introducido correctamente.
+	 * @return True si la cuenta ha sido introducida correctamente en la base de datos.
+	 * @throws SQLServerException Si se intenta introducir una cuenta que ya existe en la base de datos.
 	 */
 	public boolean insertarCuenta(CuentaImpl cuenta) throws SQLServerException
 	{
@@ -196,20 +250,24 @@ public class GestionCuenta
 		{
 			e.printStackTrace();
 		}
-		
-		
 		return insertado;
 	}
 	
 	/* INTERFAZ
 	 * Comentario: Actualiza una cuenta de la base de datos.
 	 * Prototipo: public boolean actualizarCuenta(CuentaImpl cuenta)
-	 * Entrada: la CuentaImpl que se desea actualizar en la de datos.
+	 * Entrada: la CuentaImpl con los valores que se desean actualizar en la de datos.
 	 * Precondiciones: La conexion con la base de datos tiene que estar abierta.
 	 * Salida: Un boolean indicando si se actualizó la cuenta satisfactoriamente o no.
 	 * Postcondiciones: Asociado al nombre devuelve:
 	 * 					- True. Por lo tanto la cuenta ha sido actualizada correctamente en la base de datos
 	 * 					- False. La cuenta no se ha actualizado correctamente en la base de datos.
+	 */
+	/**
+	 * Actualiza una cuenta de la base de datos.<br>
+	 * <b>Precondiciones:</b> La conexión con la base de datos debe estar abierta.
+	 * @param cuenta La cuenta con los valores que se desean actualizar en la base de datos.
+	 * @return True si la cuenta ha sido actualizada correctamente en la base de datos.<br> False si no se ha actualizado correctamente en la base de datos.
 	 */
 	public boolean actualizarCuenta(CuentaImpl cuenta)
 	{
@@ -240,14 +298,20 @@ public class GestionCuenta
 	}
 	
 	/* INTERFAZ
-	 * Comentario: Borra una cuenta de la base de datos
+	 * Comentario: Borra una cuenta de la base de datos, así como sus configuraciones y votaciones realizadas.
 	 * Prototipo: public boolean eliminarCuenta(CuentaImpl cuenta)
-	 * Entrada: la CuentaImpl que se desea eliminar de la de datos
-	 * Precondiciones: La conexion con la base de datos tiene que estar abierta
+	 * Entrada: la CuentaImpl que se desea eliminar de la base de datos
+	 * Precondiciones: La conexion con la base de datos tiene que estar abierta.
 	 * Salida: Un boolean indicando si se elimino la cuenta satisfactoriamente o no.
 	 * Postcondiciones: Asociado al nombre devuelve:
-	 * 					- True. Por lo tanto la cuenta ha sido eliminada correctamente de la base de datos
+	 * 					- True. Por lo tanto la cuenta ha sido eliminada correctamente de la base de datos, así como sus configuraciones y votaciones realizadas.
 	 * 					- False. La cuenta no se ha eliminado correctamente de la base de datos.
+	 */
+	/**
+	 * Borra una cuenta de la base de datos, así como sus configuraciones y votaciones realizadas.<br>
+	 * <b>Precondiciones:</b> La conexión con la base de datos debe estar abierta.
+	 * @param cuenta La cuenta que se desea eliminar de la base de datos.
+	 * @return True si la cuenta ha asido borrada correctamente, así como sus configuraciones y votaciones realizadas.<br> False si no se eliminó.
 	 */
 	public boolean eliminarCuenta(CuentaImpl cuenta)
 	{
@@ -302,6 +366,12 @@ public class GestionCuenta
 	 * Precondiciones: La conexion tiene que estar abierta
 	 * Salida: Un boolean indicando si el usuario existe en la base de datos o no.
 	 * Postcondiciones: Asociado al nombre devuelve true si el usuario existe en la base de datos o false de lo contrario.
+	 */
+	/**
+	 * Comprueba en la base de datos si un usuario existe.<br>
+	 * <b>Precondiciones:</b> La conexión con la base de datos debe estar abierta.
+	 * @param usuario El nombre de usuario que se desea comprobar si existe en la base de datos.
+	 * @return True si el usuario existe en la base de datos.<br> False si no existe el usuario en la base de datos.
 	 */
 	public boolean existeUsuario(String usuario)
 	{

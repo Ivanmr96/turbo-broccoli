@@ -1,13 +1,9 @@
 USE Coches
 
-DELETE FROM Coches
-
 INSERT INTO Coches VALUES
     (N'Mercedes',N'Clase A',29225),
     (N'Toyota',N'Prius',29990),
     (N'Audi',N'A1',20730);
-
-DELETE FROM Piezas
 
 INSERT INTO Piezas VALUES
     (1,N'Pintura gris oscuro',NULL,450,N'pintura'),
@@ -61,8 +57,6 @@ INSERT INTO Piezas VALUES
     (53,N'Camara de marcha atrás',NULL,410,NULL),
     (54,N'Asistente de velocidad adaptativo ',NULL,645,NULL);
 
-DELETE FROM PiezasCoches
-
 INSERT INTO PiezasCoches VALUES
     (1,N'Mercedes',N'Clase A'),
     (11,N'Toyota',N'Prius'),
@@ -109,8 +103,6 @@ INSERT INTO PiezasCoches VALUES
     (53,N'Audi',N'A1'),
     (54,N'Audi',N'A1');
 
-DELETE FROM Motores
-
 INSERT INTO Motores VALUES
     (3,N'Gasolina',N'D',6,48,250,116,N'G'),
     (10,N'Diesel',N'T',6,NULL,300,160,N'D'),
@@ -120,8 +112,6 @@ INSERT INTO Motores VALUES
     (27,N'Gasolina',N'4',7,73,550,224,N'G'),
     (38,N'Gasolina',N'D',5,46,700,95,N'G'),
     (39,N'Gasolina',N'D',7,57,700,150,N'G');
-
-DELETE FROM Pinturas
 
 INSERT INTO Pinturas VALUES
     (1,N'gris oscuro',N'metalizado'),
@@ -144,8 +134,6 @@ INSERT INTO Pinturas VALUES
     (43,N'gris',N'metalizado'),
     (44,N'rojo',N'perlado');
 
-DELETE FROM Llantas
-
 INSERT INTO Llantas VALUES
     (2,15),
     (20,16),
@@ -157,11 +145,7 @@ INSERT INTO Llantas VALUES
     (46,16),
     (47,17);
 
-DELETE FROM Cuentas
-
-INSERT INTO Cuentas VALUES ('testuser', '202cb962ac59075b964b07152d234b70')
-
-DELETE FROM Configuraciones
+INSERT INTO Cuentas VALUES ('testuser', '202cb962ac59075b964b07152d234b70') --La contraseña es 123
 
 INSERT INTO Configuraciones VALUES
 (N'{137D8ABC-FA8C-458D-891A-25B76CDD96BD}',N'testuser','2019-07-08 00:00:00',N'Toyota',N'Prius',NULL,NULL,NULL),

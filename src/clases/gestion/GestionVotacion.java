@@ -173,6 +173,25 @@ public class GestionVotacion
 		return insertada;
 	}
 	
+	/* INTERFAZ
+	 * Comentario: Elimina una votacion de la base de datos.
+	 * Prototipo: public boolean eliminarVotacion(VotacionImpl votacion)
+	 * Entrada: La VotacionImpl que se desea eliminar de la base de datos.
+	 * Precondiciones: La conexión con la base de dato debe estar abierta.
+	 * Salida: Un boolean indicando si la eliminación tuvo exito
+	 * Postcondiciones: Asociado al nombre devuelve:
+	 * 					- True. La votación ha sido borrado satisfactoriamente de la base de datos.
+	 * 					- False. La votación no se ha podido borrar de la base de datos (Puede que la votación(su ID), no exista en la base de datos).
+	 */
+	/**
+	 * Elimina una votación de la base de datos.<br>
+	 * <b>Precondiciones:</b> La conexión con la base de datos debe estar abierta.
+	 * 
+	 * @param votacion La votacion que se desea eliminar de la base de datos.
+	 * 
+	 * @return True si la votacion se borró correctamente.<br>
+	 * False si no se pudo borrar la configuracion de la base de datos.
+	 */
 	public boolean eliminarVotacion(VotacionImpl votacion)
 	{
 		boolean borrada = false;

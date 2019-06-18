@@ -14,16 +14,30 @@ import clases.basicas.MotorImpl;
 import clases.basicas.PiezaImpl;
 import clases.basicas.PinturaImpl;
 
-//TODO Javadoc
+/**
+ * Clase con funcionalidades de utilidad.
+ * 
+ * @author Iván Moreno <br> <a href="https://github.com/Ivanmr96/">Github</a>
+ */
 public class Utils 
 {
 	/* INTERFAZ
-	 * Comentario: Obtiene un objeto GregorianCalendar a partir de un String con un tipo datetime de SQL
+	 * Comentario: Obtiene un objeto GregorianCalendar a partir de un String con un tipo datetime de Transact-SQL
 	 * Prototipo: public GregorianCalendar dateTimeToGregorianCalendar(String datetime)
-	 * Entrada: un String con un datetime de SQL
+	 * Entrada: un String con un datetime de Transact-SQL
 	 * Precondiciones: El String debe tener un formato de datetime de SQL. (ejemplo: 2019-06-08 21:06:20.280) (ver: https://docs.microsoft.com/es-es/sql/t-sql/data-types/datetime-transact-sql?view=sql-server-2017)
 	 * Salida: Un GregorianCalendar que representa la fecha del datetime introducido
 	 * Postcondiciones: Asociado al nombre devuelve un GregorianCalendar que representa la fecha del string con formato datetime de SQL introducido por parametro.
+	 */
+	/**
+	 * Obtiene un {@link java.util.GregorianCalendar} a partir de String con un tipo datetime de SQL.<br>
+	 * 
+	 * <b>Precondiciones:</b> El String debe tener un formato de datetime de SQL. (ejemplo: 2019-06-08 21:06:20.280)<br><br>
+	 * 
+	 * <a href="https://docs.microsoft.com/es-es/sql/t-sql/data-types/datetime-transact-sql?view=sql-server-2017">Más información sobre datetime</a>
+	 * 
+	 * @param datetime Un String con un datetime de Transact-SQL
+	 * @return La fecha que representa el datetime dado.
 	 */
 	public GregorianCalendar dateTimeToGregorianCalendar(String datetime)
 	{
@@ -49,12 +63,20 @@ public class Utils
 	}
 	
 	/* INTERFAZ
-	 * Comentario: Convierte la fecha de un objeto GregorianCalendar en un string con el formato DateTime de SQL.
+	 * Comentario: Convierte la fecha de un objeto GregorianCalendar en un string con el formato datetime de Transact-SQL.
 	 * Prototipo: public String GregorianCalendarToDateTime(GregorianCalendar fecha)
 	 * Entrada: Un objeto GregorianCalendar con la fecha que se desea convertir a un string con el formate DateTime.
 	 * Precondiciones: No hay
 	 * Salida: Un String con la fecha del objeto GregorianCalendar dado en el formato DateTime de SQL.
-	 * Postcondiciones: Asociado al nombre devuelve un String cojn la fecha del objeto GregorianCalendar dado, en el formato DateTime de SQL.
+	 * Postcondiciones: Asociado al nombre devuelve un String con la fecha del objeto GregorianCalendar dado, en el formato DateTime de SQL.
+	 */
+	/**
+	 * Convierte un {@link java.util.GregorianCalendar} en un String con el formato datetime de Transact-SQL.<br><br>
+	 * 
+	 * <a href="https://docs.microsoft.com/es-es/sql/t-sql/data-types/datetime-transact-sql?view=sql-server-2017">Más información sobre datetime</a>
+	 * 
+	 * @param fecha La fecha que se desea convertir en String con formato de datetime de Transact-SQL.
+	 * @return Una cadena con la fecha formateada para el tipo datetime de Transact-SQL.
 	 */
 	public String GregorianCalendarToDateTime(GregorianCalendar fecha)
 	{
@@ -80,6 +102,12 @@ public class Utils
 	 * Precondiciones: No hay
 	 * Salida: Un String con el codigo hash MD5 del String de entrada.
 	 * Postcondiciones: Asociado al nombre devuelve un String con el codigo hash MD5 del String de entrada.
+	 */
+	/**
+	 * Obtiene el código hash MD5 de un String.
+	 * 
+	 * @param str Un cadena para obtener su código MD5.
+	 * @return Una cadena con el código hash MD5 del String de entrada.
 	 */
 	public String obtenerMD5(String str) 
 	{
@@ -115,13 +143,20 @@ public class Utils
 	 * 					- True si la cadena dada es un número.
 	 * 					- False si la cadena dada no es un número.
 	 */
-	public boolean esNumero(String caracteres)
+	/**
+	 * Analiza una cadena para determinar si es un número o no.
+	 * 
+	 * @param cadena La cadena a analizar.
+	 * @return True si la cadena dada es un número.<br> False si la cada dada no es un número.<br>
+	 * Aunque contenga números, si la cadena dada no está compuesta al 100% por caracteres numericos, devolvera false.
+	 */
+	public boolean esNumero(String cadena)
 	{
 		boolean esNumero;
 		
 		try
 		{
-			Integer.parseInt(caracteres);
+			Integer.parseInt(cadena);
 			
 			esNumero = true;
 		}
@@ -140,6 +175,12 @@ public class Utils
 	 * Precondiciones: No hay
 	 * Salida: Un String con la fecha dada formateada.
 	 * Postcondiciones: Asociado al nombre devuelve un String con la fecha formatea con el formato "dia/mes/año hora:minutos:segundos"
+	 */
+	/**
+	 * Formeatea una fecha dada en {@link java.util.GregorianCalendar} con el formato "dia/mes/año hora:minutos:segundos".
+	 * 
+	 * @param fecha La fecha que se desea formatear.
+	 * @return La fecha formateada con el formato "dia/mes/año hora:minutos:segundos".
 	 */
 	public String formatearFecha(GregorianCalendar fecha)
 	{
@@ -167,6 +208,19 @@ public class Utils
 	 * 				- Precio total
 	 * 				- Piezas (motor, llantas, pintura y piezas extra si tiene)
 	 * 				- Calificación media 				
+	 */
+	/**
+	 * Imprime en pantalla de forma detallada una {@link clases.basicas.ConfiguracionImpl}.
+	 * <br><br>
+	 * Muestra:<br>
+	 * - ID <br>
+	 * - Fecha <br>
+	 * - Modelo <br>
+	 * - Precio total <br>
+	 * - Piezas (motor, llantas, pintura y piezas extra si tiene) <br>
+	 * - Calificación media
+	 * 
+	 * @param configuracion La configuración de la cual se desea imprimir en pantalla sus detalles.
 	 */
 	public void mostrarConfiguracion(ConfiguracionImpl configuracion)
 	{

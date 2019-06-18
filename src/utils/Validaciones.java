@@ -17,7 +17,11 @@ import clases.gestion.GestionCuenta;
 //import clases.gestion.GestionPieza;
 //import clases.gestion.GestionVotacion;
 
-//TODO Javadoc
+/**
+ * Clase con métodos de validaciones.
+ * 
+ * @author Iván Moreno <br> <a href="https://github.com/Ivanmr96/">Github</a>
+ */
 public class Validaciones 
 {
 	private GestionCoche gestionCoche;
@@ -26,6 +30,11 @@ public class Validaciones
 	//private GestionPieza gestionPieza;
 	//private GestionVotacion gestionVotacion;
 	
+	/**
+	 * Constructor con parámetro.
+	 * 
+	 * @param conexion La conexión con la base de datos.
+	 */
 	public Validaciones(Connection conexion)
 	{
 		gestionCoche = new GestionCoche(conexion);
@@ -45,6 +54,13 @@ public class Validaciones
 	 * 						- 1 para iniciar sesión
 	 * 						- 2 para registrarse
 	 * 						- 0 para salir
+	 */
+	/**
+	 * Muestra en pantalla el menu prinicpal y valida una opción elegida.
+	 * @return Un número indicando la opción elegida. <br>
+	 * 1 para iniciar sesión.<br>
+	 * 2 para regitrarse. <br>
+	 * 0 para salir.
 	 */
 	public int mostrarMenuPrincipalYValidarOpcion()
 	{
@@ -69,13 +85,19 @@ public class Validaciones
 	}
 	
 	/* INTERFAZ
-	 * Comentario: Realiza el inicio de sesion comprobando que existe en la base de datos
+	 * Comentario: Realiza el inicio de sesion comprobando que existe el usuario en la base de datos.
 	 * Prototipo: public CuentaImpl iniciarSesion()
 	 * Entrada: No hay
-	 * Precondiciones: No hay
+	 * Precondiciones: La conexion con la base de datos debe estar abierta.
 	 * Salida: Una CuentaImpl con la cuenta que ha iniciado sesion
 	 * Postcondiciones: Asociado al nombre devuelve una CuentaImpl con la cuenta que ha iniciado sesion
 	 * 					Si el usuario no inicio sesion, la CuentaImpl es null.
+	 */
+	/**
+	 * Realiza el inicio de sesión comprobando que existe el usuario en la base de datos.<br>
+	 * <b>Precondiciones:</b> La conexión con la base de datos debe estar abierta.<br>
+	 * 
+	 * @return La cuenta que ha iniciado sesión.
 	 */
 	public CuentaImpl iniciarSesion()
 	{
@@ -120,7 +142,16 @@ public class Validaciones
 	 * 						- 2 para ver las configuraciones propias
 	 * 						- 3 para ver las configuraciones de la comunidad
 	 * 						- 4 para editar la cuenta
-	 * 						- 0 para salir
+	 * 						- 0 para cerrar sesión.
+	 */
+	/**
+	 * Muestra en pantalla el menu de la sesión y valida una opcion elegida.
+	 * @return Un número con la opción elegida.<br>
+	 * 1 para una nueva configuración.<br>
+	 * 2 para ver las configuraciones propias.<br>
+	 * 3 para ver las configuraciones de la comunidad.<br>
+	 * 4 para editar la cuenta.<br>
+	 * 0 para cerrar sesión.
 	 */
 	public int mostrarMenuSesionYValidarOpcion()
 	{
@@ -152,6 +183,12 @@ public class Validaciones
 	 * Salida: Un String con el nombre de usuario nuevo.
 	 * Postcondiciones: Asociado al nombre devuelve un String con el nuevo nombre de usuario, validado de forma que no existe en la base de datos.
 	 */
+	/**
+	 * Valida un nuevo nombre de usuario, de forma que solo se puede escoger uno que no exista en la base de datos.<br>
+	 * <b>Precondiciones:</b> La conexión con la base de datos debe estar abierta.<br>
+	 * 
+	 * @return El nuevo nombre de usuario, validado de forma que no existe en la base de datos.
+	 */
 	public String validarNuevoNombreUsuario()
 	{
 		String usuario;
@@ -175,6 +212,11 @@ public class Validaciones
 	 * Precondiciones: No hay
 	 * Salida: Un String con la contraseña introducida, encriptada en MD5.
 	 * Postcondiciones: Asociado al nombre devuelve un String con la contraseña introducida, encriptada en MD5.
+	 */
+	/**
+	 * Pide al usuario una contraseña y la devuelve encriptada en MD5.
+	 * 
+	 * @return La contraseña introducida, encriptada en MD5.
 	 */
 	public String contrasena()
 	{
@@ -200,6 +242,15 @@ public class Validaciones
 	 * Salida: El Objeto elegido de la lista
 	 * Postcondiciones: Asociado al nombre devuelve un objeto del mismo tipo que la lista (T), que será el objeto elegido.
 	 * 					- Si el usuario selecciona la opción 0 (volver atrás), el objeto devuelto será null.
+	 */
+	/**
+	 * Muestra enumarados la lista de objetos determinada y valida la elección de uno de ellos.<br>
+	 * También muestra una opción para volver atrás.
+	 * 
+	 * @param <T> El tipo del objeto de la lista.
+	 * @param lista La lista de objetos que se desea mostrar de formar enumerada y validar la elección de uno de ellos.
+	 * @return Un objeto del mismo tipo que la lista, que será el objeto elegido por el usuario.<br>
+	 * Si el usuario selecciona la opción 0 (volver atrás), el objeto devuelvo será null.
 	 */
 	public <T> T mostrarObjetosYValidarObjetoElegido(ArrayList<T> lista)
 	{
@@ -227,7 +278,7 @@ public class Validaciones
 	}
 	
 	/* INTERFAZ
-	 * Comentario: Muestra el SubMenu de la configuración y valida una opción elegida:
+	 * Comentario: Muestra el SubMenu de la configuración y valida una opción elegida.
 	 * Prototipo: public int mostrarSubMenuConfiguracionElegidaYValidarOpcion()
 	 * Entrada: No hay
 	 * Precondiciones: No hay
@@ -236,6 +287,13 @@ public class Validaciones
 	 * 						-> 1 para editar la configuración
 	 * 						-> 2 para borrar la configuración
 	 * 						-> 0 para volver atrás.
+	 */
+	/**
+	 * Muestra el SubMenu de la configuración y valida una opción elegida
+	 * @return Un número indicnado la opción elegida<br>
+	 * 1 para editar la configuración.<br>
+	 * 2 para borrar la configuración.<br>
+	 * 0 para volver atrás.
 	 */
 	public int mostrarSubMenuConfiguracionElegidaYValidarOpcion()
 	{
@@ -270,6 +328,18 @@ public class Validaciones
 	 * 						-> 6 para buscar configuraciones por fecha
 	 * 						-> 0 para volver atras
 	 */
+	/**
+	 * Muestra el menu de las configuraciones de la comunidad y valida una opción elegida.
+	 * 
+	 * @return Un número indicando la opción elegida.<br>
+	 * 1 para ver todas las configuraciones.<br>
+	 * 2 para buscar configuraciones por marca.<br>
+	 * 3 para buscar configuraciones por marca y modelo.<br>
+	 * 4 para buscar configuraciones por usuario.<br>
+	 * 5 para buscar configuraciones por rango de precio.<br>
+	 * 6 para buscar configuraciones por fecha.<br>
+	 * 0 para volver atras.
+	 */
 	public int mostrarMenuConfiguracionesComunidadYValidarOpcion()
 	{
 		int opcion;		
@@ -303,6 +373,12 @@ public class Validaciones
 	 * 							-> 1 para votar la configuracion
 	 * 							-> 0 para volver atras
 	 */
+	/**
+	 *  Muestra el menu de la configuración de la comunidad elegida y valida la opción elegida.
+	 * @return Un número indicando la opción elegida.<br>
+	 * 1 para votar la configuración.<br>
+	 * 0 para volver atrás.
+	 */
 	public int mostarMenuConfiguracionComunidadElegidaYValidarOpcion()
 	{
 		int opcion;
@@ -329,6 +405,11 @@ public class Validaciones
 	 * Salida: Una VotacionImpl con la calificación realizada.
 	 * Postcondiciones: Asociado al nombre devuelve una VotacionImpl con la calificación realizada.
 	 */
+	/**
+	 * Valida la calificación de una configuración.
+	 * 
+	 * @return La votación con la calificación realizada.
+	 */
 	public VotacionImpl validarCalificacion()
 	{
 		VotacionImpl votacion = null;
@@ -354,6 +435,11 @@ public class Validaciones
 	 * Salida: Una CuentaImpl con la cuenta del usuario leido.
 	 * Postcondiciones: Asociado al nombre devuelve una CuentaImpl con el usuario leido y validado.
 	 */
+	/**
+	 * Lee y valida un nombre de usuario.
+	 * 
+	 * @return Una cuenta con el usuario leído y validado.
+	 */
 	public CuentaImpl leerYValidarUsuario()
 	{
 		CuentaImpl cuenta = null;
@@ -375,6 +461,12 @@ public class Validaciones
 	 * Precondiciones: No hay
 	 * Salida: Un double con el precio mínimo validado.
 	 * Postcondiciones: Asociado al nombre devuelve un double con el precio mínimo validado.
+	 */
+	/**
+	 * Lee y valida el precio mínimo para ubscar en las configuraciones de la comunidad.<br>
+	 * Que no podrá ser negativo.
+	 * 
+	 * @return El precio mínimo validado.
 	 */
 	public double leerYValidarPrecioMinimo()
 	{
@@ -398,6 +490,13 @@ public class Validaciones
 	 * Salida: Un double con el precio máximo para buscar en las configuraciones de la comunidad.
 	 * Postcondiciones: Asociado al nombre devuelve un doble con el precio máximo para buscar en las configuraciones de la comunidad.
 	 */
+	/**
+	 * Lee y valida el precio máximo para buscar en las configuraciones de la comunidad.<br>
+	 * Que no podrá ser mayor que el precio mínimo.
+	 * 
+	 * @param precioMinimo El precio mínimo.
+	 * @return El precio máximo para buscar en las configuraciones de la comunidad.
+	 */
 	public double leerYValidarPrecioMaximo(double precioMinimo)
 	{
 		double precio;
@@ -419,6 +518,11 @@ public class Validaciones
 	 * Salida: Un GregorianCalendar con la fecha validada
 	 * Postcondiciones: Asociado al nombre devuelve un GregorianCalendar con la fecha validada.
 	 */
+	/**
+	 * Lee y validar una fecha(dia, mes y año)
+	 * 
+	 * @return La fecha validada.
+	 */
 	public GregorianCalendar leerYValidarFecha()
 	{
 		GregorianCalendar fecha = new GregorianCalendar();
@@ -432,15 +536,30 @@ public class Validaciones
 	 * Comentario: Muestra en pantalla el menu de edición de una configuración y valida una opción elegida.
 	 * Prototipo: public String mostrarMenuEdicionConfiguracionYValidarOpcion(ConfiguracionImpl configuracion)
 	 * Entrada: La ConfiguracionImpl de la cual se desea mostrar el menu de edición.
-	 * Precondiciones: La ConfiguracionImpl ha de tener un CocheImpl (no puede ser null). @see ConfiguracionImpl
+	 * Precondiciones: La ConfiguracionImpl ha de tener un CocheImpl (no puede ser null).
 	 * Salida: Un String indicando la opción elegida.
-	 * Postcondiciones: Asociado al nombre devuelve un String indiciando la opción elegida:
+	 * Postcondiciones: Asociado al nombre devuelve un String indicando la opción elegida:
 	 * 						-> 0 para volver atrás
 	 * 						-> M para entrar en la configuración del motor
 	 * 						-> L para entrar en la configuración de las llantas
 	 * 						-> P para entrar en la configuración de la pintura
 	 * 						-> de 1 a N por cada pieza extra existente para eliminarla de la configuracion.
 	 * 						-> + para añadir una nueva pieza extra.
+	 */
+	/**
+	 * Muestra en pantalla el menu de edición de una configuración y valida una opción elegida.<br>
+	 * <b>Precondiciones:</b> La configuración ha de tener un coche (no puede ser null).
+	 * 
+	 * @see clases.basicas.ConfiguracionImpl
+	 * 
+	 * @param configuracion La configuración de la cual se desea mostrar su menu de edición.
+	 * @return Un string indicando la opción elegida.<br>
+	 * 0 para volver atrás.<br>
+	 * M para entrar en la configuración del motor.<br>
+	 * L para entrar en la configuración de las llantas.<br>
+	 * P para entrar en la configuración de la pintura.<br>
+	 * de 1 a N por cada pieza extra existente para eliminarla de la configuracion.<br>
+	 * + para añadir una nueva pieza extra.
 	 */
 	public String mostrarMenuEdicionConfiguracionYValidarOpcion(ConfiguracionImpl configuracion)
 	{
@@ -530,6 +649,15 @@ public class Validaciones
 	 * Salida: Una PiezaImpl con el motor elegido.
 	 * Postcondiciones: Asociado al nombre devuelve una PiezaImpl con el motor elegido.
 	 */
+	/**
+	 * Muestra los motores disponibles para el coche de una configuración y valida la opción de motor elegido.<br>
+	 * <b>Precondiciones:</b> La configuración ha de tener un coche (no puede ser null).
+	 * 
+	 * @see clases.basicas.ConfiguracionImpl
+	 * 
+	 * @param configuracion La configuración a la cual se le quiere elegir un motor válido.
+	 * @return El motor elegido.
+	 */
 	public PiezaImpl mostrarMotoresDisponiblesYElegirMotor(ConfiguracionImpl configuracion)
 	{
 		PiezaImpl piezaElegida;
@@ -550,6 +678,15 @@ public class Validaciones
 	 * Salida: Unas PiezaImpl con las llantas elegidas.
 	 * Postcondiciones: Asociado al nombre devuelve una PiezaImpl con las llantas elegidas.
 	 */
+	/**
+	 * Muestra las llantas disponibles para el coche de una configuración y valida la opción de llantas elegidas.<br>
+	 * <b>Precondiciones:</b> La configuración ha de tener un coche (no puede ser null).
+	 * 
+	 * @see clases.basicas.ConfiguracionImpl
+	 * 
+	 * @param configuracion La configuración a la cual se le quiere elegir unas llantas válidas.
+	 * @return Las llantas elegidas.
+	 */
 	public PiezaImpl mostrarLlantasDisponiblesYElegirLlantas(ConfiguracionImpl configuracion)
 	{
 		PiezaImpl piezaElegida;
@@ -569,6 +706,15 @@ public class Validaciones
 	 * Precondiciones: La configuración ha de tener un CocheImpl (no puede ser null) @see ConfiguracionImpl
 	 * Salida: Una PiezaImpl con la pintura elegida.
 	 * Postcondiciones: Asociado al nombre devuelve una PiezaImpl con la pintura elegida.
+	 */
+	/**
+	 * Muestra las pinturas disponibles para el coche de una configuración y valida la opción de pintura elegida.<br>
+	 * <b>Precondiciones:</b> La configuración ha de tener un coche (no puede ser null).
+	 * 
+	 * @see clases.basicas.ConfiguracionImpl
+	 * 
+	 * @param configuracion La configuración a la cual se le quiere elegir una pintura válida.
+	 * @return la pintura elegida.
 	 */
 	public PiezaImpl mostrarPinturasDisponiblesYElegirPintura(ConfiguracionImpl configuracion)
 	{
@@ -592,6 +738,15 @@ public class Validaciones
 	 * Salida: Una PiezaImpl con la pieza extra elegida.
 	 * Postcondiciones: Asociado al nombre devuelve una PiezaImpl con la pieza extra elegida.
 	 */
+	/**
+	 * Muestra las piezas extra disponibles para el coche de una configuración y valida la opción de pieza extra elegida.<br>
+	 * <b>Precondiciones:</b> La configuración ha de tener un coche (no puede ser null).
+	 * 
+	 * @see clases.basicas.ConfiguracionImpl
+	 * 
+	 * @param configuracion La configuración a la cual se le quiere elegir una pieza extra válida.
+	 * @return La pieza extra elegida.
+	 */
 	public PiezaImpl mostrarPiezasExtraDisponiblesYElegirPiezaExtra(ConfiguracionImpl configuracion)
 	{
 		PiezaImpl piezaElegida;
@@ -608,7 +763,7 @@ public class Validaciones
 	}
 	
 	/* INTERFAZ
-	 * Comentario: Lee y validar la confirmación para borrar una configuración o no.
+	 * Comentario: Lee y valida la confirmación para borrar una configuración o no.
 	 * Prototipo: public char confirmarBorrarConfiguracion()
 	 * Entrada: No hay
 	 * Precondiciones: No hay
@@ -616,6 +771,11 @@ public class Validaciones
 	 * Postcondiciones: Asociado al nombre devuelve un char:
 	 * 						- 'S' si se confirma el borrado
 	 * 						- 'N' si no se confirma
+	 */
+	/**
+	 * Lee y valida la confirmación para borrar una configuración o no.
+	 * 
+	 * @return 'S' si se confirma el borrado, 'N' si no se confirma.
 	 */
 	public char confirmarBorrarConfiguracion()
 	{
@@ -632,7 +792,7 @@ public class Validaciones
 	}
 	
 	/* INTERFAZ
-	 * Comentario: Lee y validar si se desea guardar en la base de datos una configuración o no.
+	 * Comentario: Lee y valida si se desea guardar en la base de datos una configuración o no.
 	 * Prototipo: public char confirmarGuardarConfiguracion()
 	 * Entrada: No hay
 	 * Precondiciones: No hay
@@ -640,6 +800,10 @@ public class Validaciones
 	 * Postcondiciones: Asociado al nombre devuelve un char:
 	 * 						- 'S' si se confirma el guardado.
 	 * 						- 'N' si no se confirma
+	 */
+	/**
+	 * Lee y validar si se desea guardar en la base de datos una configuración o no.
+	 * @return 'S' si se confirma el guardado. 'N' si no se confirma.
 	 */
 	public char confirmarGuardarConfiguracion()
 	{
@@ -665,6 +829,11 @@ public class Validaciones
 	 * Postcondiciones: Asociado al nombre devuelve un char:
 	 * 						- true si se confirma que se desea borrar
 	 * 						- false si no se quiere borrar la cuenta
+	 */
+	/**
+	 * Lee y valida la confirmación para borrar una cuenta o no.
+	 * 
+	 * @return True si se confirma que se desea borrar. False si no se quiere borrar la cuenta.
 	 */
 	public boolean confirmarBorrarCuenta()
 	{
@@ -695,6 +864,12 @@ public class Validaciones
 	 * 						- true si se introdujo bien la contraseña actual de la cuenta
 	 * 						- false si no se introdujo correctamente la contraseña después de los 5 intentos.
 	 */
+	/**
+	 * Lee y valida la contraseña actual de la cuenta. El usuario tendrá 5 intentos.
+	 * @param cuenta La cuenta de la que se desea leer y validar su contraseña actual.
+	 * @return True si se introdujo correctamente la contraseña actual de la cuenta.<br>
+	 * False si no se introdujo correctamente la contraseña después de los 5 intentos.
+	 */
 	public boolean leerYValidarContrasenaActual(CuentaImpl cuenta)
 	{
 		boolean contrasenaCorrecta = false;
@@ -722,12 +897,19 @@ public class Validaciones
 	}
 	
 	/* INTERFAZ
-	 * Comentario: Lee y validar una nueva contraseña. La contraseña nueva será valida cuando no sea igual a la actual.
+	 * Comentario: Lee y valida una nueva contraseña. La contraseña nueva será valida cuando no sea igual a la actual.
 	 * Prototipo: public String LeerYValidarNuevaContrasena(String contrasenaActual)
 	 * Entrada: Un String con la contraseña actual
 	 * Precondiciones: No hay
 	 * Salida: Un String con la contraseña nueva.
 	 * Postcondiciones: Asociado al nombre devuelve un String con la nueva contraseña elegida.
+	 */
+	/**
+	 * Lee y valida una nueva contraseña.<br>
+	 * La contraseña nueva será valida cuando no sea igual a la actual.
+	 * 
+	 * @param contrasenaActual La contraseña actual.
+	 * @return La nueva contraseña elegida.
 	 */
 	public String LeerYValidarNuevaContrasena(String contrasenaActual)
 	{
@@ -756,6 +938,14 @@ public class Validaciones
 	 * 						-> 1 para borrar la cuenta
 	 * 						-> 2 para cambiar la contraseña
 	 * 						-> 0 para volver atrás.
+	 */
+	/**
+	 * Muestra el menu de edición de la cuenta y valida una opción elegida.
+	 * 
+	 * @return Un número indicando la opción elegida.<br>
+	 * 1 para borrar la cuenta.<br>
+	 * 2 para cmabiar la contraseña.<br>
+	 * 0 para volver atrás.
 	 */
 	public int mostrarMenuEditarCuentaYValidarOpcion()
 	{

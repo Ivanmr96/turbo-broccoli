@@ -9,6 +9,8 @@ import java.util.ArrayList;
 
 import com.microsoft.sqlserver.jdbc.SQLServerException;
 
+//import com.microsoft.sqlserver.jdbc.SQLServerException;
+
 import clases.basicas.CocheImpl;
 import clases.basicas.ConfiguracionImpl;
 import clases.basicas.PiezaImpl;
