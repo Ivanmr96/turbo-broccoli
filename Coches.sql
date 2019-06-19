@@ -1,7 +1,7 @@
-CREATE DATABASE Coches2
+CREATE DATABASE Coches
 GO
 
-USE Coches2
+USE Coches
 GO
 
 CREATE TABLE Cuentas
@@ -223,7 +223,8 @@ GO
 INSERT INTO Coches VALUES
     (N'Mercedes',N'Clase A',29225),
     (N'Toyota',N'Prius',29990),
-    (N'Audi',N'A1',20730);
+    (N'Audi',N'A1',20730),
+	('Audi', 'A8', 99910);
 
 INSERT INTO Piezas VALUES
     (1,N'Pintura gris oscuro',NULL,450,N'pintura'),
@@ -252,7 +253,7 @@ INSERT INTO Piezas VALUES
     (28,N'Negro noche',NULL,0,N'pintura'),
     (29,N'Azul denim',NULL,817.38,N'pintura'),
     (30,N'Blanco digital',NULL,817.38,N'pintura'),
-    (31,N'Rojo jupiter',NULL,0,N'pinuta'),
+    (31,N'Rojo jupiter',NULL,0,N'pintura'),
     (32,N'Llantas aleacion 17 pulgadas',NULL,0,N'llantas'),
     (33,N'Llantas aleacion 18 pulgadas color negro',NULL,1106.60,N'llantas'),
     (34,N'Llantas aleacion 19 multirradio titanio',NULL,829.95,N'llantas'),
@@ -275,7 +276,12 @@ INSERT INTO Piezas VALUES
     (51,N'Cristales traseros oscurecidos',NULL,410,NULL),
     (52,N'Climatizador automatico',N'Cimatizador automatico confort de 2 zonas',470,NULL),
     (53,N'Camara de marcha atrás',NULL,410,NULL),
-    (54,N'Asistente de velocidad adaptativo ',NULL,645,NULL);
+    (54,N'Asistente de velocidad adaptativo ',NULL,645,NULL),
+	(55, '50 TDI quattro tiptronic', 'Motor diésel de cilindro V6 con sistema de inyección Common Rail y turbocompresor, vehículo eléctrico híbrido suave (Mild Hybrid o MHEV)', 0, 'motor'),
+	(56, 'Negro brillante', NULL, 0, 'pintura'),
+	(57, 'Llantas de aleación 8J x 18', 'Diseño de 5 radios V. Neumáticos 235/55 R 18.', 0, 'llantas'),
+	(58, 'Asistente de vision nocturna', NULL, 2810, 'equip'), 
+	(59, 'Cinturones de seguridad Audi exclusive', NULL, 1830, 'equip');
 
 INSERT INTO PiezasCoches VALUES
     (1,N'Mercedes',N'Clase A'),
@@ -321,7 +327,12 @@ INSERT INTO PiezasCoches VALUES
     (51,N'Audi',N'A1'),
     (52,N'Audi',N'A1'),
     (53,N'Audi',N'A1'),
-    (54,N'Audi',N'A1');
+    (54,N'Audi',N'A1'),
+	(55, 'Audi', 'A8'),
+	(56, 'Audi', 'A8'),
+	(57, 'Audi', 'A8'),
+	(58, 'Audi', 'A8'),
+	(59, 'Audi', 'A8');
 
 INSERT INTO Motores VALUES
     (3,N'Gasolina',N'D',6,48,250,116,N'G'),
@@ -331,7 +342,8 @@ INSERT INTO Motores VALUES
     (26,N'Diesel',N'D',6,47,700,116,N'D'),
     (27,N'Gasolina',N'4',7,73,550,224,N'G'),
     (38,N'Gasolina',N'D',5,46,700,95,N'G'),
-    (39,N'Gasolina',N'D',7,57,700,150,N'G');
+    (39,N'Gasolina',N'D',7,57,700,150,N'G'),
+	(55, 'Diesel', '4', 8, 75, 650, 286, 'D');
 
 INSERT INTO Pinturas VALUES
     (1,N'gris oscuro',N'metalizado'),
@@ -352,7 +364,8 @@ INSERT INTO Pinturas VALUES
     (41,N'verde',N'solido'),
     (42,N'amarillo',N'metalizado'),
     (43,N'gris',N'metalizado'),
-    (44,N'rojo',N'perlado');
+    (44,N'rojo',N'perlado'),
+	(56, 'negro', 'solido');
 
 INSERT INTO Llantas VALUES
     (2,15),
@@ -363,7 +376,8 @@ INSERT INTO Llantas VALUES
     (34,19),
     (45,15),
     (46,16),
-    (47,17);
+    (47,17),
+	(57,18);
 
 INSERT INTO Cuentas VALUES ('testuser', '202cb962ac59075b964b07152d234b70') --La contraseña es 123
 
